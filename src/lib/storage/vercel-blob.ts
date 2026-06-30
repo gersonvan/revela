@@ -1,6 +1,5 @@
 import { put } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
-import sharp from "sharp";
 import {
   extensionByMimeType,
   mediaUrlToStoragePath,
@@ -40,6 +39,7 @@ export const vercelBlobStorageAdapter: StorageAdapter = {
   },
 
   async saveEventPhoto({ eventId, file }) {
+    const sharp = (await import("sharp")).default;
     const mimeType = file.type;
     const extension = extensionByMimeType[mimeType];
     const fileId = randomUUID();
@@ -80,6 +80,7 @@ export const vercelBlobStorageAdapter: StorageAdapter = {
   },
 
   async saveEventInvitation({ eventId, file }) {
+    const sharp = (await import("sharp")).default;
     const fileId = randomUUID();
     const optimizedPath = `uploads/${eventId}/invitation/${fileId}.webp`;
     const buffer = Buffer.from(await file.arrayBuffer());

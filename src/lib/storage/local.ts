@@ -1,7 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import sharp from "sharp";
 import {
   extensionByMimeType,
   mediaUrlToStoragePath,
@@ -22,88 +21,90 @@ export const localStorageAdapter: StorageAdapter = {
   },
 
   async saveEventPhoto({ eventId, file }) {
-  const mimeType = file.type;
-  const extension = extensionByMimeType[mimeType];
-  const fileId = randomUUID();
-  const eventDirectory = path.join(UPLOAD_ROOT, eventId);
-  const originalRelativePath = path.join(
-    "uploads",
-    eventId,
-    "original",
-    `${fileId}.${extension}`,
-  );
-  const optimizedRelativePath = path.join(
-    "uploads",
-    eventId,
-    "optimized",
-    `${fileId}.webp`,
-  );
-  const originalPath = getStoragePath(originalRelativePath);
-  const optimizedPath = getStoragePath(optimizedRelativePath);
-  const buffer = Buffer.from(await file.arrayBuffer());
+    const sharp = (await import("sharp")).default;
+    const mimeType = file.type;
+    const extension = extensionByMimeType[mimeType];
+    const fileId = randomUUID();
+    const eventDirectory = path.join(UPLOAD_ROOT, eventId);
+    const originalRelativePath = path.join(
+      "uploads",
+      eventId,
+      "original",
+      `${fileId}.${extension}`,
+    );
+    const optimizedRelativePath = path.join(
+      "uploads",
+      eventId,
+      "optimized",
+      `${fileId}.webp`,
+    );
+    const originalPath = getStoragePath(originalRelativePath);
+    const optimizedPath = getStoragePath(optimizedRelativePath);
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-  await mkdir(path.join(eventDirectory, "original"), { recursive: true });
-  await mkdir(path.join(eventDirectory, "optimized"), { recursive: true });
-  await writeFile(originalPath, buffer);
+    await mkdir(path.join(eventDirectory, "original"), { recursive: true });
+    await mkdir(path.join(eventDirectory, "optimized"), { recursive: true });
+    await writeFile(originalPath, buffer);
 
-  const image = sharp(buffer, { failOn: "none" }).rotate();
-  const metadata = await image.metadata();
+    const image = sharp(buffer, { failOn: "none" }).rotate();
+    const metadata = await image.metadata();
 
-  await image
-    .resize({
-      width: 1920,
-      height: 1920,
-      fit: "inside",
-      withoutEnlargement: true,
-    })
-    .webp({ quality: 82 })
-    .toFile(optimizedPath);
+    await image
+      .resize({
+        width: 1920,
+        height: 1920,
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .webp({ quality: 82 })
+      .toFile(optimizedPath);
 
-  return {
-    originalFileUrl: `/media/${originalRelativePath}`,
-    optimizedFileUrl: `/media/${optimizedRelativePath}`,
-    width: metadata.width ?? null,
-    height: metadata.height ?? null,
-  };
+    return {
+      originalFileUrl: `/media/${originalRelativePath}`,
+      optimizedFileUrl: `/media/${optimizedRelativePath}`,
+      width: metadata.width ?? null,
+      height: metadata.height ?? null,
+    };
   },
 
   async saveEventInvitation({ eventId, file }) {
-  const mimeType = file.type;
-  const extension = extensionByMimeType[mimeType];
-  const fileId = randomUUID();
-  const eventDirectory = path.join(UPLOAD_ROOT, eventId, "invitation");
-  const originalRelativePath = path.join(
-    "uploads",
-    eventId,
-    "invitation",
-    `${fileId}.${extension}`,
-  );
-  const optimizedRelativePath = path.join(
-    "uploads",
-    eventId,
-    "invitation",
-    `${fileId}.webp`,
-  );
-  const originalPath = getStoragePath(originalRelativePath);
-  const optimizedPath = getStoragePath(optimizedRelativePath);
-  const buffer = Buffer.from(await file.arrayBuffer());
+    const sharp = (await import("sharp")).default;
+    const mimeType = file.type;
+    const extension = extensionByMimeType[mimeType];
+    const fileId = randomUUID();
+    const eventDirectory = path.join(UPLOAD_ROOT, eventId, "invitation");
+    const originalRelativePath = path.join(
+      "uploads",
+      eventId,
+      "invitation",
+      `${fileId}.${extension}`,
+    );
+    const optimizedRelativePath = path.join(
+      "uploads",
+      eventId,
+      "invitation",
+      `${fileId}.webp`,
+    );
+    const originalPath = getStoragePath(originalRelativePath);
+    const optimizedPath = getStoragePath(optimizedRelativePath);
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-  await mkdir(eventDirectory, { recursive: true });
-  await writeFile(originalPath, buffer);
+    await mkdir(eventDirectory, { recursive: true });
+    await writeFile(originalPath, buffer);
 
-  await sharp(buffer, { failOn: "none" })
-    .rotate()
-    .resize({
-      width: 2200,
-      height: 2200,
-      fit: "inside",
-      withoutEnlargement: true,
-    })
-    .webp({ quality: 88 })
-    .toFile(optimizedPath);
+    await sharp(buffer, { failOn: "none" })
+      .rotate()
+      .resize({
+        width: 2200,
+        height: 2200,
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .webp({ quality: 88 })
+      .toFile(optimizedPath);
 
-  return {
-    invitationImageUrl: `/media/${optimizedRelativePath}`,
-  };
+    return {
+      invitationImageUrl: `/media/${optimizedRelativePath}`,
+    };
   },
 };
