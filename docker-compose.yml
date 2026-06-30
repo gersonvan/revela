@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: eventoon-postgres
+    environment:
+      POSTGRES_DB: eventoon
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - eventoon-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  eventoon-postgres-data:

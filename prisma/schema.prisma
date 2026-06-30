@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EventStatus {
+  DRAFT
+  ACTIVE
+  CLOSED
+}
+
+enum PhotoStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ModeratorStatus {
+  CREATED
+  USED
+  REVOKED
+}
+
+enum ModerationAction {
+  APPROVED
+  REJECTED
+  RESTORED
+}
+
+model Admin {
+  id              String   @id @default(cuid())
+  name            String?
+  email           String   @unique
+  googleId        String?  @unique
+  profileImageUrl String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  events Event[]
+}
+
+model Event {
+  id                String      @id @default(cuid())
+  adminId           String
+  name              String
+  eventDate         DateTime?
+  publicSlug        String      @unique
+  status            EventStatus @default(DRAFT)
+  invitationImageUrl String?
+  primaryColor      String?
+  secondaryColor    String?
+  authorizationText String
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  closedAt          DateTime?
+
+  admin      Admin       @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  photos     Photo[]
+  moderators Moderator[]
+
+  @@index([adminId])
+  @@index([status])
+}
+
+model Photo {
+  id                String      @id @default(cuid())
+  eventId           String
+  guestName         String
+  message           String?
+  originalFileUrl   String
+  optimizedFileUrl  String?
+  mimeType          String
+  sizeBytes         Int
+  width             Int?
+  height            Int?
+  status            PhotoStatus @default(PENDING)
+  uploadedAt        DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  event     Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  decisions ModerationDecision[]
+
+  @@index([eventId])
+  @@index([status])
+  @@index([uploadedAt])
+}
+
+model Moderator {
+  id            String          @id @default(cuid())
+  eventId       String
+  name          String
+  tokenHash     String          @unique
+  status        ModeratorStatus @default(CREATED)
+  activatedAt   DateTime?
+  lastAccessAt  DateTime?
+  deviceId      String?
+  createdAt     DateTime        @default(now())
+  revokedAt     DateTime?
+
+  event     Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  decisions ModerationDecision[]
+
+  @@index([eventId])
+  @@index([status])
+}
+
+model ModerationDecision {
+  id             String           @id @default(cuid())
+  photoId        String
+  moderatorId    String
+  action         ModerationAction
+  previousStatus PhotoStatus
+  newStatus      PhotoStatus
+  createdAt      DateTime         @default(now())
+
+  photo     Photo     @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  moderator Moderator @relation(fields: [moderatorId], references: [id], onDelete: Cascade)
+
+  @@index([photoId])
+  @@index([moderatorId])
+}
