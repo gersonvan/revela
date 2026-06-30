@@ -1,6 +1,6 @@
 # Operacao no Dia do Evento
 
-Este documento descreve como preparar e operar o EventoOn durante uma festa.
+Este documento descreve como preparar e operar o Revela durante uma festa.
 
 ## Antes do Evento
 

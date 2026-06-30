@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-Este pacote documenta a adaptação visual do sistema **Revela** (anteriormente EventoOn).
+Este pacote documenta a adaptação visual do sistema **Revela**.
 O MVP funcional já está implementado em Next.js 16 + Tailwind CSS 4 + Prisma.
 A tarefa é **substituir a UI provisória** pelas classes e estruturas do design Revela,
 sem alterar lógica de negócio, Server Actions, APIs ou schema do banco.
@@ -158,7 +158,7 @@ body {
 
 **Mudanças visuais:**
 - Background: `bg-[#FBF5EE]`.
-- Label do produto: substituir `"EventoOn"` por `"revela"` com `font-[family-name:var(--font-display)] italic text-3xl text-[#D4562B]`.
+- Label do produto: substituir `"Revela"` por `"revela"` com `font-[family-name:var(--font-display)] italic text-3xl text-[#D4562B]`.
 - H1: manter estrutura, trocar cor para `text-[#1D1108]`, fonte `font-sans font-700`.
 - Subtítulo: `text-[#8A6B55]`.
 - Cards: `bg-white border border-[#E8DDD1] rounded-xl shadow-sm`.

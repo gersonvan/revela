@@ -1,6 +1,6 @@
 # Plano de Implementacao
 
-Este documento organiza a construcao tecnica do EventoOn em etapas executaveis.
+Este documento organiza a construcao tecnica do Revela em etapas executaveis.
 
 ## Objetivo
 

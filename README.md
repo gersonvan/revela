@@ -1,6 +1,6 @@
-# EventoOn
+# Revela
 
-EventoOn e um nome provisorio para um sistema online de mural de fotos ao vivo para eventos privados.
+Revela e um sistema online de mural de fotos ao vivo para eventos privados.
 
 O produto permite que convidados enviem fotos pelo celular via QR Code, que moderadores aprovem manualmente o conteudo, e que um telao/projetor exiba em tempo real um feed apenas com fotos aprovadas.
 

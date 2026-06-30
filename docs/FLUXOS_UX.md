@@ -1,6 +1,6 @@
 # Fluxos de UX
 
-Este documento descreve os fluxos principais do EventoOn do ponto de vista de uso.
+Este documento descreve os fluxos principais do Revela do ponto de vista de uso.
 
 ## Principios de Experiencia
 

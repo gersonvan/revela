@@ -1,6 +1,6 @@
 # Arquitetura Funcional
 
-Este documento descreve os modulos, telas, permissoes, dados e eventos em tempo real do EventoOn em nivel funcional.
+Este documento descreve os modulos, telas, permissoes, dados e eventos em tempo real do Revela em nivel funcional.
 
 ## Modulos
 

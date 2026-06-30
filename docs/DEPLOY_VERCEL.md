@@ -1,6 +1,6 @@
 # Deploy e Vercel
 
-Este documento registra os pontos de deploy do EventoOn, com foco em Vercel.
+Este documento registra os pontos de deploy do Revela, com foco em Vercel.
 
 ## Relacao entre Google OAuth e Vercel
 
@@ -32,7 +32,7 @@ http://localhost:3000/api/auth/callback/google
 Exemplo Vercel:
 
 ```text
-https://eventoon.vercel.app/api/auth/callback/google
+https://revela.vercel.app/api/auth/callback/google
 ```
 
 Vantagem:
@@ -45,7 +45,7 @@ Riscos:
 - dificulta auditoria futura;
 - se o OAuth Client for alterado para um app, pode afetar o outro.
 
-### Opcao 2 - Criar um OAuth Client separado para EventoOn
+### Opcao 2 - Criar um OAuth Client separado para Revela
 
 Recomendado para o produto.
 
@@ -54,12 +54,12 @@ Vantagem:
 - configuracao isolada;
 - nome do app correto na tela de consentimento;
 - menor risco de quebrar outro sistema;
-- mais limpo para evoluir o EventoOn.
+- mais limpo para evoluir o Revela.
 
 Recomendacao:
 
 - para teste rapido, reaproveitar pode servir;
-- para uso real no aniversario e deploy, criar um OAuth Client proprio para EventoOn.
+- para uso real no aniversario e deploy, criar um OAuth Client proprio para Revela.
 
 ## Variaveis no Vercel
 

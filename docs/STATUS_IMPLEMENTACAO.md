@@ -68,7 +68,7 @@ Ja foi criado:
 - script `pnpm db:seed` para criar evento e moderador demo local;
 - script `pnpm smoke:demo` para ensaio automatizado do fluxo local;
 - aviso na tela de login quando credenciais Google OAuth nao estiverem configuradas;
-- pagina inicial simples do EventoOn;
+- pagina inicial simples do Revela;
 - scripts de validacao e build.
 
 ## Stack Efetiva
@@ -117,7 +117,7 @@ Status:
 - Producao em `revela.gersonvan.com.br`: login Google validado, evento `Ensaio Producao` criado/ativado, upload publico validado, moderacao aprovada e telao exibindo imagem do R2.
 - R2 em producao: upload validado no bucket `revela-uploads`; URL publica `r2.dev` usada enquanto o dominio `media.gersonvan.com.br` nao estiver configurado.
 - Login real com Google: validado em `http://127.0.0.1:3000/admin` com `gersonvan@gmail.com`.
-- Fluxo autenticado completo: evento `Ensaio EventoOn` criado pelo admin, ativado, moderador criado e ativado, foto enviada por API publica, aprovada e exibida no telao.
+- Fluxo autenticado completo: evento `Ensaio Revela` criado pelo admin, ativado, moderador criado e ativado, foto enviada por API publica, aprovada e exibida no telao.
 
 Scripts disponiveis:
 

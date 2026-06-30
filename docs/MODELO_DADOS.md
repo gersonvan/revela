@@ -1,6 +1,6 @@
 # Modelo de Dados
 
-Este documento descreve um modelo inicial de dados para o EventoOn. Os nomes sao conceituais e podem ser ajustados durante a implementacao.
+Este documento descreve um modelo inicial de dados para o Revela. Os nomes sao conceituais e podem ser ajustados durante a implementacao.
 
 ## Entidades
 

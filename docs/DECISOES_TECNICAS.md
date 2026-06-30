@@ -1,6 +1,6 @@
 # Decisoes Tecnicas
 
-Este documento registra decisoes tecnicas recomendadas e pontos ainda em aberto para o EventoOn.
+Este documento registra decisoes tecnicas recomendadas e pontos ainda em aberto para o Revela.
 
 ## Premissas
 

@@ -1,6 +1,6 @@
 # Stack Recomendada
 
-Este documento recomenda uma stack inicial para construir o MVP do EventoOn.
+Este documento recomenda uma stack inicial para construir o MVP do Revela.
 
 ## Recomendacao Principal
 

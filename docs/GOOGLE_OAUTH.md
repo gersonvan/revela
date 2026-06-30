@@ -1,6 +1,6 @@
 # Configuracao Google OAuth
 
-Este documento descreve como configurar o login Google do admin no EventoOn.
+Este documento descreve como configurar o login Google do admin no Revela.
 
 ## Variaveis Necessarias
 
@@ -66,11 +66,11 @@ Se houver um OAuth Client usado por outro sistema, como um sistema pessoal de ga
 - se ele esta no Google Cloud;
 - quais callbacks autorizados ele possui;
 - se o Vercel daquele sistema apenas guarda as variaveis de ambiente;
-- se faz sentido adicionar o callback do EventoOn ao mesmo client.
+- se faz sentido adicionar o callback do Revela ao mesmo client.
 
 Para teste rapido, e possivel reaproveitar.
 
-Para o EventoOn como produto, e melhor criar um OAuth Client separado.
+Para o Revela como produto, e melhor criar um OAuth Client separado.
 
 ## Teste Local
 

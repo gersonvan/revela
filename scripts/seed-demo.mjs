@@ -14,7 +14,7 @@ await client.connect();
 
 await client.query(`
   INSERT INTO "Admin" ("id", "name", "email", "createdAt", "updatedAt")
-  VALUES ('admin_demo', 'Admin Demo', 'demo@eventoon.local', NOW(), NOW())
+  VALUES ('admin_demo', 'Admin Demo', 'demo@revela.local', NOW(), NOW())
   ON CONFLICT ("email") DO UPDATE SET "updatedAt" = NOW();
 `);
 

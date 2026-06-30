@@ -1,8 +1,8 @@
-# PRD - EventoOn
+# PRD - Revela
 
 ## Visao
 
-EventoOn e um sistema online para eventos privados onde convidados enviam fotos por QR Code, moderadores aprovam manualmente, e um telao exibe em tempo real um feed com as fotos aprovadas.
+Revela e um sistema online para eventos privados onde convidados enviam fotos por QR Code, moderadores aprovam manualmente, e um telao exibe em tempo real um feed com as fotos aprovadas.
 
 O primeiro uso sera em uma festa de aniversario, mas o MVP deve nascer reutilizavel para varios eventos.
 
