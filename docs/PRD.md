@@ -128,7 +128,7 @@ Como o evento pode ter criancas nas fotos, privacidade e consentimento devem ser
 
 Texto inicial sugerido para o termo:
 
-> Ao enviar, voce autoriza que esta foto apareca no telao da festa apos moderacao. Envie apenas fotos que voce se sente confortavel em compartilhar neste evento.
+> Ao enviar, você autoriza que esta foto apareça no telão da festa após moderação. Envie apenas fotos que você se sente confortável em compartilhar neste evento.
 
 Regras de privacidade no MVP:
 

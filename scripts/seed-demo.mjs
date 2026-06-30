@@ -37,9 +37,9 @@ await client.query(`
     'Evento Demo',
     'evento-demo',
     'ACTIVE',
-    '#9a5a44',
-    '#f6f4ef',
-    'Ao enviar, voce autoriza que esta foto apareca no telao da festa apos moderacao.',
+    '#D4562B',
+    '#FBF5EE',
+    'Ao enviar, você autoriza que esta foto apareça no telão da festa após moderação. Envie apenas fotos que você se sente confortável em compartilhar neste evento.',
     NOW(),
     NOW()
   )

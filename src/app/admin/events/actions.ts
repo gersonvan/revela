@@ -13,7 +13,7 @@ import {
 } from "@/lib/storage";
 
 const DEFAULT_AUTHORIZATION_TEXT =
-  "Ao enviar, voce autoriza que esta foto apareca no telao da festa apos moderacao. Envie apenas fotos que voce se sente confortavel em compartilhar neste evento.";
+  "Ao enviar, você autoriza que esta foto apareça no telão da festa após moderação. Envie apenas fotos que você se sente confortável em compartilhar neste evento.";
 const DEFAULT_PRIMARY_COLOR = "#D4562B";
 const DEFAULT_SECONDARY_COLOR = "#FBF5EE";
 const MAX_INVITATION_SIZE_BYTES = 20 * 1024 * 1024;

@@ -4,7 +4,7 @@ import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { requireAdmin } from "@/lib/admin";
 
 const defaultAuthorizationText =
-  "Ao enviar, voce autoriza que esta foto apareca no telao da festa apos moderacao. Envie apenas fotos que voce se sente confortavel em compartilhar neste evento.";
+  "Ao enviar, você autoriza que esta foto apareça no telão da festa após moderação. Envie apenas fotos que você se sente confortável em compartilhar neste evento.";
 
 export default async function NewEventPage() {
   const admin = await requireAdmin();
