@@ -110,7 +110,7 @@ Status:
 - Validacao de ambiente R2: quando `STORAGE_PROVIDER=cloudflare-r2`, `pnpm env:check` exige todas as variaveis `R2_*`.
 - R2 real: upload de foto validado no bucket `revela-uploads`; URL publica `r2.dev` retornou `HTTP 200` para imagem WebP otimizada.
 - Vercel: projeto `revela` criado e deploy de producao publicado em `https://revela-one.vercel.app`.
-- Vercel dominio: `revela.gersonvan.com.br` adicionado ao projeto, aguardando CNAME na Locaweb.
+- Vercel dominio: `revela.gersonvan.com.br` verificado com CNAME na Locaweb e certificado HTTPS emitido.
 - Neon: banco `revela-postgres` provisionado via Vercel Marketplace e migration inicial aplicada no banco remoto.
 - Login real com Google: validado em `http://127.0.0.1:3000/admin` com `gersonvan@gmail.com`.
 - Fluxo autenticado completo: evento `Ensaio EventoOn` criado pelo admin, ativado, moderador criado e ativado, foto enviada por API publica, aprovada e exibida no telao.
@@ -159,7 +159,7 @@ Variaveis atuais:
 - variaveis `R2_*` ficam vazias no desenvolvimento local e sao obrigatorias quando `STORAGE_PROVIDER=cloudflare-r2`.
 - dominio planejado da aplicacao: `revela.gersonvan.com.br`.
 - dominio planejado de midias: `media.gersonvan.com.br`.
-- registro DNS pendente na Locaweb: CNAME `revela` para `0d6c9cd442647db1.vercel-dns-017.com.`.
+- registro DNS na Locaweb: CNAME `revela` para `0d6c9cd442647db1.vercel-dns-017.com.`.
 - O PostgreSQL local esta rodando via Docker Compose.
 - Se o container local parar, `pnpm db:up` reinicia o PostgreSQL.
 - A migration inicial foi aplicada no banco local `eventoon`.
@@ -171,8 +171,7 @@ Fase 1 - Modelo de Dados e Admin.
 
 Proximas tarefas recomendadas:
 
-1. Criar o CNAME `revela` na Locaweb para a Vercel.
-2. Adicionar callback Google OAuth de producao.
-3. Validar login em `https://revela.gersonvan.com.br/admin/login`.
-4. Decidir se o DNS de `gersonvan.com.br` sera migrado para Cloudflare para habilitar `media.gersonvan.com.br` no R2.
-5. Fazer ensaio em ambiente publicado antes do evento real.
+1. Adicionar callback Google OAuth de producao.
+2. Validar login em `https://revela.gersonvan.com.br/admin/login`.
+3. Decidir se o DNS de `gersonvan.com.br` sera migrado para Cloudflare para habilitar `media.gersonvan.com.br` no R2.
+4. Fazer ensaio em ambiente publicado antes do evento real.

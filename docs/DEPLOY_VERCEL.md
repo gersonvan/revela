@@ -216,7 +216,8 @@ Para o dominio de midias `media.gersonvan.com.br`, o caminho ideal e configurar 
 
 - Projeto Vercel: `revela`
 - URL temporaria de producao: `https://revela-one.vercel.app`
-- Dominio customizado adicionado na Vercel: `revela.gersonvan.com.br`
+- Dominio customizado ativo na Vercel: `https://revela.gersonvan.com.br`
+- Certificado HTTPS emitido para `revela.gersonvan.com.br`
 - Banco de producao: Neon `revela-postgres`
 - Migration inicial aplicada no banco Neon.
 - Storage de producao: Cloudflare R2 bucket `revela-uploads`
