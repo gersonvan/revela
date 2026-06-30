@@ -108,6 +108,7 @@ Status:
 - Smoke demo: valida paginas demo, upload, foto pendente e feed do telao com foto aprovada.
 - Smoke demo apos adapter de storage: passando com `STORAGE_PROVIDER=local`.
 - Validacao de ambiente R2: quando `STORAGE_PROVIDER=cloudflare-r2`, `pnpm env:check` exige todas as variaveis `R2_*`.
+- R2 real: upload de foto validado no bucket `revela-uploads`; URL publica `r2.dev` retornou `HTTP 200` para imagem WebP otimizada.
 - Login real com Google: validado em `http://127.0.0.1:3000/admin` com `gersonvan@gmail.com`.
 - Fluxo autenticado completo: evento `Ensaio EventoOn` criado pelo admin, ativado, moderador criado e ativado, foto enviada por API publica, aprovada e exibida no telao.
 
@@ -150,9 +151,11 @@ Variaveis atuais:
 - `NEXTAUTH_SECRET` local foi preenchido com valor real de desenvolvimento.
 - `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` locais foram configurados.
 - `ADMIN_EMAIL_ALLOWLIST` local foi preenchida com `gersonvan@gmail.com`.
-- `STORAGE_PROVIDER` local esta como `local`.
+- `STORAGE_PROVIDER` local esta como `cloudflare-r2` para validar o R2 real.
 - `BLOB_READ_WRITE_TOKEN` fica vazio no desenvolvimento local e e obrigatorio quando `STORAGE_PROVIDER=vercel-blob`.
 - variaveis `R2_*` ficam vazias no desenvolvimento local e sao obrigatorias quando `STORAGE_PROVIDER=cloudflare-r2`.
+- dominio planejado da aplicacao: `revela.gersonvan.com.br`.
+- dominio planejado de midias: `media.gersonvan.com.br`.
 - O PostgreSQL local esta rodando via Docker Compose.
 - Se o container local parar, `pnpm db:up` reinicia o PostgreSQL.
 - A migration inicial foi aplicada no banco local `eventoon`.
@@ -165,6 +168,7 @@ Fase 1 - Modelo de Dados e Admin.
 Proximas tarefas recomendadas:
 
 1. Escolher banco Postgres gerenciado para ambiente online.
-2. Criar projeto Vercel e bucket Cloudflare R2.
+2. Criar projeto Vercel e apontar `revela.gersonvan.com.br`.
 3. Preparar variaveis de ambiente no Vercel.
-4. Fazer ensaio em ambiente publicado antes do evento real.
+4. Configurar dominio publico `media.gersonvan.com.br` no R2.
+5. Fazer ensaio em ambiente publicado antes do evento real.

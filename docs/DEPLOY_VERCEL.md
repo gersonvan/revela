@@ -84,7 +84,7 @@ R2_PUBLIC_BASE_URL=
 Exemplo:
 
 ```bash
-NEXTAUTH_URL="https://eventoon.vercel.app"
+NEXTAUTH_URL="https://revela.gersonvan.com.br"
 ADMIN_EMAIL_ALLOWLIST="voce@gmail.com,moderador-admin@gmail.com"
 STORAGE_PROVIDER="cloudflare-r2"
 ```
@@ -118,7 +118,7 @@ R2_ACCOUNT_ID="..."
 R2_ACCESS_KEY_ID="..."
 R2_SECRET_ACCESS_KEY="..."
 R2_BUCKET_NAME="..."
-R2_PUBLIC_BASE_URL="https://media.seu-dominio.com"
+R2_PUBLIC_BASE_URL="https://media.gersonvan.com.br"
 ```
 
 Com esse provider:
@@ -129,7 +129,9 @@ Com esse provider:
 - o banco guarda URLs publicas do R2;
 - exportacao ZIP baixa as imagens pelas URLs gravadas no banco.
 
-As URLs do R2 precisam ser publicas para o telao e as paginas carregarem imagens diretamente no navegador. Nao ha galeria publica no MVP. Apenas fotos aprovadas entram no telao; pendentes e rejeitadas continuam acessiveis apenas por admin/moderacao/exportacao.
+As URLs do R2 precisam ser publicas para o telao e as paginas carregarem imagens diretamente no navegador. Para producao, a recomendacao e usar um dominio proprio como `media.gersonvan.com.br`. Enquanto esse dominio nao estiver configurado, a URL publica `r2.dev` do bucket pode ser usada para teste.
+
+Nao ha galeria publica no MVP. Apenas fotos aprovadas entram no telao; pendentes e rejeitadas continuam acessiveis apenas por admin/moderacao/exportacao.
 
 O adapter `vercel-blob` tambem existe como alternativa, mas nao e o caminho recomendado atual.
 
@@ -180,3 +182,14 @@ Isso deixa detalhes do provider concentrados na camada `src/lib/storage`, sem es
 15. Testar moderacao.
 16. Testar telao.
 17. Testar exportacao ZIP.
+
+## Dominios Planejados
+
+- Aplicacao: `revela.gersonvan.com.br`
+- Midias R2: `media.gersonvan.com.br`
+
+No Google OAuth, o callback de producao devera ser:
+
+```text
+https://revela.gersonvan.com.br/api/auth/callback/google
+```
