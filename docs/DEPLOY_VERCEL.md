@@ -193,3 +193,30 @@ No Google OAuth, o callback de producao devera ser:
 ```text
 https://revela.gersonvan.com.br/api/auth/callback/google
 ```
+
+## DNS na Locaweb
+
+O dominio `gersonvan.com.br` esta com nameservers da Locaweb. Para apontar a aplicacao para a Vercel, crie este registro DNS na Locaweb:
+
+```text
+Tipo: CNAME
+Nome/Host: revela
+Valor/Destino: 0d6c9cd442647db1.vercel-dns-017.com.
+```
+
+Depois de propagar, validar com:
+
+```bash
+vercel domains verify revela.gersonvan.com.br
+```
+
+Para o dominio de midias `media.gersonvan.com.br`, o caminho ideal e configurar um custom domain no Cloudflare R2. Esse fluxo pode exigir que a zona DNS esteja no Cloudflare. Enquanto isso, o MVP pode usar a URL publica `r2.dev` do bucket.
+
+## Estado Atual do Deploy
+
+- Projeto Vercel: `revela`
+- URL temporaria de producao: `https://revela-one.vercel.app`
+- Dominio customizado adicionado na Vercel: `revela.gersonvan.com.br`
+- Banco de producao: Neon `revela-postgres`
+- Migration inicial aplicada no banco Neon.
+- Storage de producao: Cloudflare R2 bucket `revela-uploads`
