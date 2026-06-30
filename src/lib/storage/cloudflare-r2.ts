@@ -78,6 +78,45 @@ async function uploadR2Object({
   return getPublicUrl(key);
 }
 
+async function optimizeToWebp({
+  buffer,
+  height,
+  quality,
+  width,
+}: {
+  buffer: Buffer;
+  height: number;
+  quality: number;
+  width: number;
+}) {
+  try {
+    const sharp = (await import("sharp")).default;
+    const image = sharp(buffer, { failOn: "none" }).rotate();
+    const metadata = await image.metadata();
+    const optimizedBuffer = await image
+      .resize({
+        width,
+        height,
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .webp({ quality })
+      .toBuffer();
+
+    return {
+      buffer: optimizedBuffer,
+      contentType: "image/webp",
+      extension: "webp",
+      height: metadata.height ?? null,
+      width: metadata.width ?? null,
+    };
+  } catch (error) {
+    console.warn("Sharp indisponivel; usando imagem original no storage.", error);
+
+    return null;
+  }
+}
+
 export const cloudflareR2StorageAdapter: StorageAdapter = {
   async readStoredFile(mediaPathOrUrl) {
     if (mediaPathOrUrl.startsWith("http")) {
@@ -99,24 +138,20 @@ export const cloudflareR2StorageAdapter: StorageAdapter = {
   },
 
   async saveEventPhoto({ eventId, file }) {
-    const sharp = (await import("sharp")).default;
     const mimeType = file.type;
     const extension = extensionByMimeType[mimeType];
     const fileId = randomUUID();
     const originalKey = `uploads/${eventId}/original/${fileId}.${extension}`;
-    const optimizedKey = `uploads/${eventId}/optimized/${fileId}.webp`;
     const buffer = Buffer.from(await file.arrayBuffer());
-    const image = sharp(buffer, { failOn: "none" }).rotate();
-    const metadata = await image.metadata();
-    const optimizedBuffer = await image
-      .resize({
-        width: 1920,
-        height: 1920,
-        fit: "inside",
-        withoutEnlargement: true,
-      })
-      .webp({ quality: 82 })
-      .toBuffer();
+    const optimized = await optimizeToWebp({
+      buffer,
+      height: 1920,
+      quality: 82,
+      width: 1920,
+    });
+    const optimizedKey = `uploads/${eventId}/optimized/${fileId}.${
+      optimized?.extension ?? extension
+    }`;
 
     const [originalFileUrl, optimizedFileUrl] = await Promise.all([
       uploadR2Object({
@@ -125,8 +160,8 @@ export const cloudflareR2StorageAdapter: StorageAdapter = {
         key: originalKey,
       }),
       uploadR2Object({
-        body: optimizedBuffer,
-        contentType: "image/webp",
+        body: optimized?.buffer ?? buffer,
+        contentType: optimized?.contentType ?? mimeType,
         key: optimizedKey,
       }),
     ]);
@@ -134,31 +169,30 @@ export const cloudflareR2StorageAdapter: StorageAdapter = {
     return {
       originalFileUrl,
       optimizedFileUrl,
-      width: metadata.width ?? null,
-      height: metadata.height ?? null,
+      width: optimized?.width ?? null,
+      height: optimized?.height ?? null,
     };
   },
 
   async saveEventInvitation({ eventId, file }) {
-    const sharp = (await import("sharp")).default;
+    const mimeType = file.type;
+    const extension = extensionByMimeType[mimeType];
     const fileId = randomUUID();
-    const optimizedKey = `uploads/${eventId}/invitation/${fileId}.webp`;
     const buffer = Buffer.from(await file.arrayBuffer());
-    const optimizedBuffer = await sharp(buffer, { failOn: "none" })
-      .rotate()
-      .resize({
-        width: 2200,
-        height: 2200,
-        fit: "inside",
-        withoutEnlargement: true,
-      })
-      .webp({ quality: 88 })
-      .toBuffer();
+    const optimized = await optimizeToWebp({
+      buffer,
+      height: 2200,
+      quality: 88,
+      width: 2200,
+    });
+    const optimizedKey = `uploads/${eventId}/invitation/${fileId}.${
+      optimized?.extension ?? extension
+    }`;
 
     return {
       invitationImageUrl: await uploadR2Object({
-        body: optimizedBuffer,
-        contentType: "image/webp",
+        body: optimized?.buffer ?? buffer,
+        contentType: optimized?.contentType ?? mimeType,
         key: optimizedKey,
       }),
     };

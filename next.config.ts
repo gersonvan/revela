@@ -6,13 +6,6 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "25mb",
     },
   },
-  outputFileTracingIncludes: {
-    "/*": [
-      "./node_modules/sharp/**/*",
-      "./node_modules/@img/sharp-linux-x64/**/*",
-      "./node_modules/@img/sharp-libvips-linux-x64/**/*",
-    ],
-  },
   turbopack: {
     root: process.cwd(),
   },
