@@ -150,15 +150,49 @@ export function PhotoUploadForm({
     );
   }
 
+  if (status === "success") {
+    return (
+      <div className="mt-8 rounded-2xl border border-[#E8DDD1] bg-white p-5 text-center shadow-sm">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#16A34A] bg-[rgba(22,163,74,0.10)] text-xl font-bold text-[#16A34A]">
+          ✓
+        </div>
+        <p className="mt-4 font-[family-name:var(--font-display)] text-2xl font-semibold italic text-[#1D1108]">
+          Fotos enviadas!
+        </p>
+        <p className="mx-auto mt-2 max-w-xs text-sm leading-5 text-[#8A6B55]">
+          {statusMessage}
+        </p>
+        <div className="mt-5 rounded-xl border border-[#E8DDD1] bg-[#F4EDE1] px-4 py-3">
+          <p className="text-[9px] uppercase tracking-wide text-[#8A6B55]">
+            Status
+          </p>
+          <p className="mt-1 text-sm font-bold text-[#D4562B]">
+            Aguardando moderação
+          </p>
+        </div>
+        <button
+          className="mt-5 h-11 w-full rounded-xl border border-[#E8DDD1] text-sm font-bold text-[#1D1108]"
+          onClick={() => {
+            setStatus("idle");
+            setStatusMessage("");
+          }}
+          type="button"
+        >
+          + Enviar mais fotos
+        </button>
+      </div>
+    );
+  }
+
   return (
     <form
-      className="mt-8 space-y-6 rounded-lg border border-[#ddd5c7] bg-white p-5 shadow-sm"
+      className="mt-8 space-y-6 rounded-2xl border border-[#E8DDD1] bg-white p-5 shadow-sm"
       onSubmit={handleSubmit}
     >
       <label className="block">
-        <span className="text-sm font-semibold text-[#172026]">Nome/apelido</span>
+        <span className="text-sm font-bold text-[#1D1108]">Nome/apelido</span>
         <input
-          className="mt-2 h-11 w-full rounded-md border border-[#d7cfc1] px-3 text-base outline-none focus:border-[#9a5a44]"
+          className="mt-2 h-11 w-full rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-base text-[#1D1108] outline-none focus:border-[#D4562B]"
           onChange={(event) => setGuestName(event.target.value)}
           placeholder="Como voce quer aparecer no telao"
           required
@@ -166,19 +200,19 @@ export function PhotoUploadForm({
         />
       </label>
 
-      <label className="block rounded-md border border-[#d7cfc1] bg-[#fbfaf7] p-4">
+      <label className="block rounded-xl border border-[#E8DDD1] bg-[#F4EDE1] p-4">
         <span className="flex items-start gap-3">
           <input
             checked={acceptedTerms}
-            className="mt-1"
+            className="mt-1 accent-[#D4562B]"
             onChange={(event) => setAcceptedTerms(event.target.checked)}
             type="checkbox"
           />
           <span>
-            <span className="block text-sm font-semibold text-[#172026]">
+            <span className="block text-sm font-bold text-[#1D1108]">
               Autorizacao
             </span>
-            <span className="mt-1 block text-sm leading-6 text-[#52616b]">
+            <span className="mt-1 block text-sm leading-6 text-[#8A6B55]">
               {authorizationText}
             </span>
           </span>
@@ -186,15 +220,15 @@ export function PhotoUploadForm({
       </label>
 
       <label className="block">
-        <span className="text-sm font-semibold text-[#172026]">Fotos</span>
+        <span className="text-sm font-bold text-[#1D1108]">Fotos</span>
         <input
           accept="image/*"
-          className="mt-2 block w-full rounded-md border border-dashed border-[#d7cfc1] bg-[#fbfaf7] p-4 text-sm text-[#52616b]"
+          className="mt-2 block w-full rounded-xl border border-dashed border-[#E8DDD1] bg-[#F4EDE1] p-4 text-sm text-[#8A6B55] file:mr-3 file:rounded-lg file:border-0 file:bg-[#D4562B] file:px-3 file:py-2 file:text-sm file:font-bold file:text-white"
           multiple
           onChange={(event) => handleFiles(event.target.files)}
           type="file"
         />
-        <span className="mt-2 block text-xs text-[#52616b]">
+        <span className="mt-2 block text-xs text-[#8A6B55]">
           Ate 15 fotos por envio, com limite de 20 MB por foto.
         </span>
       </label>
@@ -203,7 +237,7 @@ export function PhotoUploadForm({
         <div className="grid gap-4 sm:grid-cols-2">
           {photos.map((photo) => (
             <article
-              className="overflow-hidden rounded-md border border-[#ddd5c7]"
+              className="overflow-hidden rounded-xl border border-[#E8DDD1]"
               key={photo.id}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -214,23 +248,23 @@ export function PhotoUploadForm({
               />
               <div className="space-y-3 p-3">
                 <label className="block">
-                  <span className="text-xs font-semibold text-[#52616b]">
+                  <span className="text-xs font-semibold text-[#8A6B55]">
                     Mensagem opcional
                   </span>
                   <textarea
-                    className="mt-1 min-h-20 w-full rounded-md border border-[#d7cfc1] px-3 py-2 text-sm outline-none focus:border-[#9a5a44]"
+                    className="mt-1 min-h-16 w-full resize-none rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 py-2 text-sm text-[#1D1108] outline-none focus:border-[#D4562B]"
                     maxLength={MAX_MESSAGE_LENGTH}
                     onChange={(event) =>
                       updateMessage(photo.id, event.target.value)
                     }
                     value={photo.message}
                   />
-                  <span className="mt-1 block text-right text-xs text-[#52616b]">
+                  <span className="mt-1 block text-right text-xs text-[#B09585]">
                     {photo.message.length}/{MAX_MESSAGE_LENGTH}
                   </span>
                 </label>
                 <button
-                  className="text-sm font-semibold text-[#9a5a44]"
+                  className="text-sm font-semibold text-[#D4562B]"
                   onClick={() => removePhoto(photo.id)}
                   type="button"
                 >
@@ -246,8 +280,8 @@ export function PhotoUploadForm({
         <p
           className={
             status === "error"
-              ? "text-sm font-medium text-red-700"
-              : "text-sm font-medium text-[#52616b]"
+              ? "text-sm font-semibold text-[#DC2626]"
+              : "text-sm font-semibold text-[#16A34A]"
           }
         >
           {statusMessage}
@@ -255,7 +289,7 @@ export function PhotoUploadForm({
       ) : null}
 
       <button
-        className="h-11 w-full rounded-md bg-[#172026] px-4 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:bg-[#9aa6ad]"
+        className="h-12 w-full rounded-xl bg-[#D4562B] px-4 text-sm font-bold text-white transition hover:bg-[#BA4620] disabled:cursor-not-allowed disabled:bg-[#C0A898]"
         disabled={!canSubmit}
         type="submit"
       >

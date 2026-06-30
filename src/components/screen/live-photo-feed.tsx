@@ -62,8 +62,8 @@ export function LivePhotoFeed({ eventSlug, initialPhotos }: LivePhotoFeedProps) 
           <article
             className={
               index === 0
-                ? "relative col-span-2 row-span-2 overflow-hidden rounded-lg bg-black shadow-lg"
-                : "relative overflow-hidden rounded-lg bg-black shadow-md"
+                ? "relative col-span-2 row-span-2 overflow-hidden rounded-2xl bg-black shadow-lg"
+                : "relative overflow-hidden rounded-2xl bg-black shadow-lg"
             }
             key={photo.id}
           >
@@ -74,7 +74,9 @@ export function LivePhotoFeed({ eventSlug, initialPhotos }: LivePhotoFeedProps) 
               src={photo.imageUrl}
             />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
-              <p className="text-sm font-semibold">{photo.guestName}</p>
+              <p className="font-[family-name:var(--font-display)] text-base font-semibold italic">
+                {photo.guestName}
+              </p>
               {photo.message ? (
                 <p className="mt-1 line-clamp-2 text-sm leading-5 text-white/85">
                   {photo.message}
@@ -86,7 +88,7 @@ export function LivePhotoFeed({ eventSlug, initialPhotos }: LivePhotoFeedProps) 
       </div>
 
       <button
-        className="absolute left-6 top-6 rounded-md bg-white/90 px-4 py-2 text-sm font-semibold text-[#172026] shadow-md transition hover:bg-white"
+        className="absolute left-6 top-6 rounded-xl bg-white/90 px-4 py-2 text-sm font-bold text-[#1D1108] shadow-md transition hover:bg-white"
         onClick={() => document.documentElement.requestFullscreen?.()}
         type="button"
       >

@@ -71,7 +71,7 @@ export function ModerationAutoRefresh({
   }
 
   return (
-    <div className="mt-4 rounded-md border border-[#d7cfc1] bg-white p-3 text-sm font-semibold text-[#9a5a44]">
+    <div className="mt-4 rounded-xl border border-[rgba(212,86,43,0.3)] bg-[rgba(212,86,43,0.08)] px-4 py-3 text-sm font-bold text-[#D4562B]">
       Novas fotos chegaram para moderacao.
     </div>
   );

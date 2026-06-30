@@ -60,26 +60,26 @@ export default async function ScreenPage({ params }: ScreenPageProps) {
 
   return (
     <main
-      className="relative min-h-screen overflow-hidden text-[#172026]"
-      style={{ backgroundColor: event.secondaryColor ?? "#f6f4ef" }}
+      className="relative min-h-screen overflow-hidden text-[#1D1108]"
+      style={{ backgroundColor: event.secondaryColor ?? "#FBF5EE" }}
     >
       {initialPhotos.length === 0 ? (
         <EmptyScreen
           eventName={event.name}
           invitationImageUrl={event.invitationImageUrl}
-          primaryColor={event.primaryColor ?? "#9a5a44"}
+          primaryColor={event.primaryColor ?? "#D4562B"}
           qrCodeDataUrl={qrCodeDataUrl}
         />
       ) : (
         <LivePhotoFeed eventSlug={slug} initialPhotos={initialPhotos} />
       )}
 
-      <aside className="absolute bottom-6 right-6 flex items-center gap-3 rounded-lg bg-white/95 p-3 shadow-lg">
+      <aside className="absolute bottom-6 right-6 flex items-center gap-3 rounded-2xl bg-white/95 p-3 shadow-xl">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="QR Code do evento" className="h-24 w-24" src={qrCodeDataUrl} />
         <div className="max-w-48">
-          <p className="text-sm font-semibold text-[#172026]">Envie suas fotos</p>
-          <p className="mt-1 text-xs leading-5 text-[#52616b]">
+          <p className="text-sm font-bold text-[#1D1108]">Envie suas fotos</p>
+          <p className="mt-1 text-xs leading-5 text-[#8A6B55]">
             Aponte a camera para participar do mural.
           </p>
         </div>
@@ -106,7 +106,7 @@ function EmptyScreen({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             alt=""
-            className="max-h-[82vh] w-full rounded-lg object-contain shadow-xl"
+            className="max-h-[82vh] w-full rounded-2xl object-contain shadow-xl"
             src={invitationImageUrl}
           />
           <QrPanel
@@ -119,15 +119,15 @@ function EmptyScreen({
         <div className="grid w-full max-w-5xl items-center gap-12 lg:grid-cols-[1fr_320px]">
           <div>
             <p
-              className="text-sm font-semibold uppercase tracking-[0.18em]"
+              className="font-[family-name:var(--font-display)] text-5xl italic"
               style={{ color: primaryColor }}
             >
-              EventoOn
+              revela
             </p>
-            <h1 className="mt-5 text-6xl font-semibold leading-tight text-[#172026]">
+            <h1 className="mt-5 font-[family-name:var(--font-display)] text-6xl font-semibold italic leading-tight text-[#1D1108]">
               {eventName}
             </h1>
-            <p className="mt-6 max-w-2xl text-2xl leading-9 text-[#52616b]">
+            <p className="mt-6 max-w-2xl text-2xl leading-9 text-[#8A6B55]">
               Envie suas fotos para aparecer no telao apos a aprovacao da
               moderacao.
             </p>
@@ -153,15 +153,18 @@ function QrPanel({
   qrCodeDataUrl: string;
 }) {
   return (
-    <div className="rounded-lg bg-white p-6 text-center shadow-xl">
-      <p className="text-sm font-semibold text-[#52616b]">{eventName}</p>
+    <div className="rounded-2xl bg-white p-6 text-center shadow-xl">
+      <p className="text-sm font-semibold text-[#8A6B55]">{eventName}</p>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         alt="QR Code do evento"
         className="mx-auto mt-4 h-64 w-64"
         src={qrCodeDataUrl}
       />
-      <p className="mt-4 text-xl font-semibold" style={{ color: primaryColor }}>
+      <p
+        className="mt-4 font-[family-name:var(--font-display)] text-2xl font-semibold italic"
+        style={{ color: primaryColor }}
+      >
         Envie suas fotos
       </p>
     </div>

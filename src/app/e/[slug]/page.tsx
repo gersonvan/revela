@@ -28,20 +28,20 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
 
   return (
     <main
-      className="min-h-screen px-5 py-8 text-[#1f2933]"
-      style={{ backgroundColor: event.secondaryColor ?? "#f6f4ef" }}
+      className="min-h-screen px-5 py-8 text-[#1D1108]"
+      style={{ backgroundColor: event.secondaryColor ?? "#FBF5EE" }}
     >
       <section className="mx-auto max-w-2xl">
         <p
-          className="text-sm font-semibold uppercase tracking-[0.18em]"
-          style={{ color: event.primaryColor ?? "#9a5a44" }}
+          className="font-[family-name:var(--font-display)] text-3xl italic"
+          style={{ color: event.primaryColor ?? "#D4562B" }}
         >
-          EventoOn
+          revela
         </p>
-        <h1 className="mt-3 text-3xl font-semibold leading-tight text-[#172026]">
+        <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-semibold italic leading-tight text-[#1D1108]">
           {event.name}
         </h1>
-        <p className="mt-3 text-sm leading-6 text-[#52616b]">
+        <p className="mt-3 text-sm leading-6 text-[#8A6B55]">
           Envie suas fotos para a moderacao. As fotos aprovadas poderao aparecer
           no telao do evento.
         </p>
@@ -52,13 +52,13 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
             eventSlug={slug}
           />
         ) : (
-          <div className="mt-8 rounded-lg border border-[#ddd5c7] bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-semibold text-[#172026]">
+          <div className="mt-8 rounded-2xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold italic text-[#1D1108]">
               {event.status === EventStatus.DRAFT
                 ? "Evento ainda nao aberto"
                 : "Envio encerrado"}
             </h2>
-            <p className="mt-2 text-sm leading-6 text-[#52616b]">
+            <p className="mt-2 text-sm leading-6 text-[#8A6B55]">
               {event.status === EventStatus.DRAFT
                 ? "Este evento ainda nao esta recebendo fotos."
                 : "O envio de fotos deste evento foi encerrado."}

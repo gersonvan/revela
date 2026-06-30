@@ -53,22 +53,30 @@ export default async function ModerationPage({
 
   if (access.status === "activation_required" && access.moderator) {
     return (
-      <main className="min-h-screen bg-[#f6f4ef] px-5 py-8 text-[#1f2933]">
-        <section className="mx-auto max-w-md rounded-lg border border-[#ddd5c7] bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#9a5a44]">
+      <main className="min-h-screen bg-[#FBF5EE] px-5 py-8 text-[#1D1108]">
+        <section className="mx-auto max-w-md rounded-2xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4562B]">
             Moderacao
           </p>
-          <h1 className="mt-3 text-2xl font-semibold text-[#172026]">
+          <h1 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-semibold italic text-[#1D1108]">
             Ativar acesso
           </h1>
-          <p className="mt-3 text-sm leading-6 text-[#52616b]">
+          <p className="mt-3 text-sm leading-6 text-[#8A6B55]">
             Este link sera vinculado a este dispositivo para moderar o evento{" "}
-            <strong>{access.moderator.event.name}</strong>.
+            <strong className="font-[family-name:var(--font-display)] text-lg italic text-[#D4562B]">
+              {access.moderator.event.name}
+            </strong>
           </p>
+          <div className="mt-5 rounded-xl border border-[#E8DDD1] bg-[#F4EDE1] px-4 py-3 text-center">
+            <p className="text-[9px] text-[#8A6B55]">Voce e</p>
+            <p className="mt-1 text-sm font-bold text-[#1D1108]">
+              {access.moderator.name}
+            </p>
+          </div>
           <form action={activateModeratorAction} className="mt-6">
             <input name="token" type="hidden" value={token} />
             <button
-              className="h-11 w-full rounded-md bg-[#172026] px-4 text-sm font-semibold text-white"
+              className="h-11 w-full rounded-xl bg-[#D4562B] px-4 text-sm font-bold text-white"
               type="submit"
             >
               Ativar neste dispositivo
@@ -114,16 +122,16 @@ export default async function ModerationPage({
   });
 
   return (
-    <main className="min-h-screen bg-[#f6f4ef] px-4 py-6 text-[#1f2933]">
+    <main className="min-h-screen bg-[#FBF5EE] px-4 py-6 text-[#1D1108]">
       <section className="mx-auto max-w-5xl">
-        <header className="border-b border-[#ddd5c7] pb-5">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#9a5a44]">
+        <header className="border-b border-[#E8DDD1] pb-5">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4562B]">
             Moderacao
           </p>
-          <h1 className="mt-2 text-3xl font-semibold text-[#172026]">
+          <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-semibold italic text-[#1D1108]">
             {access.moderator.event.name}
           </h1>
-          <p className="mt-2 text-sm text-[#52616b]">
+          <p className="mt-2 text-sm text-[#8A6B55]">
             Moderador: {access.moderator.name}
           </p>
           <ModerationAutoRefresh
@@ -137,24 +145,33 @@ export default async function ModerationPage({
             <Link
               className={
                 currentTab === tabKey
-                  ? "rounded-md bg-[#172026] px-3 py-3 text-center text-sm font-semibold text-white"
-                  : "rounded-md border border-[#d7cfc1] bg-white px-3 py-3 text-center text-sm font-semibold text-[#52616b]"
+                  ? "rounded-lg bg-[#1D1108] px-3 py-3 text-center text-sm font-bold text-white"
+                  : "rounded-lg border border-[#E8DDD1] bg-white px-3 py-3 text-center text-sm font-semibold text-[#8A6B55]"
               }
               href={`/moderate/${token}?tab=${tabKey}`}
               key={tabKey}
             >
-              {tabLabel[tabKey]} ({countByStatus.get(status) ?? 0})
+              {tabLabel[tabKey]}{" "}
+              <span
+                className={
+                  tabKey === "pending" && (countByStatus.get(status) ?? 0) > 0
+                    ? "ml-1.5 rounded-full bg-[rgba(212,86,43,0.12)] px-2 text-[10px] font-bold text-[#D4562B]"
+                    : ""
+                }
+              >
+                ({countByStatus.get(status) ?? 0})
+              </span>
             </Link>
           ))}
         </nav>
 
         <section className="mt-6">
           {photos.length === 0 ? (
-            <div className="rounded-lg border border-[#ddd5c7] bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-[#172026]">
+            <div className="rounded-2xl border border-[#E8DDD1] bg-white p-8 shadow-sm">
+              <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold italic text-[#1D1108]">
                 Nenhuma foto em {tabLabel[currentTab].toLowerCase()}
               </h2>
-              <p className="mt-2 text-sm text-[#52616b]">
+              <p className="mt-2 text-sm text-[#8A6B55]">
                 Novas fotos aparecerao aqui conforme forem enviadas.
               </p>
             </div>
@@ -198,27 +215,29 @@ function PhotoCard({
   token: string;
 }) {
   return (
-    <article className="overflow-hidden rounded-lg border border-[#ddd5c7] bg-white shadow-sm">
+    <article className="overflow-hidden rounded-2xl border border-[#E8DDD1] bg-white shadow-sm">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img alt="" className="aspect-[4/3] w-full object-cover" src={photo.imageUrl} />
       <div className="space-y-3 p-4">
         <div>
-          <h2 className="font-semibold text-[#172026]">{photo.guestName}</h2>
-          <p className="text-xs text-[#52616b]">
+          <h2 className="text-sm font-bold text-[#1D1108]">{photo.guestName}</h2>
+          <p className="mt-0.5 text-[10px] text-[#8A6B55]">
             {photo.uploadedAt.toLocaleString("pt-BR")}
           </p>
         </div>
         {photo.message ? (
-          <p className="text-sm leading-6 text-[#52616b]">{photo.message}</p>
+          <p className="text-sm italic leading-5 text-[#8A6B55]">
+            &ldquo;{photo.message}&rdquo;
+          </p>
         ) : null}
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {currentStatus !== PhotoStatus.APPROVED ? (
             <form action={moderatePhotoAction} className="flex-1">
               <input name="token" type="hidden" value={token} />
               <input name="photoId" type="hidden" value={photo.id} />
               <input name="nextStatus" type="hidden" value={PhotoStatus.APPROVED} />
               <button
-                className="h-10 w-full rounded-md bg-[#172026] px-3 text-sm font-semibold text-white"
+                className="h-10 w-full rounded-xl bg-[#16A34A] px-3 text-sm font-bold text-white"
                 type="submit"
               >
                 Aprovar
@@ -231,7 +250,7 @@ function PhotoCard({
               <input name="photoId" type="hidden" value={photo.id} />
               <input name="nextStatus" type="hidden" value={PhotoStatus.REJECTED} />
               <button
-                className="h-10 w-full rounded-md border border-[#d7cfc1] px-3 text-sm font-semibold text-[#52616b]"
+                className="h-10 w-full rounded-xl border border-[rgba(220,38,38,0.3)] bg-[rgba(220,38,38,0.06)] px-3 text-sm font-bold text-[#DC2626]"
                 type="submit"
               >
                 Rejeitar
@@ -246,13 +265,13 @@ function PhotoCard({
 
 function ModerationState({ message, title }: { message: string; title: string }) {
   return (
-    <main className="min-h-screen bg-[#f6f4ef] px-5 py-8 text-[#1f2933]">
-      <section className="mx-auto max-w-md rounded-lg border border-[#ddd5c7] bg-white p-6 shadow-sm">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#9a5a44]">
+    <main className="min-h-screen bg-[#FBF5EE] px-5 py-8 text-[#1D1108]">
+      <section className="mx-auto max-w-md rounded-2xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4562B]">
           Moderacao
         </p>
-        <h1 className="mt-3 text-2xl font-semibold text-[#172026]">{title}</h1>
-        <p className="mt-3 text-sm leading-6 text-[#52616b]">{message}</p>
+        <h1 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-semibold italic text-[#1D1108]">{title}</h1>
+        <p className="mt-3 text-sm leading-6 text-[#8A6B55]">{message}</p>
       </section>
     </main>
   );

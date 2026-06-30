@@ -1,18 +1,47 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f4ef;
-  --foreground: #1f2933;
+  --bg: #fbf5ee;
+  --bg-subtle: #f4ede1;
+  --bg-card: #ffffff;
+  --bg-input: #f4ede1;
+  --sidebar-bg: #1d1108;
+  --sidebar-text: #f0ddd0;
+  --sidebar-muted: #7a5b44;
+  --sidebar-active-bg: rgba(212, 86, 43, 0.15);
+  --sidebar-active-border: #d4562b;
+  --text-primary: #1d1108;
+  --text-muted: #8a6b55;
+  --text-subtle: #b09585;
+  --accent: #d4562b;
+  --accent-hover: #ba4620;
+  --accent-light: rgba(212, 86, 43, 0.1);
+  --accent-border: rgba(212, 86, 43, 0.35);
+  --border: rgba(29, 17, 8, 0.08);
+  --border-strong: rgba(29, 17, 8, 0.18);
+  --status-pending-bg: rgba(212, 86, 43, 0.1);
+  --status-pending-text: #d4562b;
+  --status-approved-bg: rgba(22, 163, 74, 0.1);
+  --status-approved-text: #16a34a;
+  --status-rejected-bg: rgba(220, 38, 38, 0.08);
+  --status-rejected-text: #dc2626;
+  --status-online: #16a34a;
+  --status-warning: #d4562b;
+  --font-display-family: "Cormorant Garamond", Georgia, serif;
+  --font-sans-family: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-display: var(--font-display-family);
+  --font-sans: var(--font-sans-family);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-sans-family);
+  --font-display: var(--font-display-family);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans-family);
 }

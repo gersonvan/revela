@@ -1,15 +1,15 @@
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f6f4ef] text-[#1f2933]">
+    <main className="min-h-screen bg-[#FBF5EE] text-[#1D1108]">
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 py-16 sm:px-10">
         <div className="max-w-3xl">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-[#9a5a44]">
-            EventoOn
+          <p className="mb-4 font-[family-name:var(--font-display)] text-3xl italic text-[#D4562B]">
+            revela
           </p>
-          <h1 className="text-4xl font-semibold leading-tight text-[#172026] sm:text-6xl">
+          <h1 className="text-4xl font-bold leading-tight text-[#1D1108] sm:text-6xl">
             Mural de fotos ao vivo para eventos privados.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#52616b]">
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#8A6B55]">
             Convidados enviam fotos por QR Code, moderadores aprovam o conteudo
             e o telao exibe um feed em tempo real somente com fotos aprovadas.
           </p>
@@ -22,11 +22,11 @@ export default function Home() {
             ["Telao", "Feed ao vivo com identidade visual do evento e QR Code."],
           ].map(([title, description]) => (
             <article
-              className="rounded-lg border border-[#ddd5c7] bg-white/75 p-5 shadow-sm"
+              className="rounded-xl border border-[#E8DDD1] bg-white p-5 shadow-sm"
               key={title}
             >
-              <h2 className="text-base font-semibold text-[#172026]">{title}</h2>
-              <p className="mt-2 text-sm leading-6 text-[#52616b]">
+              <h2 className="text-base font-bold text-[#1D1108]">{title}</h2>
+              <p className="mt-2 text-sm leading-6 text-[#8A6B55]">
                 {description}
               </p>
             </article>

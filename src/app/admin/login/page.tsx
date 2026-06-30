@@ -14,21 +14,30 @@ export default async function AdminLoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f6f4ef] px-6 py-12 text-[#1f2933]">
-      <section className="mx-auto flex min-h-[calc(100vh-6rem)] max-w-md flex-col justify-center">
-        <div className="rounded-lg border border-[#ddd5c7] bg-white p-8 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#9a5a44]">
-            Admin
+    <main className="min-h-screen bg-[#1D1108] px-6 py-12 text-[#1D1108]">
+      <section className="mx-auto flex min-h-[calc(100vh-6rem)] max-w-sm flex-col justify-center">
+        <div className="mb-8 text-center">
+          <p className="font-[family-name:var(--font-display)] text-5xl italic leading-none text-[#D4562B]">
+            revela
           </p>
-          <h1 className="mt-3 text-3xl font-semibold text-[#172026]">
-            Acesse o EventoOn
+          <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-[#7A5B44]">
+            gestão de eventos
+          </p>
+        </div>
+
+        <div className="rounded-2xl bg-[#F4EDE1] p-8 shadow-2xl">
+          <p className="font-[family-name:var(--font-display)] text-2xl font-semibold italic text-[#1D1108]">
+            Acesso restrito
+          </p>
+          <h1 className="sr-only">
+            Acesse o Revela
           </h1>
-          <p className="mt-4 text-sm leading-6 text-[#52616b]">
+          <p className="mt-2 text-sm leading-6 text-[#8A6B55]">
             Use sua conta Google para criar eventos, gerar QR Codes e preparar a
             moderacao.
           </p>
           {!isGoogleConfigured ? (
-            <div className="mt-6 rounded-md border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
+            <div className="mt-6 rounded-lg border border-[rgba(212,86,43,0.2)] bg-[rgba(212,86,43,0.08)] p-4 text-sm leading-6 text-[#D4562B]">
               Login Google ainda nao configurado. Preencha
               <code className="mx-1 rounded bg-white px-1">GOOGLE_CLIENT_ID</code>
               e
@@ -42,6 +51,9 @@ export default async function AdminLoginPage() {
             <SignInButton />
           </div>
         </div>
+        <p className="mt-6 text-center text-[10px] text-[#5A3D2B]">
+          revela.gersonvan.com.br
+        </p>
       </section>
     </main>
   );

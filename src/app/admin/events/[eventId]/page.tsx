@@ -7,6 +7,7 @@ import {
   updateEventSettingsAction,
   updateEventStatusAction,
 } from "@/app/admin/events/actions";
+import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { requireAdmin } from "@/lib/admin";
 import { createQrCodeDataUrl } from "@/lib/qrcode/data-url";
 import { prisma } from "@/lib/prisma";
@@ -21,6 +22,18 @@ const moderatorStatusLabel: Record<ModeratorStatus, string> = {
   CREATED: "Criado",
   USED: "Usado",
   REVOKED: "Revogado",
+};
+
+const eventStatusClass: Record<EventStatus, string> = {
+  DRAFT: "text-[#8A6B55]",
+  ACTIVE: "text-[#16A34A]",
+  CLOSED: "text-[#8A6B55]",
+};
+
+const moderatorStatusClass: Record<ModeratorStatus, string> = {
+  CREATED: "bg-[#F4EDE1] text-[#8A6B55]",
+  USED: "bg-[rgba(22,163,74,0.10)] text-[#16A34A]",
+  REVOKED: "bg-[rgba(220,38,38,0.08)] text-[#DC2626]",
 };
 
 type EventDetailPageProps = {
@@ -87,45 +100,48 @@ export default async function EventDetailPage({
   const moderatorCountByStatus = new Map(
     moderatorCounts.map((item) => [item.status, item._count.status]),
   );
+  const pendingCount = photoCountByStatus.get("PENDING") ?? 0;
 
   return (
-    <main className="min-h-screen bg-[#f6f4ef] px-6 py-8 text-[#1f2933]">
-      <section className="mx-auto max-w-5xl">
-        <Link className="text-sm font-semibold text-[#9a5a44]" href="/admin">
-          Voltar para eventos
-        </Link>
-
-        <header className="mt-4 flex flex-col gap-4 border-b border-[#ddd5c7] pb-6 sm:flex-row sm:items-end sm:justify-between">
+    <div className="flex min-h-screen flex-col md:flex-row">
+      <AdminSidebar
+        activeEventName={event.name}
+        adminEmail={admin.email}
+        pendingCount={pendingCount}
+      />
+      <main className="flex-1 bg-[#FBF5EE] px-6 py-8 text-[#1D1108] md:px-8">
+      <section className="mx-auto max-w-6xl">
+        <header className="flex flex-col gap-4 border-b border-[#E8DDD1] pb-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#9a5a44]">
-              {statusLabel[event.status]}
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold text-[#172026]">
+            <Link className="text-xs font-bold uppercase tracking-[0.16em] text-[#D4562B]" href="/admin">
+              ← Eventos · <span className={eventStatusClass[event.status]}>{statusLabel[event.status]}</span>
+            </Link>
+            <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-semibold italic text-[#1D1108]">
               {event.name}
             </h1>
-            <p className="mt-2 text-sm text-[#52616b]">
+            <p className="mt-2 text-sm text-[#8A6B55]">
               Criado em {event.createdAt.toLocaleDateString("pt-BR")}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Link
-              className="inline-flex h-10 items-center rounded-md border border-[#d7cfc1] px-4 text-sm font-semibold text-[#52616b]"
+              className="inline-flex h-10 items-center rounded-lg border border-[#E8DDD1] px-4 text-sm font-semibold text-[#8A6B55]"
               href={`/admin/events/${event.id}/export`}
             >
-              Exportar JSON
+              JSON
             </Link>
             <Link
-              className="inline-flex h-10 items-center rounded-md border border-[#d7cfc1] px-4 text-sm font-semibold text-[#52616b]"
+              className="inline-flex h-10 items-center rounded-lg border border-[#E8DDD1] px-4 text-sm font-semibold text-[#8A6B55]"
               href={`/admin/events/${event.id}/export-zip`}
             >
-              Baixar ZIP
+              ZIP
             </Link>
             {event.status !== EventStatus.ACTIVE ? (
               <form action={updateEventStatusAction}>
                 <input name="eventId" type="hidden" value={event.id} />
                 <input name="status" type="hidden" value={EventStatus.ACTIVE} />
                 <button
-                  className="h-10 rounded-md bg-[#172026] px-4 text-sm font-semibold text-white"
+                  className="h-10 rounded-lg border border-[#E8DDD1] px-4 text-sm font-semibold text-[#1D1108]"
                   type="submit"
                 >
                   Ativar
@@ -137,7 +153,7 @@ export default async function EventDetailPage({
                 <input name="eventId" type="hidden" value={event.id} />
                 <input name="status" type="hidden" value={EventStatus.CLOSED} />
                 <button
-                  className="h-10 rounded-md border border-[#d7cfc1] px-4 text-sm font-semibold text-[#52616b]"
+                  className="h-10 rounded-lg bg-[#D4562B] px-4 text-sm font-bold text-white"
                   type="submit"
                 >
                   Encerrar
@@ -149,9 +165,9 @@ export default async function EventDetailPage({
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
           <Metric label="Fotos" value={event._count.photos} />
-          <Metric label="Pendentes" value={photoCountByStatus.get("PENDING") ?? 0} />
-          <Metric label="Aprovadas" value={photoCountByStatus.get("APPROVED") ?? 0} />
-          <Metric label="Rejeitadas" value={photoCountByStatus.get("REJECTED") ?? 0} />
+          <Metric label="Pendentes" tone="pending" value={pendingCount} />
+          <Metric label="Aprovadas" tone="approved" value={photoCountByStatus.get("APPROVED") ?? 0} />
+          <Metric label="Rejeitadas" tone="rejected" value={photoCountByStatus.get("REJECTED") ?? 0} />
           <Metric
             label="Moderadores"
             value={`${moderatorCountByStatus.get("USED") ?? 0}/${event._count.moderators}`}
@@ -159,19 +175,19 @@ export default async function EventDetailPage({
           <Metric label="Status" value={statusLabel[event.status]} />
         </div>
 
-        <section className="mt-8 rounded-lg border border-[#ddd5c7] bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-[#172026]">
+        <section className="mt-8 rounded-xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
+          <h2 className="text-sm font-bold text-[#1D1108]">
             QR Code e links
           </h2>
           <div className="mt-5 grid gap-6 lg:grid-cols-[220px_1fr]">
-            <div className="rounded-lg border border-[#ddd5c7] bg-[#fbfaf7] p-4 text-center">
+            <div className="rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] p-4 text-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 alt="QR Code do evento"
                 className="mx-auto h-44 w-44"
                 src={qrCodeDataUrl}
               />
-              <p className="mt-3 text-sm font-semibold text-[#172026]">
+              <p className="mt-3 text-sm font-bold text-[#1D1108]">
                 Upload dos convidados
               </p>
             </div>
@@ -182,8 +198,8 @@ export default async function EventDetailPage({
           </div>
         </section>
 
-        <section className="mt-8 rounded-lg border border-[#ddd5c7] bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-[#172026]">
+        <section className="mt-8 rounded-xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
+          <h2 className="text-sm font-bold text-[#1D1108]">
             Configuracoes do evento
           </h2>
           <form
@@ -192,7 +208,7 @@ export default async function EventDetailPage({
           >
             <input name="eventId" type="hidden" value={event.id} />
             <div>
-              <div className="overflow-hidden rounded-lg border border-[#ddd5c7] bg-[#fbfaf7]">
+              <div className="overflow-hidden rounded-xl border border-[#E8DDD1] bg-[#F4EDE1]">
                 {event.invitationImageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -201,18 +217,18 @@ export default async function EventDetailPage({
                     src={event.invitationImageUrl}
                   />
                 ) : (
-                  <div className="flex aspect-[3/4] items-center justify-center p-6 text-center text-sm text-[#52616b]">
+                  <div className="flex aspect-[3/4] items-center justify-center p-6 text-center text-sm text-[#8A6B55]">
                     Nenhum convite configurado
                   </div>
                 )}
               </div>
               <label className="mt-4 block">
-                <span className="text-sm font-semibold text-[#172026]">
+                <span className="mb-1.5 block text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
                   Imagem do convite
                 </span>
                 <input
                   accept="image/*"
-                  className="mt-2 block w-full rounded-md border border-dashed border-[#d7cfc1] bg-[#fbfaf7] p-3 text-sm text-[#52616b]"
+                  className="block w-full rounded-xl border border-dashed border-[#E8DDD1] bg-[#F4EDE1] p-3 text-sm text-[#8A6B55]"
                   name="invitationImage"
                   type="file"
                 />
@@ -221,11 +237,11 @@ export default async function EventDetailPage({
 
             <div className="space-y-5">
               <label className="block">
-                <span className="text-sm font-semibold text-[#172026]">
+                <span className="mb-1.5 block text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
                   Nome do evento
                 </span>
                 <input
-                  className="mt-2 h-10 w-full rounded-md border border-[#d7cfc1] px-3 text-sm outline-none focus:border-[#9a5a44]"
+                  className="h-10 w-full rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm text-[#1D1108] outline-none focus:border-[#D4562B]"
                   defaultValue={event.name}
                   name="name"
                   required
@@ -233,9 +249,9 @@ export default async function EventDetailPage({
               </label>
 
               <label className="block">
-                <span className="text-sm font-semibold text-[#172026]">Data</span>
+                <span className="mb-1.5 block text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">Data</span>
                 <input
-                  className="mt-2 h-10 w-full rounded-md border border-[#d7cfc1] px-3 text-sm outline-none focus:border-[#9a5a44]"
+                  className="h-10 w-full rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm text-[#1D1108] outline-none focus:border-[#D4562B]"
                   defaultValue={formattedEventDate}
                   name="eventDate"
                   type="date"
@@ -244,23 +260,23 @@ export default async function EventDetailPage({
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
-                  <span className="text-sm font-semibold text-[#172026]">
+                  <span className="mb-1.5 block text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
                     Cor principal
                   </span>
                   <input
-                    className="mt-2 h-10 w-full rounded-md border border-[#d7cfc1] px-3 text-sm outline-none focus:border-[#9a5a44]"
-                    defaultValue={event.primaryColor ?? "#9a5a44"}
+                    className="h-10 w-full rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm outline-none focus:border-[#D4562B]"
+                    defaultValue={event.primaryColor ?? "#D4562B"}
                     name="primaryColor"
                     type="color"
                   />
                 </label>
                 <label className="block">
-                  <span className="text-sm font-semibold text-[#172026]">
+                  <span className="mb-1.5 block text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
                     Cor secundaria
                   </span>
                   <input
-                    className="mt-2 h-10 w-full rounded-md border border-[#d7cfc1] px-3 text-sm outline-none focus:border-[#9a5a44]"
-                    defaultValue={event.secondaryColor ?? "#f6f4ef"}
+                    className="h-10 w-full rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm outline-none focus:border-[#D4562B]"
+                    defaultValue={event.secondaryColor ?? "#FBF5EE"}
                     name="secondaryColor"
                     type="color"
                   />
@@ -268,11 +284,11 @@ export default async function EventDetailPage({
               </div>
 
               <label className="block">
-                <span className="text-sm font-semibold text-[#172026]">
+                <span className="mb-1.5 block text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
                   Texto de autorizacao
                 </span>
                 <textarea
-                  className="mt-2 min-h-28 w-full rounded-md border border-[#d7cfc1] px-3 py-2 text-sm leading-6 outline-none focus:border-[#9a5a44]"
+                  className="min-h-28 w-full resize-none rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 py-2 text-sm leading-6 text-[#1D1108] outline-none focus:border-[#D4562B]"
                   defaultValue={event.authorizationText}
                   name="authorizationText"
                   required
@@ -280,7 +296,7 @@ export default async function EventDetailPage({
               </label>
 
               <button
-                className="h-10 rounded-md bg-[#172026] px-4 text-sm font-semibold text-white"
+                className="h-10 rounded-lg bg-[#1D1108] px-4 text-sm font-bold text-white"
                 type="submit"
               >
                 Salvar configuracoes
@@ -289,18 +305,18 @@ export default async function EventDetailPage({
           </form>
         </section>
 
-        <section className="mt-8 rounded-lg border border-[#ddd5c7] bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-[#172026]">Moderadores</h2>
+        <section className="mt-8 rounded-xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
+          <h2 className="text-sm font-bold text-[#1D1108]">Moderadores</h2>
           <form action={createModeratorAction} className="mt-5 flex flex-col gap-3 sm:flex-row">
             <input name="eventId" type="hidden" value={event.id} />
             <input
-              className="h-10 flex-1 rounded-md border border-[#d7cfc1] px-3 text-sm outline-none focus:border-[#9a5a44]"
+              className="h-10 flex-1 rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm text-[#1D1108] outline-none focus:border-[#D4562B]"
               name="name"
               placeholder="Nome do moderador"
               required
             />
             <button
-              className="h-10 rounded-md bg-[#172026] px-4 text-sm font-semibold text-white"
+              className="h-10 rounded-lg bg-[#1D1108] px-4 text-sm font-bold text-white"
               type="submit"
             >
               Criar link
@@ -308,40 +324,52 @@ export default async function EventDetailPage({
           </form>
 
           {moderatorToken ? (
-            <div className="mt-5 rounded-md border border-[#d7cfc1] bg-[#fbfaf7] p-4">
-              <p className="text-sm font-semibold text-[#172026]">
+            <div className="mt-5 rounded-xl border border-[#E8DDD1] bg-[#F4EDE1] p-4">
+              <p className="text-sm font-bold text-[#1D1108]">
                 Link criado. Copie agora.
               </p>
-              <p className="mt-1 text-xs leading-5 text-[#52616b]">
+              <p className="mt-1 text-xs leading-5 text-[#8A6B55]">
                 Por seguranca, o token completo aparece apenas neste momento.
               </p>
-              <p className="mt-3 break-all rounded-md bg-white p-3 text-sm text-[#52616b]">
+              <p className="mt-3 break-all rounded-lg bg-white p-3 text-sm text-[#8A6B55]">
                 /moderate/{moderatorToken}
               </p>
             </div>
           ) : null}
 
-          <div className="mt-6 divide-y divide-[#ede7dd]">
+          <div className="mt-6 grid gap-3">
             {moderators.length === 0 ? (
-              <p className="text-sm text-[#52616b]">
+              <p className="text-sm text-[#8A6B55]">
                 Nenhum moderador criado para este evento.
               </p>
             ) : (
               moderators.map((moderator) => (
                 <div
-                  className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-3 rounded-xl border border-[#E8DDD1] bg-white p-3 sm:flex-row sm:items-center sm:justify-between"
                   key={moderator.id}
                 >
-                  <div>
-                    <p className="font-medium text-[#172026]">{moderator.name}</p>
-                    <p className="text-sm text-[#52616b]">
-                      Criado em {moderator.createdAt.toLocaleDateString("pt-BR")}
-                    </p>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#D4562B] to-[#F97316] text-xs font-bold text-white">
+                      {moderator.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#1D1108]">{moderator.name}</p>
+                      <p className="text-[10px] text-[#8A6B55]">
+                        Criado em {moderator.createdAt.toLocaleDateString("pt-BR")}
+                      </p>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-fit rounded-md bg-[#f6f4ef] px-3 py-1 text-sm text-[#52616b]">
+                    <span className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${moderatorStatusClass[moderator.status]}`}>
                       {moderatorStatusLabel[moderator.status]}
                     </span>
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${
+                        moderator.status === ModeratorStatus.USED
+                          ? "bg-[#16A34A]"
+                          : "bg-[#D4562B]"
+                      }`}
+                    />
                     {moderator.status !== ModeratorStatus.REVOKED ? (
                       <form action={revokeModeratorAction}>
                         <input name="eventId" type="hidden" value={event.id} />
@@ -351,7 +379,7 @@ export default async function EventDetailPage({
                           value={moderator.id}
                         />
                         <button
-                          className="h-8 rounded-md border border-[#d7cfc1] px-3 text-xs font-semibold text-[#52616b]"
+                          className="h-8 rounded-lg border border-[#E8DDD1] px-3 text-xs font-semibold text-[#8A6B55]"
                           type="submit"
                         >
                           Revogar
@@ -366,24 +394,42 @@ export default async function EventDetailPage({
         </section>
 
       </section>
-    </main>
+      </main>
+    </div>
   );
 }
 
-function Metric({ label, value }: { label: string; value: number | string }) {
+function Metric({
+  label,
+  tone = "default",
+  value,
+}: {
+  label: string;
+  tone?: "approved" | "default" | "pending" | "rejected";
+  value: number | string;
+}) {
+  const toneClass = {
+    approved: "border-[rgba(22,163,74,0.18)] text-[#16A34A]",
+    default: "border-[#E8DDD1] text-[#1D1108]",
+    pending: "border-[rgba(212,86,43,0.2)] text-[#D4562B]",
+    rejected: "border-[rgba(220,38,38,0.14)] text-[#DC2626]",
+  }[tone];
+
   return (
-    <div className="rounded-lg border border-[#ddd5c7] bg-white p-5 shadow-sm">
-      <p className="text-sm font-medium text-[#52616b]">{label}</p>
-      <p className="mt-2 text-2xl font-semibold text-[#172026]">{value}</p>
+    <div className={`rounded-xl border bg-white p-4 shadow-sm ${toneClass}`}>
+      <p className="text-[9px] uppercase tracking-wide text-[#8A6B55]">{label}</p>
+      <p className="mt-1.5 font-[family-name:var(--font-display)] text-3xl font-semibold leading-none">
+        {value}
+      </p>
     </div>
   );
 }
 
 function LinkRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md bg-[#f6f4ef] p-4">
-      <p className="text-sm font-semibold text-[#172026]">{label}</p>
-      <p className="mt-1 break-all text-sm text-[#52616b]">{value}</p>
+    <div className="rounded-lg bg-[#F4EDE1] p-4">
+      <p className="text-sm font-bold text-[#1D1108]">{label}</p>
+      <p className="mt-1 break-all text-sm font-semibold text-[#D4562B]">{value}</p>
     </div>
   );
 }
