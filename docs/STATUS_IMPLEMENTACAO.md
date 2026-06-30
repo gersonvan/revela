@@ -2,7 +2,7 @@
 
 ## Estado Atual
 
-Fase 0 iniciada.
+MVP funcional publicado e validado em producao.
 
 Ja foi criado:
 
@@ -62,6 +62,8 @@ Ja foi criado:
 - camada publica `src/lib/storage` criada para isolar a implementacao local de storage;
 - adapter `vercel-blob` para storage online;
 - adapter `cloudflare-r2` para storage online recomendado;
+- fallback no adapter `cloudflare-r2` para enviar a imagem original quando o Sharp nao estiver disponivel no runtime serverless;
+- `.vercelignore` para evitar envio de `.env*` e artefatos locais no pacote de deploy;
 - script `pnpm env:check` para validar variaveis obrigatorias;
 - script `pnpm db:seed` para criar evento e moderador demo local;
 - script `pnpm smoke:demo` para ensaio automatizado do fluxo local;
@@ -112,6 +114,8 @@ Status:
 - Vercel: projeto `revela` criado e deploy de producao publicado em `https://revela-one.vercel.app`.
 - Vercel dominio: `revela.gersonvan.com.br` verificado com CNAME na Locaweb e certificado HTTPS emitido.
 - Neon: banco `revela-postgres` provisionado via Vercel Marketplace e migration inicial aplicada no banco remoto.
+- Producao em `revela.gersonvan.com.br`: login Google validado, evento `Ensaio Producao` criado/ativado, upload publico validado, moderacao aprovada e telao exibindo imagem do R2.
+- R2 em producao: upload validado no bucket `revela-uploads`; URL publica `r2.dev` usada enquanto o dominio `media.gersonvan.com.br` nao estiver configurado.
 - Login real com Google: validado em `http://127.0.0.1:3000/admin` com `gersonvan@gmail.com`.
 - Fluxo autenticado completo: evento `Ensaio EventoOn` criado pelo admin, ativado, moderador criado e ativado, foto enviada por API publica, aprovada e exibida no telao.
 
@@ -157,9 +161,11 @@ Variaveis atuais:
 - `STORAGE_PROVIDER` local esta como `cloudflare-r2` para validar o R2 real.
 - `BLOB_READ_WRITE_TOKEN` fica vazio no desenvolvimento local e e obrigatorio quando `STORAGE_PROVIDER=vercel-blob`.
 - variaveis `R2_*` ficam vazias no desenvolvimento local e sao obrigatorias quando `STORAGE_PROVIDER=cloudflare-r2`.
-- dominio planejado da aplicacao: `revela.gersonvan.com.br`.
+- dominio da aplicacao: `revela.gersonvan.com.br`.
 - dominio planejado de midias: `media.gersonvan.com.br`.
 - registro DNS na Locaweb: CNAME `revela` para `0d6c9cd442647db1.vercel-dns-017.com.`.
+- enquanto `media.gersonvan.com.br` nao estiver configurado no R2, as midias usam a URL publica `r2.dev` do bucket.
+- para uso real, rotacionar credenciais que foram compartilhadas durante a configuracao assistida antes do evento.
 - O PostgreSQL local esta rodando via Docker Compose.
 - Se o container local parar, `pnpm db:up` reinicia o PostgreSQL.
 - A migration inicial foi aplicada no banco local `eventoon`.
@@ -167,11 +173,12 @@ Variaveis atuais:
 
 ## Proxima Fase
 
-Fase 1 - Modelo de Dados e Admin.
+Fase 2 - Ensaio operacional e acabamento.
 
 Proximas tarefas recomendadas:
 
-1. Adicionar callback Google OAuth de producao.
-2. Validar login em `https://revela.gersonvan.com.br/admin/login`.
+1. Fazer ensaio em celular real via QR Code usando `https://revela.gersonvan.com.br/e/ensaio-producao-kkh7uc`.
+2. Testar exportacao ZIP em producao.
 3. Decidir se o DNS de `gersonvan.com.br` sera migrado para Cloudflare para habilitar `media.gersonvan.com.br` no R2.
-4. Fazer ensaio em ambiente publicado antes do evento real.
+4. Rotacionar credenciais sensiveis antes de usar no evento real.
+5. Ajustar UI quando o design system oficial estiver pronto.

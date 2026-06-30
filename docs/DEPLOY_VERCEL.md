@@ -124,8 +124,9 @@ R2_PUBLIC_BASE_URL="https://media.gersonvan.com.br"
 Com esse provider:
 
 - fotos originais sao enviadas para o bucket R2;
-- versoes WebP otimizadas sao enviadas para o bucket R2;
-- imagem do convite e convertida para WebP e enviada ao R2;
+- versoes WebP otimizadas sao enviadas para o bucket R2 quando o Sharp estiver disponivel;
+- se o Sharp nao carregar no runtime serverless, o sistema salva a imagem original tambem como arquivo de exibicao para nao bloquear o upload;
+- imagem do convite e convertida para WebP quando possivel e enviada ao R2;
 - o banco guarda URLs publicas do R2;
 - exportacao ZIP baixa as imagens pelas URLs gravadas no banco.
 
@@ -165,23 +166,23 @@ Isso deixa detalhes do provider concentrados na camada `src/lib/storage`, sem es
 
 ## Checklist de Deploy
 
-1. Criar projeto Vercel.
-2. Configurar banco Postgres gerenciado.
-3. Rodar migrations no banco remoto.
-4. Criar bucket Cloudflare R2.
-5. Configurar `NEXTAUTH_SECRET`.
-6. Configurar `NEXTAUTH_URL`.
-7. Configurar Google OAuth.
-8. Adicionar callback de producao no Google Cloud.
-9. Configurar `ADMIN_EMAIL_ALLOWLIST`.
-10. Configurar `STORAGE_PROVIDER="cloudflare-r2"`.
-11. Configurar credenciais e URL publica do R2.
-12. Testar login admin.
-13. Criar evento de teste.
-14. Testar upload por QR Code em celular.
-15. Testar moderacao.
-16. Testar telao.
-17. Testar exportacao ZIP.
+1. Criar projeto Vercel. Concluido.
+2. Configurar banco Postgres gerenciado. Concluido com Neon.
+3. Rodar migrations no banco remoto. Concluido.
+4. Criar bucket Cloudflare R2. Concluido.
+5. Configurar `NEXTAUTH_SECRET`. Concluido.
+6. Configurar `NEXTAUTH_URL`. Concluido.
+7. Configurar Google OAuth. Concluido.
+8. Adicionar callback de producao no Google Cloud. Concluido.
+9. Configurar `ADMIN_EMAIL_ALLOWLIST`. Concluido.
+10. Configurar `STORAGE_PROVIDER="cloudflare-r2"`. Concluido.
+11. Configurar credenciais e URL publica do R2. Concluido com `r2.dev`.
+12. Testar login admin. Concluido.
+13. Criar evento de teste. Concluido.
+14. Testar upload por QR Code em celular. Pendente em celular real; upload publico por API validado.
+15. Testar moderacao. Concluido.
+16. Testar telao. Concluido.
+17. Testar exportacao ZIP. Pendente em producao.
 
 ## Dominios Planejados
 
@@ -221,3 +222,11 @@ Para o dominio de midias `media.gersonvan.com.br`, o caminho ideal e configurar 
 - Banco de producao: Neon `revela-postgres`
 - Migration inicial aplicada no banco Neon.
 - Storage de producao: Cloudflare R2 bucket `revela-uploads`
+- URL publica atual de midias: `r2.dev` do bucket.
+- Ensaio de producao em 30/06/2026: upload publico, moderacao e telao validados no evento `Ensaio Producao`.
+
+## Cuidados de Seguranca
+
+- `.env*` fica fora do pacote de deploy por `.vercelignore`.
+- Credenciais sensiveis devem ficar nas variaveis de ambiente da Vercel, nao no repositorio.
+- Como algumas credenciais foram compartilhadas durante a configuracao assistida, rotacionar Google OAuth secret, R2 access keys e tokens Cloudflare antes do evento real.
