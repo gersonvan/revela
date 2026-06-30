@@ -179,10 +179,10 @@ Isso deixa detalhes do provider concentrados na camada `src/lib/storage`, sem es
 11. Configurar credenciais e URL publica do R2. Concluido com `r2.dev`.
 12. Testar login admin. Concluido.
 13. Criar evento de teste. Concluido.
-14. Testar upload por QR Code em celular. Pendente em celular real; upload publico por API validado.
+14. Testar upload por QR Code em celular. Upload publico por URL/QR validado; pendente apenas ensaio fisico em celular real.
 15. Testar moderacao. Concluido.
 16. Testar telao. Concluido.
-17. Testar exportacao ZIP. Pendente em producao.
+17. Testar exportacao ZIP. Concluido em producao.
 
 ## Dominios Planejados
 
@@ -224,6 +224,8 @@ Para o dominio de midias `media.gersonvan.com.br`, o caminho ideal e configurar 
 - Storage de producao: Cloudflare R2 bucket `revela-uploads`
 - URL publica atual de midias: `r2.dev` do bucket.
 - Ensaio de producao em 30/06/2026: upload publico, moderacao e telao validados no evento `Ensaio Producao`.
+- Deploy visual Revela em 30/06/2026: dominio customizado revisado com Home/Admin/Upload/Telao usando fontes e cores do design system.
+- Exportacao ZIP em producao validada em 30/06/2026 via sessao admin.
 
 ## Cuidados de Seguranca
 

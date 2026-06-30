@@ -115,6 +115,10 @@ Status:
 - Vercel dominio: `revela.gersonvan.com.br` verificado com CNAME na Locaweb e certificado HTTPS emitido.
 - Neon: banco `revela-postgres` provisionado via Vercel Marketplace e migration inicial aplicada no banco remoto.
 - Producao em `revela.gersonvan.com.br`: login Google validado, evento `Ensaio Producao` criado/ativado, upload publico validado, moderacao aprovada e telao exibindo imagem do R2.
+- Producao com visual Revela: deploy publicado em 30/06/2026, Home/Admin/Upload/Telao revisados com fontes e cores do design system.
+- Producao em `Ensaio Producao`: evento de teste atualizado para cores Revela e texto de autorizacao acentuado.
+- Producao em `Ensaio Producao`: novo upload publico validado, foto aprovada pela moderacao e exibida no telao.
+- Exportacao ZIP em producao: rota protegida testada com sessao admin e download disparado com sucesso.
 - R2 em producao: upload validado no bucket `revela-uploads`; URL publica `r2.dev` usada enquanto o dominio `media.gersonvan.com.br` nao estiver configurado.
 - Login real com Google: validado em `http://127.0.0.1:3000/admin` com `gersonvan@gmail.com`.
 - Fluxo autenticado completo: evento `Ensaio Revela` criado pelo admin, ativado, moderador criado e ativado, foto enviada por API publica, aprovada e exibida no telao.
@@ -169,7 +173,7 @@ Variaveis atuais:
 - O PostgreSQL local esta rodando via Docker Compose.
 - Se o container local parar, `pnpm db:up` reinicia o PostgreSQL.
 - A migration inicial foi aplicada no banco local `eventoon`.
-- O design system oficial esta sendo definido em paralelo; ate la, a implementacao deve usar UI provisoria funcional e priorizar arquitetura, regras de negocio e fluxos.
+- O design system Revela foi aplicado nas telas principais do MVP. Ajustes finos visuais devem seguir os tokens do design system como fonte unica.
 
 ## Proxima Fase
 
@@ -177,8 +181,7 @@ Fase 2 - Ensaio operacional e acabamento.
 
 Proximas tarefas recomendadas:
 
-1. Fazer ensaio em celular real via QR Code usando `https://revela.gersonvan.com.br/e/ensaio-producao-kkh7uc`.
-2. Testar exportacao ZIP em producao.
-3. Decidir se o DNS de `gersonvan.com.br` sera migrado para Cloudflare para habilitar `media.gersonvan.com.br` no R2.
-4. Rotacionar credenciais sensiveis antes de usar no evento real.
-5. Ajustar UI quando o design system oficial estiver pronto.
+1. Fazer ensaio fisico em celular real via QR Code usando `https://revela.gersonvan.com.br/e/ensaio-producao-kkh7uc`.
+2. Decidir se o DNS de `gersonvan.com.br` sera migrado para Cloudflare para habilitar `media.gersonvan.com.br` no R2.
+3. Rotacionar credenciais sensiveis antes de usar no evento real.
+4. Fazer revisao fina mobile/desktop com o design system Revela.
