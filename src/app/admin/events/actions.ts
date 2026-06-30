@@ -14,6 +14,8 @@ import {
 
 const DEFAULT_AUTHORIZATION_TEXT =
   "Ao enviar, voce autoriza que esta foto apareca no telao da festa apos moderacao. Envie apenas fotos que voce se sente confortavel em compartilhar neste evento.";
+const DEFAULT_PRIMARY_COLOR = "#D4562B";
+const DEFAULT_SECONDARY_COLOR = "#FBF5EE";
 const MAX_INVITATION_SIZE_BYTES = 20 * 1024 * 1024;
 
 export async function createEventAction(formData: FormData) {
@@ -36,8 +38,8 @@ export async function createEventAction(formData: FormData) {
       name,
       eventDate: eventDate ? new Date(`${eventDate}T12:00:00`) : null,
       publicSlug: buildEventSlug(name),
-      primaryColor: primaryColor || "#9a5a44",
-      secondaryColor: secondaryColor || "#f6f4ef",
+      primaryColor: primaryColor || DEFAULT_PRIMARY_COLOR,
+      secondaryColor: secondaryColor || DEFAULT_SECONDARY_COLOR,
       authorizationText: authorizationText || DEFAULT_AUTHORIZATION_TEXT,
     },
   });
@@ -203,8 +205,8 @@ export async function updateEventSettingsAction(formData: FormData) {
       eventDate: eventDate ? new Date(`${eventDate}T12:00:00`) : null,
       invitationImageUrl,
       name,
-      primaryColor: primaryColor || "#9a5a44",
-      secondaryColor: secondaryColor || "#f6f4ef",
+      primaryColor: primaryColor || DEFAULT_PRIMARY_COLOR,
+      secondaryColor: secondaryColor || DEFAULT_SECONDARY_COLOR,
     },
   });
 
