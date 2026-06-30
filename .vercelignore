@@ -2,8 +2,9 @@
 .env.*
 !.env.example
 
-storage/
-.next/
-node_modules/
-src/generated/
+/.storage/
+/storage/
+/.next/
+/node_modules/
+/src/generated/
 *.tsbuildinfo
