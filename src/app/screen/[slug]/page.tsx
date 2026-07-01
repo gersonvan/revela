@@ -82,12 +82,12 @@ export default async function ScreenPage({ params }: ScreenPageProps) {
       />
       <ScreenFullscreenButton />
 
-      <aside className="absolute bottom-6 right-6 flex items-center gap-3 rounded-2xl bg-white/95 p-3 shadow-xl">
+      <aside className="absolute bottom-4 right-4 z-40 flex items-center gap-2 rounded-xl bg-white/70 p-2 opacity-75 shadow-lg backdrop-blur-md transition-opacity hover:opacity-100">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="QR Code do evento" className="h-24 w-24" src={qrCodeDataUrl} />
-        <div className="max-w-48">
-          <p className="text-sm font-bold text-[#1D1108]">Envie suas fotos</p>
-          <p className="mt-1 text-xs leading-5 text-[#8A6B55]">
+        <img alt="QR Code do evento" className="h-14 w-14" src={qrCodeDataUrl} />
+        <div className="max-w-32">
+          <p className="text-xs font-bold leading-tight text-[#1D1108]">Envie fotos</p>
+          <p className="mt-0.5 text-[10px] leading-3 text-[#8A6B55]">
             Aponte a câmera para participar do mural.
           </p>
         </div>
