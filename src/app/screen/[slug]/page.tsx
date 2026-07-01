@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
 import { PhotoStatus } from "@/generated/prisma/enums";
-import { LivePhotoFeed } from "@/components/screen/live-photo-feed";
+import {
+  LivePhotoFeed,
+  ScreenFullscreenButton,
+} from "@/components/screen/live-photo-feed";
 import { createQrCodeDataUrl } from "@/lib/qrcode/data-url";
 import { prisma } from "@/lib/prisma";
 
@@ -75,6 +78,7 @@ export default async function ScreenPage({ params }: ScreenPageProps) {
         eventSlug={slug}
         initialPhotos={initialPhotos}
       />
+      <ScreenFullscreenButton />
 
       <aside className="absolute bottom-6 right-6 flex items-center gap-3 rounded-2xl bg-white/95 p-3 shadow-xl">
         {/* eslint-disable-next-line @next/next/no-img-element */}
