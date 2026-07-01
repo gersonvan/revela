@@ -24,7 +24,7 @@ Ja foi criado:
 - detalhe de evento com links operacionais;
 - ativacao e encerramento de evento;
 - pagina publica do evento em `/e/[slug]`;
-- formulario mobile provisorio para envio de fotos;
+- formulario mobile para envio de fotos;
 - API de upload de fotos por evento;
 - validacao de evento ativo, nome, quantidade, tamanho, tipo de arquivo e mensagem;
 - armazenamento local de fotos originais em desenvolvimento;
@@ -37,13 +37,9 @@ Ja foi criado:
 - tela `/moderate/[token]` com abas Pendentes, Aprovadas e Rejeitadas;
 - acoes de aprovar, rejeitar e restaurar fotos rejeitadas;
 - registro de decisoes de moderacao em `ModerationDecision`;
-- tela publica do telao em `/screen/[slug]`;
-- endpoint de fotos aprovadas para atualizacao do feed;
-- feed do telao com polling simples de fotos aprovadas;
-- estado sem fotos com QR Code e suporte a imagem do convite quando configurada;
-- QR Code visivel durante o feed;
-- botao de modo tela cheia;
-- QR Code visivel no detalhe admin do evento;
+- tela publica `/screen/[slug]`;
+- atalho curto `/t/[slug]` para abrir o telao;
+- QR Code no detalhe admin do evento;
 - links absolutos de upload e telao no admin;
 - formulario admin de configuracoes do evento;
 - dashboard admin com contadores de fotos por status;
@@ -56,13 +52,13 @@ Ja foi criado:
 - alerta visual quando novas fotos chegam para moderacao;
 - revogacao de moderadores pelo admin;
 - exportacao JSON protegida do evento com fotos, moderadores e historico de moderacao;
-- exportacao ZIP protegida do evento com `metadata.json`, fotos originais e versoes otimizadas locais;
+- exportacao ZIP protegida do evento com `metadata.json`, fotos originais e versoes otimizadas;
 - documentacao de configuracao Google OAuth;
 - documentacao de deploy/Vercel e reaproveitamento de OAuth existente;
-- camada publica `src/lib/storage` criada para isolar a implementacao local de storage;
+- camada publica `src/lib/storage` criada para isolar implementacao local de storage;
 - adapter `vercel-blob` para storage online;
 - adapter `cloudflare-r2` para storage online recomendado;
-- fallback no adapter `cloudflare-r2` para enviar a imagem original quando o Sharp nao estiver disponivel no runtime serverless;
+- fallback no adapter `cloudflare-r2` para enviar imagem original quando Sharp nao estiver disponivel no runtime serverless;
 - `.vercelignore` para evitar envio de `.env*` e artefatos locais no pacote de deploy;
 - script `pnpm env:check` para validar variaveis obrigatorias;
 - script `pnpm db:seed` para criar evento e moderador demo local;
@@ -89,6 +85,7 @@ Ja foi criado:
 ```bash
 pnpm prisma generate
 pnpm validate
+pnpm env:check
 pnpm build
 ```
 
@@ -96,10 +93,10 @@ Status:
 
 - `pnpm prisma generate`: passando.
 - `pnpm validate`: passando.
+- `pnpm env:check`: passando.
 - `pnpm build`: passando.
 - `pnpm db:up`: passando.
 - `pnpm db:migrate`: passando.
-- `pnpm env:check`: passando com as credenciais Google OAuth locais configuradas.
 - Upload API: testada com imagem PNG local e registro `Photo` criado como `PENDING`.
 - Moderacao: link de teste ativado, foto pendente aprovada e decisao registrada no banco.
 - Telao: `/screen/evento-teste` verificado no navegador com foto aprovada, mensagem, QR Code e botao de tela cheia.
@@ -109,26 +106,15 @@ Status:
 - Exportacao ZIP: rota protegida validada com redirecionamento para login quando sem sessao admin.
 - Smoke demo: valida paginas demo, upload, foto pendente e feed do telao com foto aprovada.
 - Smoke demo apos adapter de storage: passando com `STORAGE_PROVIDER=local`.
-- Validacao de ambiente R2: quando `STORAGE_PROVIDER=cloudflare-r2`, `pnpm env:check` exige todas as variaveis `R2_*`.
+- Validacao de ambiente R2: quando `STORAGE_PROVIDER=cloudflare-r2`, `pnpm env:check` exige todas variaveis `R2_*`.
 - R2 real: upload de foto validado no bucket `revela-uploads`; URL publica `r2.dev` retornou `HTTP 200` para imagem WebP otimizada.
-- Vercel: projeto `revela` criado e deploy de producao publicado em `https://revela-one.vercel.app`.
-- Vercel dominio: `revela.gersonvan.com.br` verificado com CNAME na Locaweb e certificado HTTPS emitido.
-- Neon: banco `revela-postgres` provisionado via Vercel Marketplace e migration inicial aplicada no banco remoto.
-- Producao em `revela.gersonvan.com.br`: login Google validado, evento `Ensaio Producao` criado/ativado, upload publico validado, moderacao aprovada e telao exibindo imagem do R2.
-- Producao com visual Revela: deploy publicado em 30/06/2026, Home/Admin/Upload/Telao revisados com fontes e cores do design system.
-- Producao em `Ensaio Producao`: evento de teste atualizado para cores Revela e texto de autorizacao acentuado.
-- Producao em `Ensaio Producao`: novo upload publico validado, foto aprovada pela moderacao e exibida no telao.
-- Exportacao ZIP em producao: rota protegida testada com sessao admin e download disparado com sucesso.
-- R2 em producao: upload validado no bucket `revela-uploads`; URL publica `r2.dev` usada enquanto o dominio `media.gersonvan.com.br` nao estiver configurado.
+- Vercel: projeto `revela` criado e deploy de producao publicado.
+- Dominio `revela.gersonvan.com.br`: CNAME configurado, HTTPS emitido e rotas principais validadas.
+- Banco de producao: Neon `revela-postgres`, com migration inicial aplicada.
+- R2 em producao: upload validado no bucket `revela-uploads`; URL publica `r2.dev` usada enquanto `media.gersonvan.com.br` nao estiver configurado.
 - Login real com Google: validado em `http://127.0.0.1:3000/admin` com `gersonvan@gmail.com`.
 - Fluxo autenticado completo: evento `Ensaio Revela` criado pelo admin, ativado, moderador criado e ativado, foto enviada por API publica, aprovada e exibida no telao.
-
-Scripts disponiveis:
-
-```bash
-pnpm db:up
-pnpm db:migrate
-```
+- Ensaio de producao em 30/06/2026: upload publico, moderacao, telao e exportacao ZIP validados no evento `Ensaio Producao`.
 
 ## Variaveis de Ambiente
 
@@ -159,21 +145,16 @@ Variaveis atuais:
 - O Prisma Client e gerado em `src/generated/prisma`, mas esse diretorio nao deve ser versionado.
 - O script `postinstall` executa `prisma generate`.
 - O `.env` local foi criado para desenvolvimento e esta ignorado pelo Git.
-- `NEXTAUTH_SECRET` local foi preenchido com valor real de desenvolvimento.
-- `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` locais foram configurados.
-- `ADMIN_EMAIL_ALLOWLIST` local foi preenchida com `gersonvan@gmail.com`.
+- `ADMIN_EMAIL_ALLOWLIST` local esta preenchida com `gersonvan@gmail.com`.
 - `STORAGE_PROVIDER` local esta como `cloudflare-r2` para validar o R2 real.
 - `BLOB_READ_WRITE_TOKEN` fica vazio no desenvolvimento local e e obrigatorio quando `STORAGE_PROVIDER=vercel-blob`.
-- variaveis `R2_*` ficam vazias no desenvolvimento local e sao obrigatorias quando `STORAGE_PROVIDER=cloudflare-r2`.
-- dominio da aplicacao: `revela.gersonvan.com.br`.
-- dominio planejado de midias: `media.gersonvan.com.br`.
-- registro DNS na Locaweb: CNAME `revela` para `0d6c9cd442647db1.vercel-dns-017.com.`.
-- enquanto `media.gersonvan.com.br` nao estiver configurado no R2, as midias usam a URL publica `r2.dev` do bucket.
-- para uso real, rotacionar credenciais que foram compartilhadas durante a configuracao assistida antes do evento.
-- O PostgreSQL local esta rodando via Docker Compose.
-- Se o container local parar, `pnpm db:up` reinicia o PostgreSQL.
-- A migration inicial foi aplicada no banco local `eventoon`.
-- O design system Revela foi aplicado nas telas principais do MVP. Ajustes finos visuais devem seguir os tokens do design system como fonte unica.
+- Variaveis `R2_*` sao obrigatorias quando `STORAGE_PROVIDER=cloudflare-r2`.
+- Dominio da aplicacao: `revela.gersonvan.com.br`.
+- Dominio planejado de midias: `media.gersonvan.com.br`.
+- Registro DNS na Locaweb: CNAME `revela` para `0d6c9cd442647db1.vercel-dns-017.com.`.
+- Enquanto `media.gersonvan.com.br` nao estiver configurado, o MVP usa URL publica `r2.dev` do bucket.
+- Validacao de 30/06/2026: `media.gersonvan.com.br` ainda nao possui CNAME; o bucket `revela-uploads` ainda nao possui custom domain conectado; a zona `gersonvan.com.br` ainda nao existe na conta Cloudflare do bucket.
+- Componentes visuais devem seguir os tokens do design system como fonte unica.
 
 ## Proxima Fase
 

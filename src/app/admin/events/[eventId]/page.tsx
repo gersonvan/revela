@@ -87,9 +87,9 @@ export default async function EventDetailPage({
 
   const baseUrl = process.env.NEXTAUTH_URL ?? "http://127.0.0.1:3000";
   const uploadPath = `/e/${event.publicSlug}`;
-  const screenPath = `/screen/${event.publicSlug}`;
+  const shortScreenPath = `/t/${event.publicSlug}`;
   const uploadUrl = `${baseUrl}${uploadPath}`;
-  const screenUrl = `${baseUrl}${screenPath}`;
+  const screenUrl = `${baseUrl}${shortScreenPath}`;
   const qrCodeDataUrl = await createQrCodeDataUrl(uploadUrl);
   const formattedEventDate = event.eventDate
     ? event.eventDate.toISOString().slice(0, 10)

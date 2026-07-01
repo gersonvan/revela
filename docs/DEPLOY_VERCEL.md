@@ -1,12 +1,10 @@
 # Deploy e Vercel
 
-Este documento registra os pontos de deploy do Revela, com foco em Vercel.
+Este documento registra os pontos de deploy do Revela, com foco em Vercel, Neon, Google OAuth e Cloudflare R2.
 
 ## Relacao entre Google OAuth e Vercel
 
-O Vercel normalmente guarda as variaveis de ambiente do app.
-
-O Google Cloud e onde fica o OAuth Client real.
+O Vercel guarda as variaveis de ambiente do app. O Google Cloud guarda o OAuth Client real.
 
 Na pratica:
 
@@ -15,51 +13,17 @@ Na pratica:
 - `NEXTAUTH_URL` deve ser a URL publica do deploy.
 - No Google Cloud, a URL de callback precisa apontar para o dominio do app.
 
-## Reaproveitar configuracao existente
-
-Se ja existir uma configuracao usada em outro sistema, como um sistema pessoal de gastos, existem duas opcoes.
-
-### Opcao 1 - Reaproveitar o mesmo OAuth Client
-
-Possivel, desde que o Google Cloud permita adicionar mais uma URI de callback autorizada.
-
-Exemplo local:
+Callback local:
 
 ```text
 http://localhost:3000/api/auth/callback/google
 ```
 
-Exemplo Vercel:
+Callback de producao:
 
 ```text
-https://revela.vercel.app/api/auth/callback/google
+https://revela.gersonvan.com.br/api/auth/callback/google
 ```
-
-Vantagem:
-
-- mais rapido para testar.
-
-Riscos:
-
-- mistura configuracao de produtos diferentes;
-- dificulta auditoria futura;
-- se o OAuth Client for alterado para um app, pode afetar o outro.
-
-### Opcao 2 - Criar um OAuth Client separado para Revela
-
-Recomendado para o produto.
-
-Vantagem:
-
-- configuracao isolada;
-- nome do app correto na tela de consentimento;
-- menor risco de quebrar outro sistema;
-- mais limpo para evoluir o Revela.
-
-Recomendacao:
-
-- para teste rapido, reaproveitar pode servir;
-- para uso real no aniversario e deploy, criar um OAuth Client proprio para Revela.
 
 ## Variaveis no Vercel
 
@@ -91,24 +55,17 @@ STORAGE_PROVIDER="cloudflare-r2"
 
 `ADMIN_EMAIL_ALLOWLIST` e opcional em desenvolvimento, mas deve ser preenchida em producao para impedir que qualquer conta Google valida acesse o admin.
 
-Em desenvolvimento local, com `STORAGE_PROVIDER="local"`, as variaveis do R2 podem ficar vazias.
-
 ## Banco e Storage no Deploy
 
 O MVP local usa:
 
 - Postgres via Docker;
-- arquivos em `storage/`.
+- arquivos em `storage/` quando `STORAGE_PROVIDER="local"`.
 
-Para Vercel, isso precisa mudar:
+Em producao:
 
-- banco Postgres gerenciado;
-- storage de objetos para imagens.
-
-Opcoes recomendadas:
-
-- Postgres: Neon, Supabase ou Vercel Postgres;
-- Storage: Cloudflare R2.
+- banco Postgres gerenciado: Neon;
+- storage de objetos: Cloudflare R2.
 
 O adapter recomendado `cloudflare-r2` ja esta implementado. Para ativar no deploy, configure:
 
@@ -121,20 +78,18 @@ R2_BUCKET_NAME="..."
 R2_PUBLIC_BASE_URL="https://media.gersonvan.com.br"
 ```
 
+Enquanto `media.gersonvan.com.br` nao estiver configurado, o MVP pode usar a URL publica `r2.dev` do bucket para teste. Nao criar CNAME direto para `r2.dev`; esse endpoint e temporario/desenvolvimento. O caminho de producao esta em [Dominio de Midias R2](DOMINIO_MIDIAS_R2.md).
+
 Com esse provider:
 
 - fotos originais sao enviadas para o bucket R2;
-- versoes WebP otimizadas sao enviadas para o bucket R2 quando o Sharp estiver disponivel;
-- se o Sharp nao carregar no runtime serverless, o sistema salva a imagem original tambem como arquivo de exibicao para nao bloquear o upload;
+- versoes WebP otimizadas sao enviadas para o bucket R2 quando Sharp estiver disponivel;
+- se Sharp nao carregar no runtime serverless, o sistema salva a imagem original tambem como arquivo de exibicao para nao bloquear o upload;
 - imagem do convite e convertida para WebP quando possivel e enviada ao R2;
 - o banco guarda URLs publicas do R2;
 - exportacao ZIP baixa as imagens pelas URLs gravadas no banco.
 
-As URLs do R2 precisam ser publicas para o telao e as paginas carregarem imagens diretamente no navegador. Para producao, a recomendacao e usar um dominio proprio como `media.gersonvan.com.br`. Enquanto esse dominio nao estiver configurado, a URL publica `r2.dev` do bucket pode ser usada para teste.
-
 Nao ha galeria publica no MVP. Apenas fotos aprovadas entram no telao; pendentes e rejeitadas continuam acessiveis apenas por admin/moderacao/exportacao.
-
-O adapter `vercel-blob` tambem existe como alternativa, mas nao e o caminho recomendado atual.
 
 ## Adapter de Storage
 
@@ -184,20 +139,14 @@ Isso deixa detalhes do provider concentrados na camada `src/lib/storage`, sem es
 16. Testar telao. Concluido.
 17. Testar exportacao ZIP. Concluido em producao.
 
-## Dominios Planejados
+## Dominios
 
 - Aplicacao: `revela.gersonvan.com.br`
 - Midias R2: `media.gersonvan.com.br`
 
-No Google OAuth, o callback de producao devera ser:
+### Aplicacao
 
-```text
-https://revela.gersonvan.com.br/api/auth/callback/google
-```
-
-## DNS na Locaweb
-
-O dominio `gersonvan.com.br` esta com nameservers da Locaweb. Para apontar a aplicacao para a Vercel, crie este registro DNS na Locaweb:
+O dominio `gersonvan.com.br` esta com nameservers da Locaweb. Para apontar a aplicacao para a Vercel, manter este registro:
 
 ```text
 Tipo: CNAME
@@ -205,13 +154,24 @@ Nome/Host: revela
 Valor/Destino: 0d6c9cd442647db1.vercel-dns-017.com.
 ```
 
-Depois de propagar, validar com:
+Validacao:
 
 ```bash
 vercel domains verify revela.gersonvan.com.br
+curl -I https://revela.gersonvan.com.br/
 ```
 
-Para o dominio de midias `media.gersonvan.com.br`, o caminho ideal e configurar um custom domain no Cloudflare R2. Esse fluxo pode exigir que a zona DNS esteja no Cloudflare. Enquanto isso, o MVP pode usar a URL publica `r2.dev` do bucket.
+### Midias
+
+Estado em 30/06/2026:
+
+- `gersonvan.com.br` ainda usa DNS autoritativo da Locaweb.
+- A conta Cloudflare do bucket ainda nao tem a zona `gersonvan.com.br`.
+- `media.gersonvan.com.br` ainda nao possui CNAME publicado.
+- O bucket `revela-uploads` ainda nao possui custom domain conectado.
+- O app ainda usa `R2_PUBLIC_BASE_URL` com URL publica `r2.dev`.
+
+Caminho recomendado: migrar o DNS autoritativo para Cloudflare, conectar o bucket `revela-uploads` a `media.gersonvan.com.br` e atualizar `R2_PUBLIC_BASE_URL`. Ver [Dominio de Midias R2](DOMINIO_MIDIAS_R2.md).
 
 ## Estado Atual do Deploy
 
@@ -231,4 +191,4 @@ Para o dominio de midias `media.gersonvan.com.br`, o caminho ideal e configurar 
 
 - `.env*` fica fora do pacote de deploy por `.vercelignore`.
 - Credenciais sensiveis devem ficar nas variaveis de ambiente da Vercel, nao no repositorio.
-- Como algumas credenciais foram compartilhadas durante a configuracao assistida, rotacionar Google OAuth secret, R2 access keys e tokens Cloudflare antes do evento real.
+- Como algumas credenciais foram compartilhadas durante configuracao assistida, rotacionar Google OAuth secret, R2 access keys e tokens Cloudflare antes do evento real.

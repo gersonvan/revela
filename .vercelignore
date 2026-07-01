@@ -7,4 +7,5 @@
 /.next/
 /node_modules/
 /src/generated/
+/codex-chat-backups/
 *.tsbuildinfo

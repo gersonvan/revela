@@ -4,7 +4,7 @@ Este documento descreve como preparar e operar o Revela durante uma festa.
 
 ## Antes do Evento
 
-## Ensaio Local
+### Ensaio Local
 
 Para criar um evento demo local sem depender do login Google:
 
@@ -36,52 +36,48 @@ Ele valida:
 - aprovacao simulada no banco;
 - disponibilidade da foto aprovada no endpoint do telao.
 
-### Configuracao
+### Configuracao do Evento
 
 1. Admin faz login com Google.
 2. Admin cria o evento.
-3. Admin configura:
-   - nome do evento;
-   - data;
-   - imagem do convite;
-   - cores/tema;
-   - texto de autorizacao.
+3. Admin configura nome, data, imagem do convite, cores/tema e texto de autorizacao.
 4. Admin ativa o evento.
-5. Sistema gera QR Code do evento.
+5. Sistema gera QR Code e links absolutos de upload/telao.
 6. Admin cria links individuais para moderadores.
+7. Admin envia os links aos moderadores por canal privado.
 
-### Teste
+### Ensaio Antes da Festa
 
 Antes da festa, testar o fluxo completo:
 
-1. Abrir QR Code no celular.
+1. Abrir o QR Code no celular.
 2. Enviar uma foto de teste.
 3. Abrir painel de moderacao.
 4. Aprovar a foto.
-5. Abrir telao no notebook.
-6. Confirmar que a foto aprovada aparece.
-7. Rejeitar/remover uma foto aprovada e confirmar que ela sai do telao.
-8. Confirmar estado inicial com imagem do convite.
+5. Confirmar que a foto aparece no telao.
+6. Rejeitar ou remover uma foto aprovada por engano.
+7. Baixar a exportacao ZIP pelo admin.
+8. Conferir se o convite aparece no estado inicial do telao.
 
-### Materiais
+Tambem revisar:
 
-Preparar:
-
-- QR Code impresso ou exibido nas mesas;
-- notebook para o projetor;
-- carregador do notebook;
-- acesso a internet;
-- links de moderadores enviados para as pessoas certas;
-- imagem do convite em boa resolucao.
+- qualidade da internet no local;
+- notebook que ficara conectado ao projetor ou TV;
+- cabo HDMI/adaptador;
+- fonte de energia;
+- brilho e resolucao do projetor;
+- imagem do convite em boa resolucao;
+- quantidade de moderadores disponiveis.
 
 ## Inicio da Festa
 
 1. Conectar notebook ao projetor ou TV.
-2. Abrir pagina do telao.
+2. Abrir pagina do telao. Para o evento de ensaio, usar `https://revela.gersonvan.com.br/t/ensaio-producao-kkh7uc`.
 3. Ativar modo tela cheia.
 4. Conferir se o QR Code aparece no telao.
 5. Moderadores abrem seus links nos celulares.
 6. Deixar o QR Code visivel nas mesas, entrada ou bar.
+7. Fazer um upload de teste e aprovar a foto antes dos convidados comecarem a usar.
 
 ## Durante a Festa
 
@@ -135,20 +131,31 @@ Acao:
 
 - chamar mais moderadores;
 - priorizar aprovacao rapida de fotos claramente boas;
-- rejeitar fotos duplicadas, borradas ou inadequadas.
+- rejeitar fotos duplicadas ou ruins;
+- deixar fotos duvidosas pendentes ate alguem revisar com calma.
 
-### Foto indevida apareceu
+### Foto inadequada apareceu no telao
 
 Acao:
 
-1. Abrir aba Aprovadas.
-2. Localizar a foto.
-3. Mover para Rejeitadas.
-4. Confirmar que saiu do telao.
+1. Abrir painel de moderacao.
+2. Entrar na aba Aprovadas.
+3. Rejeitar/remover a foto.
+4. Confirmar que ela saiu do feed do telao.
+
+### QR Code nao abre
+
+Acao:
+
+- confirmar se o evento esta ativo;
+- conferir se o dominio `revela.gersonvan.com.br` abre no celular;
+- usar o link de upload diretamente se o leitor de QR do celular falhar;
+- manter uma copia impressa do QR Code.
 
 ## Depois do Evento
 
 1. Admin encerra o evento.
 2. Sistema bloqueia novos uploads.
-3. Fotos e historico permanecem armazenados.
-4. Futuramente, admin podera baixar fotos ou criar galeria privada.
+3. Admin baixa a exportacao ZIP protegida.
+4. Fotos e historico permanecem armazenados.
+5. Futuramente, admin podera criar galeria privada ou pacote de entrega.

@@ -17,7 +17,8 @@ O MVP deve permitir:
 - moderacao manual;
 - feed ao vivo para telao;
 - armazenamento das fotos e historico de moderacao;
-- encerramento de evento para bloquear novos uploads.
+- encerramento de evento para bloquear novos uploads;
+- exportacao protegida das fotos e metadados do evento.
 
 ## Documentacao
 
@@ -32,14 +33,15 @@ O MVP deve permitir:
 - [Status de implementacao](docs/STATUS_IMPLEMENTACAO.md)
 - [Configuracao Google OAuth](docs/GOOGLE_OAUTH.md)
 - [Deploy e Vercel](docs/DEPLOY_VERCEL.md)
+- [Dominio de midias R2](docs/DOMINIO_MIDIAS_R2.md)
 - [Roteiro de releases](docs/ROADMAP.md)
 - [Operacao no dia do evento](docs/OPERACAO_EVENTO.md)
 
-## Escopo resumido
+## Fluxos Principais
 
 ### Convidado
 
-O convidado acessa o QR Code do evento, informa nome/apelido, aceita um termo simples e envia uma ou mais fotos. Cada foto pode ter uma mensagem opcional.
+O convidado acessa o QR Code do evento, informa nome ou apelido, aceita um termo simples e envia uma ou mais fotos. Cada foto pode ter uma mensagem opcional.
 
 ### Moderador
 
@@ -47,11 +49,11 @@ O moderador acessa um link secreto individual, revisa fotos pendentes e aprova o
 
 ### Admin
 
-O admin entra com Google, cria eventos, configura identidade visual, gera QR Code, cria links de moderadores, acompanha dashboard e encerra eventos.
+O admin cria e configura eventos, ativa ou encerra uploads, acompanha contadores, cria links de moderadores e exporta fotos/metadados.
 
 ### Telao
 
-O telao exibe somente fotos aprovadas, com nome/apelido e mensagem. Enquanto nao houver fotos aprovadas, usa a imagem do convite como estado inicial.
+O telao exibe somente fotos aprovadas, com nome ou apelido e mensagem. Enquanto nao houver fotos aprovadas, usa a imagem do convite como estado inicial.
 
 ## Desenvolvimento
 
@@ -64,6 +66,6 @@ pnpm validate
 pnpm build
 ```
 
-O arquivo `.env.example` lista as variaveis necessarias para banco, NextAuth, Google OAuth e allowlist de administradores.
+O arquivo `.env.example` lista variaveis necessarias para banco, NextAuth, Google OAuth, allowlist de administradores e storage.
 
-Em desenvolvimento local, o storage usa `STORAGE_PROVIDER="local"` e salva arquivos no diretorio ignorado `storage/`. No deploy recomendado, use `STORAGE_PROVIDER="cloudflare-r2"` com as variaveis `R2_*` configuradas no Vercel.
+Em desenvolvimento local, o storage pode usar `STORAGE_PROVIDER="local"` e salvar arquivos no diretorio ignorado `storage/`. No deploy recomendado, use `STORAGE_PROVIDER="cloudflare-r2"` com variaveis `R2_*` configuradas no Vercel.

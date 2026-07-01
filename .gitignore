@@ -45,3 +45,6 @@ src/generated/
 
 # local uploads
 /storage/
+
+# local Codex history backups
+/codex-chat-backups/
