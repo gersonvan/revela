@@ -140,7 +140,7 @@ export function LivePhotoFeed({
 export function ScreenFullscreenButton() {
   return (
     <button
-      className="absolute left-4 top-4 z-50 rounded-xl bg-white/95 px-4 py-2 text-sm font-bold text-[#1D1108] shadow-lg ring-1 ring-black/10 hover:bg-white sm:left-6 sm:top-6"
+      className="absolute right-4 top-4 z-50 rounded-xl bg-white/95 px-4 py-2 text-sm font-bold text-[#1D1108] shadow-lg ring-1 ring-black/10 hover:bg-white sm:right-6 sm:top-6"
       onClick={() => document.documentElement.requestFullscreen?.()}
       type="button"
     >
