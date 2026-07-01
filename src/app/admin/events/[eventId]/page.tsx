@@ -238,6 +238,16 @@ ${createdModeratorUrl}`)}`
                   type="file"
                 />
               </label>
+              {event.invitationImageUrl ? (
+                <label className="mt-3 flex items-start gap-2 rounded-xl border border-[#E8DDD1] bg-white p-3 text-sm text-[#8A6B55]">
+                  <input
+                    className="mt-1 h-4 w-4 accent-[#D4562B]"
+                    name="removeInvitationImage"
+                    type="checkbox"
+                  />
+                  <span>Remover imagem do convite ao salvar</span>
+                </label>
+              ) : null}
             </div>
 
             <div className="space-y-5">

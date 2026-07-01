@@ -63,16 +63,18 @@ export default async function ScreenPage({ params }: ScreenPageProps) {
       className="relative min-h-screen overflow-hidden text-[#1D1108]"
       style={{ backgroundColor: event.secondaryColor ?? "#FBF5EE" }}
     >
-      {initialPhotos.length === 0 ? (
-        <EmptyScreen
-          eventName={event.name}
-          invitationImageUrl={event.invitationImageUrl}
-          primaryColor={event.primaryColor ?? "#D4562B"}
-          qrCodeDataUrl={qrCodeDataUrl}
-        />
-      ) : (
-        <LivePhotoFeed eventSlug={slug} initialPhotos={initialPhotos} />
-      )}
+      <LivePhotoFeed
+        emptyFallback={
+          <EmptyScreen
+            eventName={event.name}
+            invitationImageUrl={event.invitationImageUrl}
+            primaryColor={event.primaryColor ?? "#D4562B"}
+            qrCodeDataUrl={qrCodeDataUrl}
+          />
+        }
+        eventSlug={slug}
+        initialPhotos={initialPhotos}
+      />
 
       <aside className="absolute bottom-6 right-6 flex items-center gap-3 rounded-2xl bg-white/95 p-3 shadow-xl">
         {/* eslint-disable-next-line @next/next/no-img-element */}

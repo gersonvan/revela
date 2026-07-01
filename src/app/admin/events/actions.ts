@@ -187,6 +187,7 @@ export async function updateEventSettingsAction(formData: FormData) {
     formData.get("authorizationText") ?? DEFAULT_AUTHORIZATION_TEXT,
   ).trim();
   const invitationFile = formData.get("invitationImage");
+  const removeInvitationImage = formData.get("removeInvitationImage") === "on";
 
   if (!name) {
     throw new Error("Nome do evento e obrigatorio.");
@@ -207,7 +208,9 @@ export async function updateEventSettingsAction(formData: FormData) {
     throw new Error("Evento não encontrado.");
   }
 
-  let invitationImageUrl: string | undefined;
+  let invitationImageUrl: null | string | undefined = removeInvitationImage
+    ? null
+    : undefined;
 
   if (invitationFile instanceof File && invitationFile.size > 0) {
     if (!isSupportedImageType(invitationFile.type)) {
@@ -243,4 +246,5 @@ export async function updateEventSettingsAction(formData: FormData) {
   revalidatePath(`/admin/events/${event.id}`);
   revalidatePath(`/e/${event.publicSlug}`);
   revalidatePath(`/screen/${event.publicSlug}`);
+  revalidatePath(`/t/${event.publicSlug}`);
 }

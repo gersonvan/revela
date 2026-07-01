@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 
 type FeedPhoto = {
   guestName: string;
@@ -11,11 +11,16 @@ type FeedPhoto = {
 };
 
 type LivePhotoFeedProps = {
+  emptyFallback?: ReactNode;
   eventSlug: string;
   initialPhotos: FeedPhoto[];
 };
 
-export function LivePhotoFeed({ eventSlug, initialPhotos }: LivePhotoFeedProps) {
+export function LivePhotoFeed({
+  emptyFallback = null,
+  eventSlug,
+  initialPhotos,
+}: LivePhotoFeedProps) {
   const [photos, setPhotos] = useState(initialPhotos);
 
   useEffect(() => {
@@ -54,7 +59,7 @@ export function LivePhotoFeed({ eventSlug, initialPhotos }: LivePhotoFeedProps) 
   const mixedPhotos = useMemo(() => mixPhotos(photos), [photos]);
 
   if (mixedPhotos.length === 0) {
-    return null;
+    return emptyFallback;
   }
 
   return (
