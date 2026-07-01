@@ -75,8 +75,10 @@ export default async function ScreenPage({ params }: ScreenPageProps) {
             qrCodeDataUrl={qrCodeDataUrl}
           />
         }
+        eventName={event.name}
         eventSlug={slug}
         initialPhotos={initialPhotos}
+        qrCodeDataUrl={qrCodeDataUrl}
       />
       <ScreenFullscreenButton />
 
