@@ -41,6 +41,8 @@ type EventDetailPageProps = {
     eventId: string;
   }>;
   searchParams: Promise<{
+    inviteStatus?: string;
+    moderatorEmail?: string;
     moderatorToken?: string;
   }>;
 };
@@ -51,7 +53,7 @@ export default async function EventDetailPage({
 }: EventDetailPageProps) {
   const admin = await requireAdmin();
   const { eventId } = await params;
-  const { moderatorToken } = await searchParams;
+  const { inviteStatus, moderatorEmail, moderatorToken } = await searchParams;
   const event = await prisma.event.findFirst({
     where: {
       id: eventId,
@@ -310,31 +312,14 @@ ${createdModeratorUrl}`)}`
 
         <section className="mt-8 rounded-xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
           <h2 className="text-sm font-bold text-[#1D1108]">Moderadores</h2>
-          <form action={createModeratorAction} className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <input name="eventId" type="hidden" value={event.id} />
-            <input
-              className="h-10 flex-1 rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm text-[#1D1108] outline-none focus:border-[#D4562B]"
-              name="name"
-              placeholder="Nome do moderador"
-              required
-            />
-            <button
-              className="h-10 rounded-lg bg-[#1D1108] px-4 text-sm font-bold text-white"
-              type="submit"
-            >
-              Criar link
-            </button>
-          </form>
+          <form action={createModeratorAction} className="mt-5 grid gap-3 lg:grid-cols-[1fr_1fr_auto]"> <input name="eventId" type="hidden" value={event.id} /> <input className="h-10 rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm text-[#1D1108] outline-none focus:border-[#D4562B]" name="name" placeholder="Nome do moderador" required /> <input className="h-10 rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm text-[#1D1108] outline-none focus:border-[#D4562B]" name="email" placeholder="E-mail do moderador (opcional)" type="email" /> <button className="h-10 rounded-lg bg-[#1D1108] px-4 text-sm font-bold text-white" type="submit" > Criar e convidar </button> </form>
 
           {moderatorToken ? (
             <div className="mt-5 rounded-xl border border-[#E8DDD1] bg-[#F4EDE1] p-4">
               <p className="text-sm font-bold text-[#1D1108]">
                 Link criado. Copie agora.
               </p>
-              <p className="mt-1 text-xs leading-5 text-[#8A6B55]">
-                Por segurança, o token completo aparece apenas neste momento.
-              </p>
-              <p className="mt-3 break-all rounded-lg bg-white p-3 text-sm text-[#8A6B55]"> {createdModeratorUrl} </p> <a className="mt-3 inline-flex h-10 items-center rounded-lg bg-[#D4562B] px-4 text-sm font-bold text-white" href={moderatorInviteMailto}> Preparar e-mail de convite </a>
+              <p className="mt-1 text-xs leading-5 text-[#8A6B55]"> Por segurança, o token completo aparece apenas neste momento. </p> {inviteStatus === "sent" ? <p className="mt-3 rounded-lg border border-[#16A34A]/20 bg-[#16A34A]/10 p-3 text-sm font-bold text-[#16A34A]"> Convite enviado para {moderatorEmail}. </p> : null} {inviteStatus === "not_configured" ? <p className="mt-3 rounded-lg border border-[#D4562B]/20 bg-[#D4562B]/10 p-3 text-sm font-bold text-[#D4562B]"> Link criado. Configure RESEND_API_KEY e EMAIL_FROM para envio automático. </p> : null} {inviteStatus === "failed" ? <p className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-bold text-red-700"> Link criado, mas o envio por e-mail falhou. Use o link abaixo. </p> : null} <p className="mt-3 break-all rounded-lg bg-white p-3 text-sm text-[#8A6B55]"> {createdModeratorUrl} </p> <a className="mt-3 inline-flex h-10 items-center rounded-lg bg-[#D4562B] px-4 text-sm font-bold text-white" href={moderatorInviteMailto}> Preparar e-mail manual </a>
             </div>
           ) : null}
 
@@ -357,7 +342,7 @@ ${createdModeratorUrl}`)}`
                       <p className="text-sm font-semibold text-[#1D1108]">{moderator.name}</p>
                       <p className="text-[10px] text-[#8A6B55]">
                         Criado em {moderator.createdAt.toLocaleDateString("pt-BR")}
-                      </p>
+                      </p> {moderator.email ? ( <p className="text-[10px] text-[#8A6B55]">{moderator.email}</p> ) : null}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { EventStatus, ModeratorStatus } from "@/generated/prisma/enums";
 import { requireAdmin } from "@/lib/admin";
+import { sendModeratorInviteEmail } from "@/lib/email/moderator-invite";
 import { createSecretToken, hashSecretToken } from "@/lib/moderation/token";
 import { prisma } from "@/lib/prisma";
 import { buildEventSlug } from "@/lib/slug";
@@ -73,41 +74,69 @@ export async function updateEventStatusAction(formData: FormData) {
 }
 
 export async function createModeratorAction(formData: FormData) {
-  const admin = await requireAdmin();
-  const eventId = String(formData.get("eventId") ?? "");
-  const name = String(formData.get("name") ?? "").trim();
+ const admin = await requireAdmin();
+ const eventId = String(formData.get("eventId") ?? "");
+ const name = String(formData.get("name") ?? "").trim();
+ const email = String(formData.get("email") ?? "").trim().toLowerCase();
 
-  if (!name) {
-    throw new Error("Nome do moderador e obrigatorio.");
-  }
+ if (!name) {
+ throw new Error("Nome do moderador é obrigatório.");
+ }
 
-  const event = await prisma.event.findFirst({
-    where: {
-      id: eventId,
-      adminId: admin.id,
-    },
-    select: {
-      id: true,
-      publicSlug: true,
-    },
-  });
+ if (email && !isValidEmail(email)) {
+ throw new Error("E-mail do moderador inválido.");
+ }
 
-  if (!event) {
-    throw new Error("Evento não encontrado.");
-  }
+ const event = await prisma.event.findFirst({
+ where: {
+ id: eventId,
+ adminId: admin.id,
+ },
+ select: {
+ id: true,
+ name: true,
+ publicSlug: true,
+ },
+ });
 
-  const token = createSecretToken();
+ if (!event) {
+ throw new Error("Evento não encontrado.");
+ }
 
-  await prisma.moderator.create({
-    data: {
-      eventId: event.id,
-      name,
-      tokenHash: hashSecretToken(token),
-    },
-  });
+ const token = createSecretToken();
+ const baseUrl = process.env.NEXTAUTH_URL ?? "http://127.0.0.1:3000";
+ const inviteUrl = `${baseUrl}/moderate/${token}`;
+ let inviteStatus = "manual";
 
-  revalidatePath(`/admin/events/${event.id}`);
-  redirect(`/admin/events/${event.id}?moderatorToken=${token}`);
+ await prisma.moderator.create({
+ data: {
+ email: email || null,
+ eventId: event.id,
+ name,
+ tokenHash: hashSecretToken(token),
+ },
+ });
+
+ if (email) {
+ const emailResult = await sendModeratorInviteEmail({
+ eventName: event.name,
+ inviteUrl,
+ moderatorEmail: email,
+ moderatorName: name,
+ });
+ inviteStatus = emailResult.status;
+ }
+
+ revalidatePath(`/admin/events/${event.id}`);
+ redirect(
+ `/admin/events/${event.id}?moderatorToken=${token}&inviteStatus=${inviteStatus}${
+ email ? `&moderatorEmail=${encodeURIComponent(email)}` : ""
+ }`,
+ );
+}
+
+function isValidEmail(value: string) {
+ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
 export async function revokeModeratorAction(formData: FormData) {

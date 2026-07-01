@@ -34,6 +34,7 @@ O MVP deve permitir:
 - [Configuracao Google OAuth](docs/GOOGLE_OAUTH.md)
 - [Deploy e Vercel](docs/DEPLOY_VERCEL.md)
 - [Dominio de midias R2](docs/DOMINIO_MIDIAS_R2.md)
+- [Envio de e-mail com Resend](docs/RESEND_EMAIL.md)
 - [Roteiro de releases](docs/ROADMAP.md)
 - [Operacao no dia do evento](docs/OPERACAO_EVENTO.md)
 

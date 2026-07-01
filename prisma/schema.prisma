@@ -93,7 +93,8 @@ model Moderator {
   id            String          @id @default(cuid())
   eventId       String
   name          String
-  tokenHash     String          @unique
+  email String?
+ tokenHash     String          @unique
   status        ModeratorStatus @default(CREATED)
   activatedAt   DateTime?
   lastAccessAt  DateTime?
