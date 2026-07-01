@@ -1,6 +1,9 @@
 "use client";
 
-import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+
+const MAX_VISIBLE_PHOTOS = 10;
+const ROTATION_INTERVAL_MS = 10_000;
 
 type FeedPhoto = {
   guestName: string;
@@ -27,6 +30,8 @@ export function LivePhotoFeed({
   initialPhotos,
 }: LivePhotoFeedProps) {
   const [photos, setPhotos] = useState(initialPhotos);
+  const [pageIndex, setPageIndex] = useState(0);
+  const photoSignatureRef = useRef(createPhotoSignature(initialPhotos));
 
   useEffect(() => {
     let active = true;
@@ -44,6 +49,13 @@ export function LivePhotoFeed({
         const payload = (await response.json()) as { photos: FeedPhoto[] };
 
         if (active) {
+          const nextSignature = createPhotoSignature(payload.photos);
+
+          if (nextSignature !== photoSignatureRef.current) {
+            photoSignatureRef.current = nextSignature;
+            setPageIndex(0);
+          }
+
           setPhotos(payload.photos);
         }
       } catch {
@@ -61,7 +73,27 @@ export function LivePhotoFeed({
     };
   }, [eventSlug]);
 
-  const visiblePhotos = useMemo(() => uniquePhotos(photos).slice(0, 12), [photos]);
+  const uniqueApprovedPhotos = useMemo(() => uniquePhotos(photos), [photos]);
+  const photoPages = useMemo(
+    () => paginatePhotos(uniqueApprovedPhotos),
+    [uniqueApprovedPhotos],
+  );
+
+  useEffect(() => {
+    if (photoPages.length <= 1) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setPageIndex((currentPage) => (currentPage + 1) % photoPages.length);
+    }, ROTATION_INTERVAL_MS);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [photoPages.length]);
+
+  const visiblePhotos = photoPages[pageIndex] ?? photoPages[0] ?? [];
   const layout = useMemo(
     () => getScreenLayout(visiblePhotos.length),
     [visiblePhotos.length],
@@ -147,6 +179,30 @@ function uniquePhotos(photos: FeedPhoto[]) {
   });
 }
 
+function createPhotoSignature(photos: FeedPhoto[]) {
+  return photos.map((photo) => photo.id).join(":");
+}
+
+function paginatePhotos(photos: FeedPhoto[]) {
+  if (photos.length <= MAX_VISIBLE_PHOTOS) {
+    return [photos];
+  }
+
+  const pageCount = Math.ceil(photos.length / MAX_VISIBLE_PHOTOS);
+  const baseSize = Math.floor(photos.length / pageCount);
+  const extraItems = photos.length % pageCount;
+  const pages: FeedPhoto[][] = [];
+  let cursor = 0;
+
+  for (let page = 0; page < pageCount; page += 1) {
+    const pageSize = baseSize + (page < extraItems ? 1 : 0);
+    pages.push(photos.slice(cursor, cursor + pageSize));
+    cursor += pageSize;
+  }
+
+  return pages;
+}
+
 function getScreenLayout(count: number): ScreenLayout {
   if (count === 1) {
     return {
@@ -179,19 +235,33 @@ function getScreenLayout(count: number): ScreenLayout {
   if (count <= 6) {
     return {
       grid: "grid-cols-3 grid-rows-2",
-      items: Array.from({ length: count }, () => ""),
+      items: ["col-span-2 row-span-2", "", "", "", "", ""].slice(0, count),
     };
   }
 
-  if (count <= 9) {
+  if (count <= 8) {
     return {
-      grid: "grid-cols-3 grid-rows-3",
-      items: Array.from({ length: count }, () => ""),
+      grid: "grid-cols-4 grid-rows-3",
+      items: ["col-span-2 row-span-2", "", "", "", "", "", "", ""].slice(
+        0,
+        count,
+      ),
     };
   }
 
   return {
     grid: "grid-cols-4 grid-rows-3",
-    items: Array.from({ length: count }, () => ""),
+    items: [
+      "col-span-2 row-span-2",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ].slice(0, count),
   };
 }
