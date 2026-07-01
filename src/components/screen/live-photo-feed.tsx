@@ -236,7 +236,7 @@ function getScreenLayout(count: number): ScreenLayout {
 
   if (count <= 6) {
     return {
-      grid: "grid-cols-3 grid-rows-2",
+      grid: "grid-cols-4 grid-rows-3",
       items: ["col-span-2 row-span-2", "", "", "", "", ""].slice(0, count),
     };
   }
@@ -252,7 +252,7 @@ function getScreenLayout(count: number): ScreenLayout {
   }
 
   return {
-    grid: "grid-cols-4 grid-rows-3",
+    grid: count === 10 ? "grid-cols-5 grid-rows-3" : "grid-cols-4 grid-rows-3",
     items: [
       "col-span-2 row-span-2",
       "",
