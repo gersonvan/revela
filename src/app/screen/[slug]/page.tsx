@@ -82,7 +82,7 @@ export default async function ScreenPage({ params }: ScreenPageProps) {
         <div className="max-w-48">
           <p className="text-sm font-bold text-[#1D1108]">Envie suas fotos</p>
           <p className="mt-1 text-xs leading-5 text-[#8A6B55]">
-            Aponte a camera para participar do mural.
+            Aponte a câmera para participar do mural.
           </p>
         </div>
       </aside>
@@ -130,7 +130,7 @@ function EmptyScreen({
               {eventName}
             </h1>
             <p className="mt-6 max-w-2xl text-2xl leading-9 text-[#8A6B55]">
-              Envie suas fotos para aparecer no telão apos a aprovação da
+              Envie suas fotos para aparecer no telão após a aprovação da
               moderação.
             </p>
           </div>
