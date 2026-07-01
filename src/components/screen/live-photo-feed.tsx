@@ -1,9 +1,11 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 const MAX_VISIBLE_PHOTOS = 10;
 const ROTATION_INTERVAL_MS = 10_000;
+const NEW_PHOTO_SPOTLIGHT_MS = 7_000;
 
 type FeedPhoto = {
   guestName: string;
@@ -31,7 +33,8 @@ export function LivePhotoFeed({
 }: LivePhotoFeedProps) {
   const [photos, setPhotos] = useState(initialPhotos);
   const [pageIndex, setPageIndex] = useState(0);
-  const photoSignatureRef = useRef(createPhotoSignature(initialPhotos));
+  const [spotlightPhoto, setSpotlightPhoto] = useState<FeedPhoto | null>(null);
+  const knownPhotoIdsRef = useRef(new Set(initialPhotos.map((photo) => photo.id)));
 
   useEffect(() => {
     let active = true;
@@ -49,11 +52,18 @@ export function LivePhotoFeed({
         const payload = (await response.json()) as { photos: FeedPhoto[] };
 
         if (active) {
-          const nextSignature = createPhotoSignature(payload.photos);
+          const uniquePayloadPhotos = uniquePhotos(payload.photos);
+          const newPhotos = uniquePayloadPhotos.filter(
+            (photo) => !knownPhotoIdsRef.current.has(photo.id),
+          );
 
-          if (nextSignature !== photoSignatureRef.current) {
-            photoSignatureRef.current = nextSignature;
+          knownPhotoIdsRef.current = new Set(
+            uniquePayloadPhotos.map((photo) => photo.id),
+          );
+
+          if (newPhotos.length > 0) {
             setPageIndex(0);
+            setSpotlightPhoto(newPhotos[0]);
           }
 
           setPhotos(payload.photos);
@@ -73,6 +83,20 @@ export function LivePhotoFeed({
     };
   }, [eventSlug]);
 
+  useEffect(() => {
+    if (!spotlightPhoto) {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setSpotlightPhoto(null);
+    }, NEW_PHOTO_SPOTLIGHT_MS);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, [spotlightPhoto]);
+
   const uniqueApprovedPhotos = useMemo(() => uniquePhotos(photos), [photos]);
   const photoPages = useMemo(
     () => paginatePhotos(uniqueApprovedPhotos),
@@ -80,7 +104,7 @@ export function LivePhotoFeed({
   );
 
   useEffect(() => {
-    if (photoPages.length <= 1) {
+    if (photoPages.length <= 1 || spotlightPhoto) {
       return;
     }
 
@@ -91,28 +115,25 @@ export function LivePhotoFeed({
     return () => {
       window.clearInterval(interval);
     };
-  }, [photoPages.length]);
+  }, [photoPages.length, spotlightPhoto]);
 
   const visiblePhotos = photoPages[pageIndex] ?? photoPages[0] ?? [];
-  const layout = useMemo(
-    () => getScreenLayout(visiblePhotos.length),
-    [visiblePhotos.length],
-  );
 
   if (visiblePhotos.length === 0) {
     return emptyFallback;
   }
 
   return (
-    <div className={`grid h-screen gap-3 p-4 sm:gap-4 sm:p-6 ${layout.grid}`}>
-      {visiblePhotos.map((photo, index) => (
-        <PhotoTile
-          className={layout.items[index] ?? ""}
-          key={photo.id}
-          photo={photo}
+    <AnimatePresence mode="wait">
+      {spotlightPhoto ? (
+        <NewPhotoScene key={`new-${spotlightPhoto.id}`} photo={spotlightPhoto} />
+      ) : (
+        <MosaicScene
+          key={`page-${pageIndex}-${visiblePhotos.map((photo) => photo.id).join("-")}`}
+          photos={visiblePhotos}
         />
-      ))}
-    </div>
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -128,44 +149,175 @@ export function ScreenFullscreenButton() {
   );
 }
 
+function NewPhotoScene({ photo }: { photo: FeedPhoto }) {
+  return (
+    <motion.section
+      animate={{ opacity: 1, scale: 1 }}
+      className="relative h-screen overflow-hidden bg-[#1D1108] p-6 text-white"
+      exit={{ opacity: 0, scale: 0.98 }}
+      initial={{ opacity: 0, scale: 1.02 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      <PhotoBackdrop imageUrl={photo.imageUrl} intensity="strong" />
+
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute left-6 top-6 z-20 rounded-full bg-white/15 px-5 py-2 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-md"
+        initial={{ opacity: 0, y: -12 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
+        Nova foto no telão
+      </motion.div>
+
+      <div className="relative z-10 flex h-full items-center justify-center">
+        <motion.div
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          className="relative h-[84vh] w-full max-w-6xl overflow-hidden rounded-2xl bg-black/35 shadow-2xl ring-1 ring-white/15"
+          initial={{ opacity: 0, scale: 0.94, y: 24 }}
+          transition={{ delay: 0.15, duration: 0.75, ease: "easeOut" }}
+        >
+          <motion.img
+            alt=""
+            animate={{ scale: 1.04 }}
+            className="h-full w-full object-contain"
+            initial={{ scale: 1 }}
+            src={photo.imageUrl}
+            transition={{ duration: 6.6, ease: "easeOut" }}
+          />
+
+          <PhotoCaption photo={photo} size="large" />
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+}
+
+function MosaicScene({ photos }: { photos: FeedPhoto[] }) {
+  const layout = getScreenLayout(photos.length);
+
+  return (
+    <motion.section
+      animate={{ opacity: 1 }}
+      className={`grid h-screen gap-3 p-4 sm:gap-4 sm:p-6 ${layout.grid}`}
+      exit={{ opacity: 0 }}
+      initial={{ opacity: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      {photos.map((photo, index) => (
+        <PhotoTile
+          className={layout.items[index] ?? ""}
+          index={index}
+          key={photo.id}
+          photo={photo}
+          priority={index === 0}
+        />
+      ))}
+    </motion.section>
+  );
+}
+
 function PhotoTile({
   className,
+  index,
   photo,
+  priority,
 }: {
   className: string;
+  index: number;
   photo: FeedPhoto;
+  priority: boolean;
 }) {
   return (
-    <article
+    <motion.article
+      animate={{ opacity: 1, scale: 1, y: 0 }}
       className={`relative isolate overflow-hidden rounded-xl bg-[#1D1108] shadow-lg ${className}`}
+      initial={{ opacity: 0, scale: 0.96, y: 18 }}
+      layout
+      transition={{
+        delay: Math.min(index * 0.06, 0.36),
+        duration: 0.55,
+        ease: "easeOut",
+        layout: { duration: 0.65 },
+      }}
     >
+      <PhotoBackdrop imageUrl={photo.imageUrl} intensity="soft" />
+
+      <motion.img
+        alt=""
+        animate={priority ? { scale: 1.035 } : { scale: 1 }}
+        className="relative z-10 h-full w-full object-contain"
+        initial={{ scale: 1 }}
+        src={photo.imageUrl}
+        transition={
+          priority
+            ? { duration: 9, ease: "easeOut", repeat: Infinity, repeatType: "mirror" }
+            : { duration: 0.6 }
+        }
+      />
+
+      <PhotoCaption photo={photo} size={priority ? "large" : "normal"} />
+    </motion.article>
+  );
+}
+
+function PhotoBackdrop({
+  imageUrl,
+  intensity,
+}: {
+  imageUrl: string;
+  intensity: "soft" | "strong";
+}) {
+  return (
+    <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-2xl"
-        src={photo.imageUrl}
+        className={`absolute inset-0 h-full w-full scale-110 object-cover blur-2xl ${
+          intensity === "strong" ? "opacity-70" : "opacity-40"
+        }`}
+        src={imageUrl}
       />
-      <div className="absolute inset-0 bg-black/25" />
-
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        alt=""
-        className="relative z-10 h-full w-full object-contain"
-        src={photo.imageUrl}
+      <div
+        className={`absolute inset-0 ${
+          intensity === "strong" ? "bg-black/45" : "bg-black/25"
+        }`}
       />
+    </>
+  );
+}
 
-      <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/75 to-transparent p-3 text-white sm:p-4">
-        <p className="font-[family-name:var(--font-display)] text-sm font-semibold italic sm:text-base">
-          {photo.guestName}
+function PhotoCaption({
+  photo,
+  size,
+}: {
+  photo: FeedPhoto;
+  size: "large" | "normal";
+}) {
+  return (
+    <motion.div
+      animate={{ opacity: 1, y: 0 }}
+      className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/80 to-transparent p-3 text-white sm:p-4"
+      initial={{ opacity: 0, y: 12 }}
+      transition={{ delay: 0.25, duration: 0.45 }}
+    >
+      <p
+        className={`font-[family-name:var(--font-display)] font-semibold italic ${
+          size === "large" ? "text-2xl sm:text-4xl" : "text-sm sm:text-base"
+        }`}
+      >
+        {photo.guestName}
+      </p>
+      {photo.message ? (
+        <p
+          className={`mt-1 line-clamp-2 leading-5 text-white/85 ${
+            size === "large" ? "text-base sm:text-xl" : "text-xs sm:text-sm"
+          }`}
+        >
+          {photo.message}
         </p>
-        {photo.message ? (
-          <p className="mt-1 line-clamp-2 text-xs leading-5 text-white/85 sm:text-sm">
-            {photo.message}
-          </p>
-        ) : null}
-      </div>
-    </article>
+      ) : null}
+    </motion.div>
   );
 }
 
@@ -179,10 +331,6 @@ function uniquePhotos(photos: FeedPhoto[]) {
     seen.add(photo.id);
     return true;
   });
-}
-
-function createPhotoSignature(photos: FeedPhoto[]) {
-  return photos.map((photo) => photo.id).join(":");
 }
 
 function paginatePhotos(photos: FeedPhoto[]) {
