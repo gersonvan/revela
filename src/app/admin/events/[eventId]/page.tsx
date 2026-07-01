@@ -101,11 +101,20 @@ export default async function EventDetailPage({
     moderatorCounts.map((item) => [item.status, item._count.status]),
   );
   const pendingCount = photoCountByStatus.get("PENDING") ?? 0;
+  const createdModeratorUrl = moderatorToken
+    ? `${baseUrl}/moderate/${moderatorToken}`
+    : "";
+  const moderatorInviteMailto = createdModeratorUrl
+    ? `mailto:?subject=${encodeURIComponent(`Convite para moderar ${event.name}`)}&body=${encodeURIComponent(`Olá! Use este link para moderar as fotos do evento ${event.name}:
+
+${createdModeratorUrl}`)}`
+    : "";
 
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
       <AdminSidebar
         activeEventName={event.name}
+        activeEventSlug={event.publicSlug}
         adminEmail={admin.email}
         pendingCount={pendingCount}
       />
@@ -175,10 +184,7 @@ export default async function EventDetailPage({
           <Metric label="Status" value={statusLabel[event.status]} />
         </div>
 
-        <section className="mt-8 rounded-xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
-          <h2 className="text-sm font-bold text-[#1D1108]">
-            QR Code e links
-          </h2>
+        <section className="mt-8 scroll-mt-6 rounded-xl border border-[#E8DDD1] bg-white p-6 shadow-sm" id="qr-code"> <h2 className="text-sm font-bold text-[#1D1108]"> QR Code e links </h2>
           <div className="mt-5 grid gap-6 lg:grid-cols-[220px_1fr]">
             <div className="rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] p-4 text-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -193,15 +199,12 @@ export default async function EventDetailPage({
             </div>
             <div className="grid content-start gap-4">
               <LinkRow label="Upload dos convidados" value={uploadUrl} />
-              <LinkRow label="Telao" value={screenUrl} />
+              <LinkRow label="Telão" value={screenUrl} />
             </div>
           </div>
         </section>
 
-        <section className="mt-8 rounded-xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
-          <h2 className="text-sm font-bold text-[#1D1108]">
-            Configuracoes do evento
-          </h2>
+        <section className="mt-8 scroll-mt-6 rounded-xl border border-[#E8DDD1] bg-white p-6 shadow-sm" id="configuracoes"> <h2 className="text-sm font-bold text-[#1D1108]"> Configurações do evento </h2>
           <form
             action={updateEventSettingsAction}
             className="mt-5 grid gap-6 lg:grid-cols-[260px_1fr]"
@@ -299,7 +302,7 @@ export default async function EventDetailPage({
                 className="h-10 rounded-lg bg-[#1D1108] px-4 text-sm font-bold text-white"
                 type="submit"
               >
-                Salvar configuracoes
+                Salvar configurações
               </button>
             </div>
           </form>
@@ -329,11 +332,9 @@ export default async function EventDetailPage({
                 Link criado. Copie agora.
               </p>
               <p className="mt-1 text-xs leading-5 text-[#8A6B55]">
-                Por seguranca, o token completo aparece apenas neste momento.
+                Por segurança, o token completo aparece apenas neste momento.
               </p>
-              <p className="mt-3 break-all rounded-lg bg-white p-3 text-sm text-[#8A6B55]">
-                /moderate/{moderatorToken}
-              </p>
+              <p className="mt-3 break-all rounded-lg bg-white p-3 text-sm text-[#8A6B55]"> {createdModeratorUrl} </p> <a className="mt-3 inline-flex h-10 items-center rounded-lg bg-[#D4562B] px-4 text-sm font-bold text-white" href={moderatorInviteMailto}> Preparar e-mail de convite </a>
             </div>
           ) : null}
 

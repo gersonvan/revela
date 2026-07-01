@@ -6,12 +6,14 @@ import { SignOutButton } from "@/components/auth/auth-buttons";
 
 type AdminSidebarProps = {
   activeEventName?: string;
+  activeEventSlug?: string;
   adminEmail?: string;
   pendingCount?: number;
 };
 
 export function AdminSidebar({
   activeEventName,
+  activeEventSlug,
   adminEmail,
   pendingCount,
 }: AdminSidebarProps) {
@@ -37,12 +39,12 @@ export function AdminSidebar({
           <span className="text-[8px] uppercase tracking-widest text-[#7A5B44]">
             Evento ativo
           </span>
-          <p className="mt-0.5 font-[family-name:var(--font-display)] text-sm italic leading-snug text-[#F0DDD0]">
+          <p className="mt-0.5 font-[family-name:var(--font-display)] text-sm leading-snug text-[#F0DDD0]">
             {activeEventName}
           </p>
           <div className="mt-1.5 flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-[#16A34A]" />
-            <span className="text-[10px] text-[#16A34A]">Ativo</span>
+            <span className="text-[10px] font-bold text-[#16A34A]">Ativo</span>
           </div>
         </div>
       ) : null}
@@ -54,10 +56,11 @@ export function AdminSidebar({
           icon="▦"
           label="Eventos"
         />
+
         {isEventDetailRoute ? (
           <>
             <SidebarLink
-              active={true}
+              active
               badge={pendingCount}
               href={pathname}
               icon="▣"
@@ -65,33 +68,38 @@ export function AdminSidebar({
             />
             <SidebarLink
               active={false}
-              href={pathname}
+              href={`${pathname}#qr-code`}
               icon="▦"
               label="QR Code"
             />
             <SidebarLink
               active={false}
-              href={pathname}
+              href={activeEventSlug ? `/t/${activeEventSlug}` : pathname}
               icon="▭"
               label="Telão"
+              target={activeEventSlug ? "_blank" : undefined}
+            />
+            <SidebarLink
+              active={false}
+              href={`${pathname}#configuracoes`}
+              icon="⚙"
+              label="Configurações"
             />
           </>
-        ) : null}
-        <SidebarLink active={false} href="/admin" icon="⚙" label="Configurações" />
+        ) : (
+          <SidebarLink active={false} href="/admin" icon="⚙" label="Configurações" />
+        )}
       </nav>
 
       <div className="flex items-center gap-2 border-t border-white/5 px-4 py-3">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D4562B] to-[#F97316] text-xs font-bold text-white">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D4562B] to-[#8A3F25] text-xs font-bold text-white">
           {adminInitial}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[11px] font-semibold text-[#F0DDD0]">
-            {adminName}
-          </p>
-          <p className="text-[9px] text-[#7A5B44]">Admin</p>
-        </div>
-        <div className="[&_button]:h-auto [&_button]:border-0 [&_button]:p-0 [&_button]:text-[9px] [&_button]:text-[#7A5B44] [&_button]:hover:bg-transparent [&_button]:hover:text-[#F0DDD0]">
-          <SignOutButton />
+          <p className="truncate text-xs font-semibold text-[#F0DDD0]">{adminName}</p>
+          <div className="[&_button]:h-auto [&_button]:border-0 [&_button]:p-0 [&_button]:hover:bg-transparent [&_button]:hover:text-[#F0DDD0]">
+            <SignOutButton />
+          </div>
         </div>
       </div>
     </aside>
@@ -104,12 +112,14 @@ function SidebarLink({
   href,
   icon,
   label,
+  target,
 }: {
   active: boolean;
   badge?: number;
   href: string;
   icon: string;
   label: string;
+  target?: "_blank";
 }) {
   return (
     <Link
@@ -119,6 +129,8 @@ function SidebarLink({
           : "border-l-[2.5px] border-transparent text-[#7A5B44] hover:text-[#F0DDD0]"
       }`}
       href={href}
+      rel={target === "_blank" ? "noreferrer" : undefined}
+      target={target}
     >
       <span className="w-4 text-center text-sm leading-none">{icon}</span>
       <span>{label}</span>

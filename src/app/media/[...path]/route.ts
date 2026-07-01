@@ -32,6 +32,6 @@ export async function GET(_request: Request, context: MediaRouteContext) {
       },
     });
   } catch {
-    return NextResponse.json({ error: "Arquivo nao encontrado." }, { status: 404 });
+    return NextResponse.json({ error: "Arquivo não encontrado." }, { status: 404 });
   }
 }

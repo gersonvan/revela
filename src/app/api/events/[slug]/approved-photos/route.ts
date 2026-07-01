@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import { PhotoStatus } from "@/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 
@@ -16,7 +19,7 @@ export async function GET(_request: Request, context: ApprovedPhotosContext) {
   });
 
   if (!event) {
-    return NextResponse.json({ error: "Evento nao encontrado." }, { status: 404 });
+    return NextResponse.json({ error: "Evento não encontrado." }, { status: 404 });
   }
 
   const photos = await prisma.photo.findMany({

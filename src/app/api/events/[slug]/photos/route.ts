@@ -3,6 +3,10 @@ import { EventStatus } from "@/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 import { isSupportedImageType, saveEventPhoto } from "@/lib/storage";
 
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+export const revalidate = 0;
+
 const MAX_FILES = 15;
 const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
 const MAX_MESSAGE_LENGTH = 120;
@@ -25,14 +29,14 @@ export async function POST(request: Request, context: UploadRouteContext) {
 
   if (!event) {
     return NextResponse.json(
-      { error: "Evento nao encontrado." },
+      { error: "Evento não encontrado." },
       { status: 404 },
     );
   }
 
   if (event.status !== EventStatus.ACTIVE) {
     return NextResponse.json(
-      { error: "Este evento nao esta aberto para envio de fotos." },
+      { error: "Este evento não está aberto para envio de fotos." },
       { status: 403 },
     );
   }
@@ -59,7 +63,7 @@ export async function POST(request: Request, context: UploadRouteContext) {
 
   if (files.length > MAX_FILES) {
     return NextResponse.json(
-      { error: `Envie no maximo ${MAX_FILES} fotos por vez.` },
+      { error: `Envie no máximo ${MAX_FILES} fotos por vez.` },
       { status: 400 },
     );
   }
@@ -67,7 +71,7 @@ export async function POST(request: Request, context: UploadRouteContext) {
   for (const file of files) {
     if (!isSupportedImageType(file.type)) {
       return NextResponse.json(
-        { error: "Uma ou mais fotos usam um formato nao suportado." },
+        { error: "Uma ou mais fotos usam um formato não suportado." },
         { status: 400 },
       );
     }
@@ -87,7 +91,7 @@ export async function POST(request: Request, context: UploadRouteContext) {
 
     if (message.length > MAX_MESSAGE_LENGTH) {
       return NextResponse.json(
-        { error: "Cada mensagem pode ter no maximo 120 caracteres." },
+        { error: "Cada mensagem pode ter no máximo 120 caracteres." },
         { status: 400 },
       );
     }

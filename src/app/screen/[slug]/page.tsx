@@ -128,8 +128,8 @@ function EmptyScreen({
               {eventName}
             </h1>
             <p className="mt-6 max-w-2xl text-2xl leading-9 text-[#8A6B55]">
-              Envie suas fotos para aparecer no telao apos a aprovacao da
-              moderacao.
+              Envie suas fotos para aparecer no telão apos a aprovação da
+              moderação.
             </p>
           </div>
           <QrPanel

@@ -13,7 +13,7 @@ import {
 } from "@/lib/storage";
 
 const DEFAULT_AUTHORIZATION_TEXT =
-  "Ao enviar, você autoriza que esta foto apareça no telão da festa após moderação. Envie apenas fotos que você se sente confortável em compartilhar neste evento.";
+  "Ao enviar, você autoriza que está foto apareça no telão da festá após moderação. Envie apenas fotos que você se sente confortável em compartilhar neste evento.";
 const DEFAULT_PRIMARY_COLOR = "#D4562B";
 const DEFAULT_SECONDARY_COLOR = "#FBF5EE";
 const MAX_INVITATION_SIZE_BYTES = 20 * 1024 * 1024;
@@ -93,7 +93,7 @@ export async function createModeratorAction(formData: FormData) {
   });
 
   if (!event) {
-    throw new Error("Evento nao encontrado.");
+    throw new Error("Evento não encontrado.");
   }
 
   const token = createSecretToken();
@@ -175,7 +175,7 @@ export async function updateEventSettingsAction(formData: FormData) {
   });
 
   if (!event) {
-    throw new Error("Evento nao encontrado.");
+    throw new Error("Evento não encontrado.");
   }
 
   let invitationImageUrl: string | undefined;
@@ -186,7 +186,7 @@ export async function updateEventSettingsAction(formData: FormData) {
     }
 
     if (invitationFile.size > MAX_INVITATION_SIZE_BYTES) {
-      throw new Error("A imagem do convite deve ter ate 20 MB.");
+      throw new Error("A imagem do convite deve ter até 20 MB.");
     }
 
     const storedInvitation = await saveEventInvitation({

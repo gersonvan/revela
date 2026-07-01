@@ -41,7 +41,9 @@ export function LivePhotoFeed({ eventSlug, initialPhotos }: LivePhotoFeedProps) 
       }
     }
 
-    const interval = window.setInterval(refreshPhotos, 4000);
+    void refreshPhotos();
+
+    const interval = window.setInterval(refreshPhotos, 1500);
 
     return () => {
       active = false;

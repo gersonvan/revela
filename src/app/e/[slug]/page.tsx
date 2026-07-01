@@ -42,8 +42,8 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
           {event.name}
         </h1>
         <p className="mt-3 text-sm leading-6 text-[#8A6B55]">
-          Envie suas fotos para a moderacao. As fotos aprovadas poderao aparecer
-          no telao do evento.
+          Envie suas fotos para a moderação. As fotos aprovadas poderao aparecer
+          no telão do evento.
         </p>
 
         {event.status === EventStatus.ACTIVE ? (
@@ -60,7 +60,7 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
             </h2>
             <p className="mt-2 text-sm leading-6 text-[#8A6B55]">
               {event.status === EventStatus.DRAFT
-                ? "Este evento ainda nao esta recebendo fotos."
+                ? "Este evento ainda nao está recebendo fotos."
                 : "O envio de fotos deste evento foi encerrado."}
             </p>
           </div>

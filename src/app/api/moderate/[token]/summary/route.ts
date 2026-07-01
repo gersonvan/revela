@@ -3,6 +3,9 @@ import { PhotoStatus } from "@/generated/prisma/enums";
 import { getModeratorAccess } from "@/lib/moderation/access";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 type ModerationSummaryContext = {
   params: Promise<{
     token: string;
@@ -14,7 +17,7 @@ export async function GET(_request: Request, context: ModerationSummaryContext) 
   const access = await getModeratorAccess(token);
 
   if (access.status !== "authorized" || !access.moderator) {
-    return NextResponse.json({ error: "Acesso invalido." }, { status: 401 });
+    return NextResponse.json({ error: "Acesso inválido." }, { status: 401 });
   }
 
   const counts = await prisma.photo.groupBy({

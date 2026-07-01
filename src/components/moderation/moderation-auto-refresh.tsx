@@ -58,7 +58,9 @@ export function ModerationAutoRefresh({
       }
     }
 
-    const interval = window.setInterval(refreshSummary, 4000);
+void refreshSummary();
+
+const interval = window.setInterval(refreshSummary, 1500);
 
     return () => {
       active = false;
@@ -72,7 +74,7 @@ export function ModerationAutoRefresh({
 
   return (
     <div className="mt-4 rounded-xl border border-[rgba(212,86,43,0.3)] bg-[rgba(212,86,43,0.08)] px-4 py-3 text-sm font-bold text-[#D4562B]">
-      Novas fotos chegaram para moderacao.
+      Novas fotos chegaram para moderação.
     </div>
   );
 }

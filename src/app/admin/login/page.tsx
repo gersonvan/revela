@@ -34,7 +34,7 @@ export default async function AdminLoginPage() {
           </h1>
           <p className="mt-2 text-sm leading-6 text-[#8A6B55]">
             Use sua conta Google para criar eventos, gerar QR Codes e preparar a
-            moderacao.
+            moderação.
           </p>
           {!isGoogleConfigured ? (
             <div className="mt-6 rounded-lg border border-[rgba(212,86,43,0.2)] bg-[rgba(212,86,43,0.08)] p-4 text-sm leading-6 text-[#D4562B]">

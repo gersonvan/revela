@@ -52,7 +52,7 @@ export async function GET(_request: Request, context: EventExportContext) {
   });
 
   if (!event) {
-    return NextResponse.json({ error: "Evento nao encontrado." }, { status: 404 });
+    return NextResponse.json({ error: "Evento não encontrado." }, { status: 404 });
   }
 
   const payload = {

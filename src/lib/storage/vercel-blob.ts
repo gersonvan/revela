@@ -32,7 +32,7 @@ export const vercelBlobStorageAdapter: StorageAdapter = {
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(`Arquivo nao encontrado: ${url}`);
+      throw new Error(`Arquivo não encontrado: ${url}`);
     }
 
     return Buffer.from(await response.arrayBuffer());

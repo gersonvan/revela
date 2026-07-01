@@ -17,7 +17,7 @@ export async function activateModeratorAction(formData: FormData) {
   const access = await getModeratorAccess(token);
 
   if (access.status !== "activation_required" || !access.moderator) {
-    throw new Error("Este link nao pode ser ativado.");
+    throw new Error("Este link não pode ser ativado.");
   }
 
   const deviceId = createDeviceId();
@@ -54,7 +54,7 @@ export async function moderatePhotoAction(formData: FormData) {
     nextStatus !== PhotoStatus.APPROVED &&
     nextStatus !== PhotoStatus.REJECTED
   ) {
-    throw new Error("Status de foto invalido.");
+    throw new Error("Status de foto inválido.");
   }
 
   const photo = await prisma.photo.findFirst({
@@ -69,7 +69,7 @@ export async function moderatePhotoAction(formData: FormData) {
   });
 
   if (!photo) {
-    throw new Error("Foto nao encontrada.");
+    throw new Error("Foto não encontrada.");
   }
 
   const action =

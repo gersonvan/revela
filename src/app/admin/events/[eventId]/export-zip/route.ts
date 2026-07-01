@@ -43,7 +43,7 @@ export async function GET(_request: Request, context: EventExportZipContext) {
   });
 
   if (!event) {
-    return NextResponse.json({ error: "Evento nao encontrado." }, { status: 404 });
+    return NextResponse.json({ error: "Evento não encontrado." }, { status: 404 });
   }
 
   const zip = new JSZip();
@@ -123,7 +123,7 @@ async function addMediaFileToZip({
   } catch {
     zip.file(
       `${directory}/${fallbackName}.missing.txt`,
-      `Arquivo nao encontrado: ${mediaUrl}`,
+      `Arquivo não encontrado: ${mediaUrl}`,
     );
   }
 }

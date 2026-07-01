@@ -11,7 +11,7 @@ export default function Home() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-[#8A6B55]">
             Convidados enviam fotos por QR Code, moderadores aprovam o conteudo
-            e o telao exibe um feed em tempo real somente com fotos aprovadas.
+            e o telão exibe um feed em tempo real somente com fotos aprovadas.
           </p>
         </div>
 
@@ -19,7 +19,7 @@ export default function Home() {
           {[
             ["Convidados", "Upload mobile sem login, com nome e mensagem por foto."],
             ["Moderadores", "Links secretos individuais para aprovar ou rejeitar fotos."],
-            ["Telao", "Feed ao vivo com identidade visual do evento e QR Code."],
+            ["Telão", "Feed ao vivo com identidade visual do evento e QR Code."],
           ].map(([title, description]) => (
             <article
               className="rounded-xl border border-[#E8DDD1] bg-white p-5 shadow-sm"

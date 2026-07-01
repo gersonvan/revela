@@ -56,7 +56,7 @@ export default async function ModerationPage({
       <main className="min-h-screen bg-[#FBF5EE] px-5 py-8 text-[#1D1108]">
         <section className="mx-auto max-w-md rounded-2xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4562B]">
-            Moderacao
+            Moderação
           </p>
           <h1 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-semibold italic text-[#1D1108]">
             Ativar acesso
@@ -68,7 +68,7 @@ export default async function ModerationPage({
             </strong>
           </p>
           <div className="mt-5 rounded-xl border border-[#E8DDD1] bg-[#F4EDE1] px-4 py-3 text-center">
-            <p className="text-[9px] text-[#8A6B55]">Voce e</p>
+            <p className="text-[9px] text-[#8A6B55]">Você e</p>
             <p className="mt-1 text-sm font-bold text-[#1D1108]">
               {access.moderator.name}
             </p>
@@ -88,7 +88,7 @@ export default async function ModerationPage({
   }
 
   if (access.status !== "authorized" || !access.moderator) {
-    return <ModerationState title="Acesso indisponivel" message="Nao foi possivel validar este acesso." />;
+    return <ModerationState title="Acesso indisponivel" message="Não foi possível validar este acesso." />;
   }
 
   const photos = await prisma.photo.findMany({
@@ -126,7 +126,7 @@ export default async function ModerationPage({
       <section className="mx-auto max-w-5xl">
         <header className="border-b border-[#E8DDD1] pb-5">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4562B]">
-            Moderacao
+            Moderação
           </p>
           <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-semibold italic text-[#1D1108]">
             {access.moderator.event.name}
@@ -268,7 +268,7 @@ function ModerationState({ message, title }: { message: string; title: string })
     <main className="min-h-screen bg-[#FBF5EE] px-5 py-8 text-[#1D1108]">
       <section className="mx-auto max-w-md rounded-2xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4562B]">
-          Moderacao
+          Moderação
         </p>
         <h1 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-semibold italic text-[#1D1108]">{title}</h1>
         <p className="mt-3 text-sm leading-6 text-[#8A6B55]">{message}</p>

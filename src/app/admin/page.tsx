@@ -66,7 +66,7 @@ export default async function AdminPage() {
               </h2>
               <p className="mt-2 max-w-xl text-sm leading-6 text-[#8A6B55]">
                 Crie o primeiro evento para gerar o QR Code, convidar
-                moderadores e preparar a tela do telao.
+                moderadores e preparar a tela do telão.
               </p>
             </div>
           ) : (
