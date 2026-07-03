@@ -48,6 +48,3 @@ src/generated/
 
 # local Codex history backups
 /codex-chat-backups/
-
-# local design handoff exports
-/design/
