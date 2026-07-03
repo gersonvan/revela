@@ -8,4 +8,5 @@
 /node_modules/
 /src/generated/
 /codex-chat-backups/
+/design/
 *.tsbuildinfo
