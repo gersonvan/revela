@@ -75,10 +75,18 @@ export async function GET(_request: Request, context: EventExportZipContext) {
 
   zip.file("metadata.json", JSON.stringify(metadata, null, 2));
 
+  const fileNameBase = slugifyFileName(event.name);
+  const indexWidth = Math.max(2, String(event.photos.length).length);
+
   for (const [index, photo] of event.photos.entries()) {
+    const fallbackName = `${String(index + 1).padStart(
+      indexWidth,
+      "0",
+    )}-${fileNameBase}`;
+
     await addMediaFileToZip({
       directory: `photos/${photo.status.toLowerCase()}`,
-      fallbackName: `${String(index + 1).padStart(3, "0")}-${photo.id}`,
+      fallbackName,
       mediaUrl: photo.originalFileUrl,
       zip,
     });
@@ -86,7 +94,7 @@ export async function GET(_request: Request, context: EventExportZipContext) {
     if (photo.optimizedFileUrl) {
       await addMediaFileToZip({
         directory: `photos/${photo.status.toLowerCase()}/optimized`,
-        fallbackName: `${String(index + 1).padStart(3, "0")}-${photo.id}`,
+        fallbackName,
         mediaUrl: photo.optimizedFileUrl,
         zip,
       });
@@ -126,4 +134,15 @@ async function addMediaFileToZip({
       `Arquivo não encontrado: ${mediaUrl}`,
     );
   }
+}
+
+function slugifyFileName(value: string) {
+  return (
+    value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "") || "evento"
+  );
 }

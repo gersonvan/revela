@@ -41,6 +41,7 @@ type EventDetailPageProps = {
     eventId: string;
   }>;
   searchParams: Promise<{
+    inviteReason?: string;
     inviteStatus?: string;
     moderatorEmail?: string;
     moderatorToken?: string;
@@ -53,7 +54,8 @@ export default async function EventDetailPage({
 }: EventDetailPageProps) {
   const admin = await requireAdmin();
   const { eventId } = await params;
-  const { inviteStatus, moderatorEmail, moderatorToken } = await searchParams;
+  const { inviteReason, inviteStatus, moderatorEmail, moderatorToken } =
+    await searchParams;
   const event = await prisma.event.findFirst({
     where: {
       id: eventId,
@@ -329,7 +331,7 @@ ${createdModeratorUrl}`)}`
               <p className="text-sm font-bold text-[#1D1108]">
                 Link criado. Copie agora.
               </p>
-              <p className="mt-1 text-xs leading-5 text-[#8A6B55]"> Por segurança, o token completo aparece apenas neste momento. </p> {inviteStatus === "sent" ? <p className="mt-3 rounded-lg border border-[#16A34A]/20 bg-[#16A34A]/10 p-3 text-sm font-bold text-[#16A34A]"> Convite enviado para {moderatorEmail}. </p> : null} {inviteStatus === "not_configured" ? <p className="mt-3 rounded-lg border border-[#D4562B]/20 bg-[#D4562B]/10 p-3 text-sm font-bold text-[#D4562B]"> Link criado. Configure RESEND_API_KEY e EMAIL_FROM para envio automático. </p> : null} {inviteStatus === "failed" ? <p className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-bold text-red-700"> Link criado, mas o envio por e-mail falhou. Use o link abaixo. </p> : null} <p className="mt-3 break-all rounded-lg bg-white p-3 text-sm text-[#8A6B55]"> {createdModeratorUrl} </p> <a className="mt-3 inline-flex h-10 items-center rounded-lg bg-[#D4562B] px-4 text-sm font-bold text-white" href={moderatorInviteMailto}> Preparar e-mail manual </a>
+              <p className="mt-1 text-xs leading-5 text-[#8A6B55]"> Por segurança, o token completo aparece apenas neste momento. </p> {inviteStatus === "sent" ? <p className="mt-3 rounded-lg border border-[#16A34A]/20 bg-[#16A34A]/10 p-3 text-sm font-bold text-[#16A34A]"> Convite enviado para {moderatorEmail}. </p> : null} {inviteStatus === "not_configured" ? <p className="mt-3 rounded-lg border border-[#D4562B]/20 bg-[#D4562B]/10 p-3 text-sm font-bold text-[#D4562B]"> Link criado. Configure RESEND_API_KEY e EMAIL_FROM para envio automático. </p> : null} {inviteStatus === "failed" ? <p className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-bold text-red-700"> Link criado, mas o envio por e-mail falhou. Use o link abaixo.{inviteReason ? ` Motivo: ${inviteReason}` : ""} </p> : null} <p className="mt-3 break-all rounded-lg bg-white p-3 text-sm text-[#8A6B55]"> {createdModeratorUrl} </p> <a className="mt-3 inline-flex h-10 items-center rounded-lg bg-[#D4562B] px-4 text-sm font-bold text-white" href={moderatorInviteMailto}> Preparar e-mail manual </a>
             </div>
           ) : null}
 

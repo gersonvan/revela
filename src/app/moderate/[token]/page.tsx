@@ -5,6 +5,7 @@ import {
   moderatePhotoAction,
 } from "@/app/moderate/[token]/actions";
 import { ModerationAutoRefresh } from "@/components/moderation/moderation-auto-refresh";
+import { RememberModeratorAccess } from "@/components/moderation/moderator-access-memory";
 import { getModeratorAccess } from "@/lib/moderation/access";
 import { prisma } from "@/lib/prisma";
 
@@ -54,6 +55,11 @@ export default async function ModerationPage({
   if (access.status === "activation_required" && access.moderator) {
     return (
       <main className="min-h-screen bg-[#FBF5EE] px-5 py-8 text-[#1D1108]">
+        <RememberModeratorAccess
+          eventName={access.moderator.event.name}
+          moderatorName={access.moderator.name}
+          token={token}
+        />
         <section className="mx-auto max-w-md rounded-2xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4562B]">
             Moderação
@@ -123,6 +129,11 @@ export default async function ModerationPage({
 
   return (
     <main className="min-h-screen bg-[#FBF5EE] px-4 py-6 text-[#1D1108]">
+      <RememberModeratorAccess
+        eventName={access.moderator.event.name}
+        moderatorName={access.moderator.name}
+        token={token}
+      />
       <section className="mx-auto max-w-5xl">
         <header className="border-b border-[#E8DDD1] pb-5">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4562B]">

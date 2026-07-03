@@ -107,6 +107,7 @@ export async function createModeratorAction(formData: FormData) {
  const baseUrl = process.env.NEXTAUTH_URL ?? "http://127.0.0.1:3000";
  const inviteUrl = `${baseUrl}/moderate/${token}`;
  let inviteStatus = "manual";
+ let inviteReason = "";
 
  await prisma.moderator.create({
  data: {
@@ -125,14 +126,24 @@ export async function createModeratorAction(formData: FormData) {
  moderatorName: name,
  });
  inviteStatus = emailResult.status;
+ inviteReason = "reason" in emailResult ? emailResult.reason : "";
  }
 
  revalidatePath(`/admin/events/${event.id}`);
- redirect(
- `/admin/events/${event.id}?moderatorToken=${token}&inviteStatus=${inviteStatus}${
- email ? `&moderatorEmail=${encodeURIComponent(email)}` : ""
- }`,
- );
+ const redirectParams = new URLSearchParams({
+ moderatorToken: token,
+ inviteStatus,
+ });
+
+ if (email) {
+ redirectParams.set("moderatorEmail", email);
+ }
+
+ if (inviteReason) {
+ redirectParams.set("inviteReason", inviteReason);
+ }
+
+ redirect(`/admin/events/${event.id}?${redirectParams.toString()}`);
 }
 
 function isValidEmail(value: string) {
