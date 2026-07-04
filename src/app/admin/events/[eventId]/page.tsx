@@ -200,6 +200,12 @@ ${createdModeratorUrl}`)}`
               <p className="mt-3 text-sm font-bold text-[#1D1108]">
                 Upload dos convidados
               </p>
+              <Link
+                className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-lg bg-[#D4562B] px-4 text-sm font-bold text-white"
+                href={`/admin/events/${event.id}/qr-code`}
+              >
+                Baixar para impressão
+              </Link>
             </div>
             <div className="grid content-start gap-4">
               <LinkRow label="Upload dos convidados" value={uploadUrl} />
