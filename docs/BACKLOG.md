@@ -193,6 +193,46 @@ Como moderador usando celular, quero revisar fotos com uma interface própria pa
 - A interface evita cliques acidentais em ações destrutivas.
 - Novas fotos continuam aparecendo sem exigir atualização manual.
 
+## Épico 3A - Aplicativo nativo de moderação e envio
+
+### História 3A.1 - Aplicativo Android/iOS para moderação
+
+Como moderador, quero usar um aplicativo Android/iOS para receber alertas e moderar fotos com mais agilidade durante a festa.
+
+**Critérios de aceite**
+
+- Moderador consegue vincular o aplicativo ao evento usando convite, token ou login seguro.
+- Aplicativo exibe fila de fotos pendentes do evento.
+- Moderador consegue aprovar e reprovar fotos pelo aplicativo.
+- Aplicativo envia notificação push quando novas fotos chegam para moderação.
+- Notificações respeitam permissões do dispositivo e podem ser desativadas.
+- Histórico de decisões continua registrado no backend com moderador, horário e decisão.
+- O uso no aplicativo não quebra o acesso atual via navegador.
+
+### História 3A.2 - Aplicativo Android/iOS para envio de fotos
+
+Como convidado, quero enviar fotos pelo aplicativo para ter uma experiência mais integrada durante a festa.
+
+**Critérios de aceite**
+
+- Convidado consegue entrar no evento por QR Code, link ou código curto.
+- Convidado consegue selecionar fotos da galeria ou câmera.
+- Envio mantém regras atuais de nome, autorização, limite de fotos e limite de tamanho.
+- Fotos enviadas pelo aplicativo entram como pendentes para moderação.
+- Aplicativo mostra estado de envio, falha e confirmação.
+
+### História 3A.3 - Estratégia de notificações push
+
+Como organizador, quero que moderadores recebam notificações de novas fotos para reduzir o risco de a fila ficar parada.
+
+**Critérios de aceite**
+
+- Backend registra dispositivos autorizados para receber notificações por evento.
+- Notificação é enviada quando novas fotos entram em moderação.
+- Sistema evita excesso de notificações em rajadas grandes de envio.
+- Push não expõe fotos ou dados sensíveis na tela bloqueada.
+- Há fallback claro para web quando o app não está instalado.
+
 ## Epico 4 - Telao
 
 ### Historia 4.1 - Abrir tela do telao

@@ -108,5 +108,6 @@ Ideias para evolucao depois do primeiro uso real:
 - controle manual do feed;
 - multiplos admins;
 - QR Code por mesa;
+- aplicativo Android/iOS para moderação, envio de fotos e notificações push;
 - produto comercial com planos;
 - politicas de retencao e exclusao de dados.
