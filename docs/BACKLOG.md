@@ -170,6 +170,29 @@ Como moderador, quero corrigir decisoes se necessario.
 - Foto aprovada pode ser movida para rejeitada.
 - Foto rejeitada pode ser aprovada.
 
+### História 3.6 - Aprovar ou reprovar todas as fotos pendentes
+
+Como moderador, quero aprovar ou reprovar todas as fotos pendentes de uma vez para acelerar a operação durante a festa.
+
+**Critérios de aceite**
+
+- Tela de moderação oferece ações explícitas para aprovar todas e reprovar todas as fotos pendentes.
+- Antes de executar uma ação em lote, o sistema pede confirmação clara.
+- A ação em lote registra moderador, horário e decisão em cada foto afetada.
+- Fotos já aprovadas ou rejeitadas não são alteradas por engano.
+
+### História 3.7 - Moderação otimizada para mobile
+
+Como moderador usando celular, quero revisar fotos com uma interface própria para mobile durante a festa.
+
+**Critérios de aceite**
+
+- Lista de pendentes é confortável em telas pequenas.
+- Botões de aprovar e reprovar são grandes o suficiente para uso rápido com o polegar.
+- A foto pode ser vista em tamanho maior antes da decisão.
+- A interface evita cliques acidentais em ações destrutivas.
+- Novas fotos continuam aparecendo sem exigir atualização manual.
+
 ## Epico 4 - Telao
 
 ### Historia 4.1 - Abrir tela do telao
