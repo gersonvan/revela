@@ -97,3 +97,67 @@ export async function moderatePhotoAction(formData: FormData) {
 
   revalidatePath(`/moderate/${token}`);
 }
+
+export async function moderatePendingPhotosAction(formData: FormData) {
+  const token = String(formData.get("token") ?? "");
+  const nextStatus = String(formData.get("nextStatus") ?? "") as PhotoStatus;
+  const moderator = await requireModerator(token);
+
+  if (
+    nextStatus !== PhotoStatus.APPROVED &&
+    nextStatus !== PhotoStatus.REJECTED
+  ) {
+    throw new Error("Status de foto inválido.");
+  }
+
+  const action =
+    nextStatus === PhotoStatus.APPROVED
+      ? ModerationAction.APPROVED
+      : ModerationAction.REJECTED;
+
+  await prisma.$transaction(async (tx) => {
+    const pendingPhotos = await tx.photo.findMany({
+      where: {
+        eventId: moderator.eventId,
+        status: PhotoStatus.PENDING,
+      },
+      select: {
+        id: true,
+        status: true,
+      },
+    });
+
+    const decisions = [];
+
+    for (const photo of pendingPhotos) {
+      const result = await tx.photo.updateMany({
+        where: {
+          eventId: moderator.eventId,
+          id: photo.id,
+          status: PhotoStatus.PENDING,
+        },
+        data: {
+          status: nextStatus,
+        },
+      });
+
+      if (result.count === 1) {
+        decisions.push({
+          action,
+          moderatorId: moderator.id,
+          newStatus: nextStatus,
+          photoId: photo.id,
+          previousStatus: photo.status,
+        });
+      }
+    }
+
+    if (decisions.length > 0) {
+      await tx.moderationDecision.createMany({
+        data: decisions,
+      });
+    }
+  });
+
+  revalidatePath(`/moderate/${token}`);
+}

@@ -4,6 +4,7 @@ import {
   activateModeratorAction,
   moderatePhotoAction,
 } from "@/app/moderate/[token]/actions";
+import { BulkModerationActions } from "@/components/moderation/bulk-moderation-actions";
 import { ModerationAutoRefresh } from "@/components/moderation/moderation-auto-refresh";
 import { RememberModeratorAccess } from "@/components/moderation/moderator-access-memory";
 import { getModeratorAccess } from "@/lib/moderation/access";
@@ -118,6 +119,7 @@ export default async function ModerationPage({
   const countByStatus = new Map(
     counts.map((item) => [item.status, item._count.status]),
   );
+  const pendingCount = countByStatus.get(PhotoStatus.PENDING) ?? 0;
   const latestPending = await prisma.photo.findFirst({
     where: {
       eventId: access.moderator.eventId,
@@ -175,6 +177,10 @@ export default async function ModerationPage({
             </Link>
           ))}
         </nav>
+
+        {currentTab === "pending" ? (
+          <BulkModerationActions pendingCount={pendingCount} token={token} />
+        ) : null}
 
         <section className="mt-6">
           {photos.length === 0 ? (
