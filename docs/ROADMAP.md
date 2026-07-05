@@ -139,6 +139,8 @@ Este roteiro organiza o Revela em entregas pequenas para preservar o fluxo de pr
 
 **Objetivo:** avaliar clipes curtos sem afetar o evento ao vivo.
 
+**Referência:** [Prova controlada de vídeo](PROVA_VIDEO_CONTROLADA.md)
+
 **Entregas planejadas**
 
 - prova isolada com vídeos de 5 a 10 segundos;
@@ -148,7 +150,7 @@ Este roteiro organiza o Revela em entregas pequenas para preservar o fluxo de pr
 
 **Critério de pronto**
 
-- Existe evidência técnica e de custo suficiente para decidir se vídeo vira produto futuro.
+- Existe evidência técnica e de custo suficiente para decidir se vídeo vira produto futuro. Para 11/07/2026, vídeo segue fora do upload público, da moderação, do telão e da exportação do evento.
 
 ## Pós-evento e produto comercial
 

@@ -55,6 +55,9 @@ MVP web funcional publicado e validado em produção. A Fase 2 está em prepara�
 - exportação ZIP protegida do evento com `metadata.json`, fotos originais e versões otimizadas;
 - documentação de configuração Google OAuth;
 - documentação de deploy/Vercel e reaproveitamento de OAuth existente;
+- documentação da prova controlada de vídeo;
+- estudo de vídeo de baixo custo;
+- runbook local do spike de processamento de vídeo;
 - camada pública `src/lib/storage` criada para isolar implementação local de storage;
 - adapter `vercel-blob` para storage online;
 - adapter `cloudflare-r2` para storage online recomendado;
@@ -129,12 +132,14 @@ Status registrado:
 - Notificações push agrupadas ou limitadas.
 - Prova isolada com vídeos de 5 a 10 segundos.
 - Documentação de custos e retenção de originais para vídeo.
+- Testes futuros com vídeos reais de celular, sem dados sensíveis.
 
 ## Fora do escopo de implementação atual
 
 - Cobrança e planos com enforcement real.
 - Aplicativo nativo para convidados.
 - Vídeo no fluxo público de upload do evento.
+- Vídeo no telão de produção do evento de 11/07/2026.
 - IA de moderação.
 - Reconhecimento facial.
 - Back office SaaS comercial completo.
