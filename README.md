@@ -1,12 +1,12 @@
 # Revela
 
-Revela e um sistema online de mural de fotos ao vivo para eventos privados.
+Revela é um sistema online de mural de fotos ao vivo para eventos privados.
 
-O produto permite que convidados enviem fotos pelo celular via QR Code, que moderadores aprovem manualmente o conteudo, e que um telao/projetor exiba em tempo real um feed apenas com fotos aprovadas.
+O produto permite que convidados enviem fotos pelo celular via QR Code, que a organização controle o que aparece, e que um telão/projetor exiba em tempo real um feed apenas com fotos aprovadas.
 
 ## Objetivo do MVP
 
-Criar um MVP reutilizavel para varios eventos, com o primeiro caso real sendo uma festa de aniversario.
+Criar um MVP reutilizável para vários eventos, com o primeiro caso real sendo uma festa de aniversário.
 
 O MVP deve permitir:
 
@@ -14,11 +14,13 @@ O MVP deve permitir:
 - criacao e configuracao de eventos;
 - QR Code unico por evento;
 - envio de fotos por convidados sem login;
-- moderacao manual;
+- moderação web;
 - feed ao vivo para telao;
-- armazenamento das fotos e historico de moderacao;
+- armazenamento das fotos e histórico de moderação;
 - encerramento de evento para bloquear novos uploads;
-- exportacao protegida das fotos e metadados do evento.
+- exportação protegida das fotos e metadados do evento.
+
+Na Fase 2, o produto deve continuar preservando o fluxo web de produção e evoluir com modo de moderação por evento, melhorias mobile para moderadores, direção de aplicativo nativo para moderadores e prova isolada de vídeo.
 
 ## Documentacao
 
@@ -46,7 +48,7 @@ O convidado acessa o QR Code do evento, informa nome ou apelido, aceita um termo
 
 ### Moderador
 
-O moderador acessa um link secreto individual, revisa fotos pendentes e aprova ou rejeita o que pode aparecer no telao.
+O moderador acessa um link secreto individual, revisa fotos pendentes quando o evento está com moderação, aprova ou rejeita fotos e remove do telão qualquer foto inadequada.
 
 ### Admin
 
@@ -54,7 +56,7 @@ O admin cria e configura eventos, ativa ou encerra uploads, acompanha contadores
 
 ### Telao
 
-O telao exibe somente fotos aprovadas, com nome ou apelido e mensagem. Enquanto nao houver fotos aprovadas, usa a imagem do convite como estado inicial.
+O telão exibe somente fotos aprovadas, com nome ou apelido e mensagem. Enquanto não houver fotos aprovadas, usa a imagem do convite como estado inicial.
 
 ## Desenvolvimento
 
