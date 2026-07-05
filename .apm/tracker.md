@@ -6,20 +6,15 @@ title: Revela Fase 2
 
 ## Task Tracking
 
-**Stage 1:**
-
-| Task | Status | Agent | Branch |
-|------|--------|-------|--------|
-| 1.1 | Active | documentation-agent | codex/repair-product-docs |
-| 1.2 | Active | qa-release-agent | codex/audit-operational-baseline |
+**Stage 1:** Complete
 
 **Stage 2:**
 
 | Task | Status | Agent | Branch |
 |------|--------|-------|--------|
-| 2.1 | Waiting: 1.1, 1.2 | web-product-agent | |
+| 2.1 | Active | web-product-agent | codex/event-ready-web-controls |
 | 2.2 | Waiting: 2.1 | web-product-agent | |
-| 2.3 | Waiting: 1.2 | web-product-agent | |
+| 2.3 | Active | web-product-agent | codex/event-ready-web-controls |
 | 2.4 | Waiting: 2.2, 2.3 | qa-release-agent | |
 
 **Stage 3:**
@@ -36,8 +31,8 @@ title: Revela Fase 2
 
 | Task | Status | Agent | Branch |
 |------|--------|-------|--------|
-| 4.1 | Active | media-research-agent | codex/study-low-cost-video |
-| 4.2 | Waiting: 4.1 | media-research-agent | |
+| 4.1 | Done | media-research-agent | |
+| 4.2 | Active | media-research-agent | codex/video-processing-spike |
 | 4.3 | Waiting: 4.2 | documentation-agent | |
 
 **Stage 5:**
@@ -52,11 +47,11 @@ title: Revela Fase 2
 
 | Agent | Instance | Notes |
 |-------|----------|-------|
-| documentation-agent | 0 | Uninitialized; Task 1.1 dispatched. |
-| qa-release-agent | 0 | Uninitialized; Task 1.2 dispatched. |
-| web-product-agent | 0 | Uninitialized. |
+| documentation-agent | 1 | Available after Task 1.1. |
+| qa-release-agent | 1 | Available after Task 1.2; authenticated validation remains a future event-readiness caveat. |
+| web-product-agent | 0 | Uninitialized; Tasks 2.1 and 2.3 dispatched as a batch. |
 | native-app-agent | 0 | Uninitialized. |
-| media-research-agent | 0 | Uninitialized; Task 4.1 dispatched. |
+| media-research-agent | 1 | Task 4.1 completed; Task 4.2 dispatched. |
 
 ## Version Control
 
@@ -67,3 +62,4 @@ title: Revela Fase 2
 ## Working Notes
 
 - APM artifacts are intentionally versioned in this project, per user preference.
+- QA baseline accepted with documented auth/session caveat: local lint/typecheck/build and public production checks passed, while authenticated admin/moderator/export checks require a valid session or configured local environment.
