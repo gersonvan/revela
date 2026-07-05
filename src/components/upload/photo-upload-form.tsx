@@ -213,12 +213,20 @@ export function PhotoUploadForm({
       className="mt-8 space-y-6 rounded-2xl border border-[#E8DDD1] bg-white p-5 shadow-sm"
       onSubmit={handleSubmit}
     >
-      <label className="block">
-        <span className="text-sm font-bold text-[#1D1108]">Nome/apelido</span>
+      <label className="block rounded-2xl border-2 border-[#D4562B] bg-[rgba(212,86,43,0.07)] p-4">
+        <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#D4562B]">
+          Primeiro passo
+        </span>
+        <span className="mt-1 block text-base font-bold text-[#1D1108]">
+          Digite seu nome ou apelido
+        </span>
+        <span className="mt-1 block text-sm leading-5 text-[#8A6B55]">
+          Esse nome aparece junto com suas fotos no telão.
+        </span>
         <input
-          className="mt-2 h-11 w-full rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-base text-[#1D1108] outline-none focus:border-[#D4562B]"
+          autoComplete="name"
+          className="mt-3 h-12 w-full rounded-xl border border-[#D4562B] bg-white px-4 text-lg font-semibold text-[#1D1108] outline-none focus:border-[#1D1108] focus:ring-2 focus:ring-[rgba(212,86,43,0.18)]"
           onChange={(event) => setGuestName(event.target.value)}
-          placeholder="Como você quer aparecer no telão"
           required
           value={guestName}
         />
