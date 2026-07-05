@@ -47,9 +47,11 @@ Billing and real plan enforcement are outside this phase. Landing-page and prici
 
 ## Guest Experience
 
-Guests should continue using the web upload flow accessed by QR Code. The live event confirmed that guests liked this model, and requiring installation for guests would add friction.
+Guests should continue using the web upload flow accessed by QR Code. The live event confirmed guests liked this model, and requiring installation would add friction.
 
 The guest flow should stay mobile-first, fast, and clear. The name/apelido field is mandatory and must remain visually obvious because users previously skipped or misunderstood it. Upload success/failure feedback must remain explicit.
+
+Guest media selection must prevent avoidable loss of work. When the event flow limits a batch to 15 items, the UI should block or clearly warn before accepting excess selection whenever possible. If the guest selects more than the allowed amount, the app must preserve the valid existing selection and show a clear message instead of discarding the whole chosen batch and forcing the user to start over.
 
 An app for guests is not a Fase 2 priority. Any native app work should first serve moderators.
 

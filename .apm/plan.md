@@ -156,25 +156,26 @@ graph TB
 
 ### Task 2.2: Upload And History Behavior - Web Product Agent
 
-* **Objective:** Apply moderation mode to guest uploads and moderation history.
-* **Output:** Upload API behavior that creates pending photos for com moderacao and auto-approved photos for sem moderacao, with appropriate history/audit handling.
-* **Validation:** In com moderacao, uploaded photos remain pending; in sem moderacao, uploaded photos become approved and appear in the approved feed; removal/rejection after auto-approval remains possible; lint, typecheck, and build pass.
-* **Guidance:** Follow Spec Moderation Modes. If recording an automatic moderation decision requires schema or enum changes, keep the model explicit and migration-safe. Do not weaken existing event status validation.
+* **Objective:** Apply moderation mode to guest uploads and improve guest media selection behavior.
+* **Output:** Upload API behavior creates pending photos in com moderacao and auto-approved photos in sem moderacao, with appropriate history/audit handling and a safer client selection flow for the 15-item batch limit.
+* **Validation:** In com moderacao, uploaded photos remain pending; in sem moderacao, uploaded photos become approved and appear in the approved feed; removal/rejection after auto-approval remains possible; selecting more than 15 media items does not discard the guest's valid existing selection and shows a clear limit message; lint, typecheck, and build pass.
+* **Guidance:** Follow Spec Moderation Modes and Guest Experience. If recording automatic moderation decision requires schema or enum changes, keep the model explicit and migration-safe. Do not weaken existing event status validation. Treat the 15-item selection rule as a guest UX protection that should apply to photos now and remain compatible with future video support.
 * **Dependencies:** Task 2.1 by Web Product Agent.
 1. Update upload creation logic to branch on event moderation mode.
 2. Record enough state/history to explain auto-approved photos later.
 3. Ensure screen approved-photo APIs include auto-approved photos naturally.
 4. Verify moderation actions can still reject/remove an auto-approved photo.
-5. Add focused tests or smoke coverage where the project structure supports it.
+5. Update client-side media selection so selecting more than 15 items is blocked or warned without clearing already selected valid items.
+6. Add focused tests or smoke coverage where the project structure supports it.
 
 ### Task 2.3: Mobile Web Moderation Fallback - Web Product Agent
 
 * **Objective:** Improve the existing web moderation page as the reliable fallback for event operation.
 * **Output:** Updated moderation UI optimized for phone use, with clearer pending counts, larger actions, safer review flow, and no regression to approve/reject/bulk actions.
 * **Validation:** Moderation is usable at mobile widths without horizontal overflow; individual and bulk approve/reject actions remain available; new-photo refresh behavior still works; lint, typecheck, and build pass.
-* **Guidance:** Follow Spec Moderator Web Fallback. Preserve existing token/cookie access model. Keep the web fallback independent of native app success.
+* **Guidance:** Follow Spec Moderator Web Fallback. Preserve existing token/cookie access model. Keep web fallback independent of native app success.
 * **Dependencies:** Task 1.2 by QA Release Agent.
-1. Review the current `/moderate/[token]` layout at common mobile widths.
+1. Review current /moderate/[token] layout at common mobile widths.
 2. Improve touch targets, spacing, photo preview hierarchy, and action placement.
 3. Keep destructive actions visually distinct and hard to trigger accidentally.
 4. Verify pending/approved/rejected tabs and bulk actions still work.
@@ -182,16 +183,17 @@ graph TB
 
 ### Task 2.4: Web Flow Validation - QA Release Agent
 
-* **Objective:** Validate the event-ready web changes before app work depends on them.
-* **Output:** Validation evidence covering com moderacao, sem moderacao, moderation web fallback, and screen updates.
-* **Validation:** Report shows pass/fail for upload -> moderation/screen behavior in both modes, mobile moderation sanity check, and production deploy readiness.
-* **Guidance:** This task validates Stage 2 deliverables and should summarize exact commands and route checks. If production deploy occurs, record the deployment result and URL check.
+* **Objective:** Validate event-ready web changes before app work depends on them.
+* **Output:** Validation evidence covering com moderacao, sem moderacao, upload selection limit UX, moderation web fallback, and screen updates.
+* **Validation:** Report shows pass/fail upload -> moderation/screen behavior in both modes, confirms selecting more than 15 media items does not force the guest to restart a valid selection, includes mobile moderation sanity check, and covers production deploy readiness.
+* **Guidance:** This task validates Stage 2 deliverables and should summarize exact commands and route checks. If production deploy occurs, record deployment result and URL check.
 * **Dependencies:** **Task 2.2 by Web Product Agent**, **Task 2.3 by Web Product Agent**.
 1. Run lint, typecheck, and build after Stage 2 changes.
 2. Validate com moderacao upload behavior.
 3. Validate sem moderacao upload behavior.
-4. Validate moderation web fallback at mobile dimensions.
-5. Record findings and remaining risks.
+4. Validate upload selection behavior when more than 15 items are selected.
+5. Validate moderation web fallback at mobile dimensions.
+6. Record findings and remaining risks.
 
 ## Stage 3: Moderator App Prototype
 
