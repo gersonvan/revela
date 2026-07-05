@@ -1,344 +1,386 @@
-# Backlog do MVP
+# Backlog do Revela
 
-## Epico 1 - Administracao e Eventos
+Este backlog separa o MVP web já validado, os ajustes da Fase 2 e ideias futuras. Itens marcados como Fase 2 não devem ser tratados como implementados até aparecerem no status de implementação.
 
-### Historia 1.1 - Login do admin
+## Épico 1 - Administração e eventos
+
+### História 1.1 - Login do admin
 
 Como admin, quero acessar o sistema com Google para gerenciar meus eventos.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Admin consegue fazer login com Google.
-- Admin nao logado nao acessa painel.
-- Sessao permanece ativa por periodo razoavel.
+- Admin não logado não acessa o painel.
+- Sessão permanece ativa por período razoável.
 - Admin consegue sair da conta.
 
-### Historia 1.2 - Criar evento
+### História 1.2 - Criar evento
 
-Como admin, quero criar um evento para gerar um ambiente separado de uploads, moderacao e telao.
+Como admin, quero criar um evento para gerar um ambiente separado de upload, moderação e telão.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Admin informa nome do evento.
 - Admin informa data.
 - Evento nasce como rascunho.
 - Evento aparece na lista de eventos do admin.
 
-### Historia 1.3 - Configurar evento
+### História 1.3 - Configurar evento
 
-Como admin, quero configurar convite, tema e termo para personalizar a experiencia.
+Como admin, quero configurar convite, tema, termo e regras operacionais para personalizar a experiência.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Admin consegue subir imagem do convite.
 - Admin define cores principais.
-- Admin edita texto de autorizacao.
-- Configuracoes refletem na pagina do convidado e no telao.
+- Admin edita texto de autorização.
+- Admin escolhe se o evento usa moderação manual.
+- Configurações refletem nas páginas públicas e operacionais.
 
-### Historia 1.4 - Ativar evento
+### História 1.4 - Ativar evento
 
 Como admin, quero ativar o evento quando ele estiver pronto para receber fotos.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Evento rascunho pode virar ativo.
 - Apenas evento ativo aceita uploads.
-- QR Code aponta para a pagina publica de upload.
+- QR Code aponta para página pública de upload.
 
-### Historia 1.5 - Encerrar evento
+### História 1.5 - Encerrar evento
 
-Como admin, quero encerrar o evento para bloquear novos envios apos a festa.
+Como admin, quero encerrar o evento para bloquear novos envios após a festa.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Evento ativo pode virar encerrado.
-- Evento encerrado nao aceita novos uploads.
-- Fotos e historico continuam acessiveis ao admin.
+- Evento encerrado não aceita novos uploads.
+- Fotos e histórico continuam acessíveis ao admin.
 
-## Epico 2 - QR Code e Pagina do Convidado
+## Épico 2 - Upload dos convidados
 
-### Historia 2.1 - Gerar QR Code do evento
+### História 2.1 - Acessar evento por QR Code
 
-Como admin, quero ver e baixar ou imprimir o QR Code do evento.
+Como convidado, quero abrir o evento pelo QR Code para enviar fotos rapidamente.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
-- Sistema gera QR Code unico por evento.
-- QR Code abre a pagina publica de upload.
-- QR Code continua valido enquanto o evento existir.
-- Se o evento estiver encerrado, a pagina informa que uploads foram encerrados.
+- QR Code abre a página pública correta do evento.
+- Página funciona bem em celular.
+- Evento inativo ou encerrado mostra mensagem clara.
 
-### Historia 2.2 - Identificacao do convidado
+### História 2.2 - Identificação simples
 
-Como convidado, quero informar meu nome/apelido uma vez para nao repetir a cada envio.
+Como convidado, quero informar nome ou apelido uma vez para não repetir a cada envio.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
-- Nome/apelido e obrigatorio.
+- Nome ou apelido é obrigatório.
 - Nome fica salvo no navegador.
 - Convidado pode editar o nome antes de enviar novas fotos.
 
-### Historia 2.3 - Aceite do termo
+### História 2.3 - Aceite do termo
 
 Como convidado, quero ver um termo simples antes de enviar fotos.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Termo aparece antes do primeiro envio.
-- Aceite e obrigatorio.
+- Aceite é obrigatório.
 - Aceite fica salvo no navegador.
-- Texto do termo vem da configuracao do evento.
+- Texto do termo vem da configuração do evento.
 
-### Historia 2.4 - Enviar fotos
+### História 2.4 - Enviar fotos
 
-Como convidado, quero enviar uma ou varias fotos pelo celular.
+Como convidado, quero enviar uma ou várias fotos pelo celular.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Pode enviar de 1 a 15 fotos por lote.
 - Cada foto tem limite de 20 MB.
-- Sistema bloqueia arquivos nao suportados.
-- Fotos enviadas entram como pendente.
-- Convidado ve confirmacao de envio.
+- Sistema bloqueia arquivos não suportados.
+- Foto entra como pendente quando o evento está com moderação.
+- Foto entra como aprovada automaticamente quando o evento está sem moderação.
+- Convidado vê confirmação de envio.
 
-### Historia 2.5 - Mensagem por foto
+### História 2.5 - Mensagem por foto
 
 Como convidado, quero escrever uma mensagem opcional em cada foto.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
-- Cada foto tem campo de mensagem proprio.
-- Mensagem e opcional.
+- Cada foto tem campo de mensagem próprio.
+- Mensagem é opcional.
 - Limite de 120 caracteres.
-- Mensagem aparece para moderador e no telao se aprovada.
+- Mensagem aparece para moderador e no telão se aprovada.
 
-## Epico 3 - Moderacao
+## Épico 3 - Moderação web
 
-### Historia 3.1 - Criar links de moderador
+### História 3.1 - Criar links de moderador
 
 Como admin, quero criar links individuais para moderadores.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Admin informa nome do moderador.
 - Sistema gera link secreto individual.
 - Link tem status criado, usado ou revogado.
 - Admin consegue revogar link.
 
-### Historia 3.2 - Ativar link de moderador
+### História 3.2 - Ativar link de moderador
 
-Como moderador, quero abrir meu link uma vez e ficar autorizado no dispositivo.
+Como moderador, quero abrir meu link uma vez e vincular o acesso ao dispositivo.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
-- Link nao usado ativa acesso no dispositivo.
-- Link usado nao pode ser ativado em outro dispositivo.
-- Moderador acessa apenas o evento vinculado.
-- Link revogado nao permite acesso.
+- Link válido abre a área de moderação.
+- Link revogado não permite acesso.
+- Ativação registra uso do link.
+- Acesso fica limitado ao evento correto.
 
-### Historia 3.3 - Ver fila de pendentes
+### História 3.3 - Revisar fotos pendentes
 
-Como moderador, quero ver fotos pendentes para revisar rapidamente.
+Como moderador, quero ver fotos pendentes para decidir o que pode aparecer no telão.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
-- Aba Pendentes lista fotos novas.
-- Cada item mostra foto, nome, mensagem e horario.
-- Novas fotos aparecem sem recarregar a pagina.
-- Ha alerta visual quando chegam novas fotos.
+- Aba Pendentes mostra foto, nome, mensagem e horário.
+- Lista atualiza durante o evento.
+- Interface funciona bem em celular.
 
-### Historia 3.4 - Aprovar ou rejeitar foto
+### História 3.4 - Aprovar e rejeitar fotos
 
-Como moderador, quero decidir se uma foto pode aparecer no telao.
+Como moderador, quero aprovar ou rejeitar fotos pendentes.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Moderador pode aprovar foto pendente.
 - Moderador pode rejeitar foto pendente.
-- Decisao registra moderador e horario.
-- Foto aprovada entra no feed do telao.
-- Foto rejeitada nunca aparece no telao.
+- Decisão registra moderador, ação e horário.
+- Foto aprovada entra no feed do telão.
+- Foto rejeitada não aparece no telão.
 
-### Historia 3.5 - Revisar aprovadas e rejeitadas
+### História 3.5 - Revisar aprovadas e rejeitadas
 
-Como moderador, quero corrigir decisoes se necessario.
+Como moderador, quero corrigir decisões se necessário.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Aba Aprovadas mostra fotos aprovadas.
 - Aba Rejeitadas mostra fotos rejeitadas.
 - Foto aprovada pode ser movida para rejeitada.
 - Foto rejeitada pode ser aprovada.
 
-### História 3.6 - Aprovar ou reprovar todas as fotos pendentes
+### História 3.6 - Ações em lote
 
-Como moderador, quero aprovar ou reprovar todas as fotos pendentes de uma vez para acelerar a operação durante a festa.
+Como moderador, quero aprovar ou rejeitar várias fotos pendentes de uma vez para acelerar a operação.
 
 **Critérios de aceite**
 
-- Tela de moderação oferece ações explícitas para aprovar todas e reprovar todas as fotos pendentes.
-- Antes de executar uma ação em lote, o sistema pede confirmação clara.
-- A ação em lote registra moderador, horário e decisão em cada foto afetada.
+- Tela oferece ações explícitas para aprovar todas e rejeitar todas pendentes.
+- Antes da ação em lote, o sistema pede confirmação clara.
+- Cada foto afetada recebe histórico de decisão.
 - Fotos já aprovadas ou rejeitadas não são alteradas por engano.
 
-### História 3.7 - Moderação otimizada para mobile
+### História 3.7 - Modo sem moderação
 
-Como moderador usando celular, quero revisar fotos com uma interface própria para mobile durante a festa.
+Como admin, quero desligar a moderação em eventos de baixo risco para reduzir trabalho operacional.
+
+**Critérios de aceite**
+
+- Evento permite alternar entre com moderação e sem moderação.
+- Interface avisa que fotos podem aparecer diretamente no telão.
+- Uploads em evento sem moderação entram como aprovados automaticamente.
+- Histórico registra que a aprovação foi automática.
+- Admin e moderadores ainda podem rejeitar ou remover fotos aprovadas.
+
+### História 3.8 - Moderação otimizada para mobile
+
+Como moderador usando celular, quero revisar fotos com uma interface rápida durante a festa.
 
 **Critérios de aceite**
 
 - Lista de pendentes é confortável em telas pequenas.
-- Botões de aprovar e reprovar são grandes o suficiente para uso rápido com o polegar.
-- A foto pode ser vista em tamanho maior antes da decisão.
-- A interface evita cliques acidentais em ações destrutivas.
-- Novas fotos continuam aparecendo sem exigir atualização manual.
+- Botões de aprovar e rejeitar têm área de toque adequada.
+- Foto pode ser vista maior antes da decisão.
+- Acesso web continua funcionando mesmo que o app nativo não esteja disponível.
 
-## Épico 3A - Aplicativo nativo de moderação e envio
+## Épico 4 - Telão
 
-### História 3A.1 - Aplicativo Android/iOS para moderação
+### História 4.1 - Abrir tela do telão
 
-Como moderador, quero usar um aplicativo Android/iOS para receber alertas e moderar fotos com mais agilidade durante a festa.
-
-**Critérios de aceite**
-
-- Moderador consegue vincular o aplicativo ao evento usando convite, token ou login seguro.
-- Aplicativo exibe fila de fotos pendentes do evento.
-- Moderador consegue aprovar e reprovar fotos pelo aplicativo.
-- Aplicativo envia notificação push quando novas fotos chegam para moderação.
-- Notificações respeitam permissões do dispositivo e podem ser desativadas.
-- Histórico de decisões continua registrado no backend com moderador, horário e decisão.
-- O uso no aplicativo não quebra o acesso atual via navegador.
-
-### História 3A.2 - Aplicativo Android/iOS para envio de fotos
-
-Como convidado, quero enviar fotos pelo aplicativo para ter uma experiência mais integrada durante a festa.
+Como admin, quero abrir uma URL de projeção do evento.
 
 **Critérios de aceite**
 
-- Convidado consegue entrar no evento por QR Code, link ou código curto.
-- Convidado consegue selecionar fotos da galeria ou câmera.
-- Envio mantém regras atuais de nome, autorização, limite de fotos e limite de tamanho.
-- Fotos enviadas pelo aplicativo entram como pendentes para moderação.
-- Aplicativo mostra estado de envio, falha e confirmação.
+- Telão usa página separada da moderação.
+- Página não mostra controles administrativos.
+- Página pode ser aberta no navegador do notebook.
+- Página exibe identidade visual do evento.
 
-### História 3A.3 - Estratégia de notificações push
+### História 4.2 - Estado sem fotos
 
-Como organizador, quero que moderadores recebam notificações de novas fotos para reduzir o risco de a fila ficar parada.
+Como público do evento, quero ver uma tela bonita antes das fotos aparecerem.
 
 **Critérios de aceite**
 
-- Backend registra dispositivos autorizados para receber notificações por evento.
-- Notificação é enviada quando novas fotos entram em moderação.
-- Sistema evita excesso de notificações em rajadas grandes de envio.
-- Push não expõe fotos ou dados sensíveis na tela bloqueada.
-- Há fallback claro para web quando o app não está instalado.
+- Quando não há fotos aprovadas, telão mostra imagem do convite.
+- Telão mostra QR Code do evento.
+- Telão mostra chamada curta para envio.
 
-## Epico 4 - Telao
+### História 4.3 - Feed ao vivo
 
-### Historia 4.1 - Abrir tela do telao
+Como público da festa, quero ver fotos aprovadas surgindo no telão.
 
-Como admin, quero abrir uma URL de projecao do evento.
+**Critérios de aceite**
 
-**Criterios de aceite**
-
-- Telao usa pagina separada da moderacao.
-- Pagina nao mostra controles administrativos.
-- Pagina pode ser aberta no navegador do notebook.
-- Pagina exibe identidade visual do evento.
-
-### Historia 4.2 - Estado sem fotos
-
-Como publico do evento, quero ver uma tela bonita antes das fotos aparecerem.
-
-**Criterios de aceite**
-
-- Quando nao ha fotos aprovadas, telao mostra imagem do convite.
-- Telao mostra QR Code do evento.
-- Telao mostra chamada curta para envio.
-
-### Historia 4.3 - Feed ao vivo
-
-Como publico da festa, quero ver fotos aprovadas surgindo no telao.
-
-**Criterios de aceite**
-
-- Telao mostra apenas fotos aprovadas.
+- Telão mostra apenas fotos aprovadas.
 - Feed atualiza sem recarregar manualmente.
-- Exibe foto, nome/apelido e mensagem.
+- Exibe foto, nome ou apelido e mensagem.
 - Mistura fotos recentes e antigas.
 - QR Code aparece durante o feed.
 
-### Historia 4.4 - Modo tela cheia
+### História 4.4 - Modo tela cheia
 
-Como operador do telao, quero colocar a projecao em tela cheia.
+Como operador do telão, quero colocar a projeção em tela cheia.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
-- Ha controle visivel para entrar em tela cheia.
+- Há controle visível para entrar em tela cheia.
 - Depois de ativado, a interface fica limpa.
 - Feed continua atualizando em tela cheia.
 
-## Epico 5 - Armazenamento e Historico
+## Épico 5 - Armazenamento, histórico e exportação
 
-### Historia 5.1 - Armazenar fotos
+### História 5.1 - Armazenar fotos
 
-Como sistema, preciso guardar fotos enviadas para manter historico do evento.
+Como sistema, preciso guardar fotos enviadas para manter histórico do evento.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
-- Foto original ou versao de boa qualidade e preservada.
-- Versao otimizada e usada no telao.
+- Foto original ou versão de boa qualidade é preservada.
+- Versão otimizada é usada no telão.
 - Foto fica associada ao evento.
-- Metadados sao salvos: nome, mensagem, status e horario.
+- Metadados são salvos: nome, mensagem, status e horário.
 
-### Historia 5.2 - Historico de moderacao
+### História 5.2 - Histórico de moderação
 
-Como admin, quero saber quem aprovou ou rejeitou cada foto.
+Como admin, quero saber como cada foto chegou ao estado atual.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
-- Cada decisao registra acao, moderador e horario.
-- Historico fica disponivel apos o evento.
-- Mudancas posteriores tambem sao registradas.
+- Cada decisão registra ação, responsável e horário quando aplicável.
+- Aprovação automática registra origem automática.
+- Histórico fica disponível após o evento.
+- Mudanças posteriores também são registradas.
 
-### Historia 5.3 - Dashboard operacional
+### História 5.3 - Dashboard operacional
 
 Como admin, quero acompanhar o andamento do evento.
 
-**Criterios de aceite**
+**Critérios de aceite**
 
 - Mostra total de fotos.
 - Mostra pendentes, aprovadas e rejeitadas.
 - Mostra moderadores criados, usados e revogados.
 - Atualiza durante o evento.
 
-## Priorizacao Recomendada
+### História 5.4 - Exportação protegida
 
-### Essencial para funcionar na festa
+Como admin, quero baixar fotos e metadados do evento depois da festa.
 
-1. Login do admin.
-2. Criar e configurar evento.
-3. QR Code do evento.
-4. Upload de fotos por convidado.
-5. Moderacao pendente, aprovar e rejeitar.
-6. Telao com fotos aprovadas.
-7. Estado sem fotos com convite.
-8. Encerrar evento.
+**Critérios de aceite**
 
-### Reducao de risco operacional
+- Exportação exige sessão admin.
+- ZIP inclui metadados, originais e versões otimizadas disponíveis.
+- JSON inclui fotos, moderadores e histórico.
+- Exportação respeita escopo do evento.
 
-1. Links individuais de moderador.
-2. Abas aprovadas e rejeitadas.
-3. Alerta visual de novas fotos.
-4. Dashboard operacional.
-5. Versoes otimizadas das imagens.
-6. Historico de decisoes.
+## Épico 6 - Aplicativo nativo para moderadores
 
-### Depois do MVP
+### História 6.1 - Base Expo/React Native
 
-1. Download em lote.
-2. Galeria pos-evento.
-3. Controle avancado do feed.
-4. Multiplos admins.
-5. Templates visuais.
-6. Produto comercial com planos.
+Como equipe do produto, quero uma base de aplicativo nativo para moderadores.
+
+**Critérios de aceite**
+
+- Projeto usa Expo/React Native.
+- App separa configuração de ambiente.
+- App não interfere no fluxo web de produção.
+
+### História 6.2 - Acesso de moderador por convite
+
+Como moderador, quero acessar o app por convite seguro do evento.
+
+**Critérios de aceite**
+
+- Convite pode ser enviado por e-mail.
+- Acesso fica limitado ao evento correto.
+- Dispositivo ou sessão fica registrado.
+- Web continua sendo fallback.
+
+### História 6.3 - Moderação no app
+
+Como moderador, quero aprovar e rejeitar fotos pendentes no app.
+
+**Critérios de aceite**
+
+- App lista fotos pendentes do evento.
+- App permite aprovar e rejeitar.
+- Backend registra decisão com responsável e horário.
+- Ações não quebram o histórico já usado pela web.
+
+### História 6.4 - Notificações push
+
+Como organizador, quero que moderadores recebam avisos de novas fotos.
+
+**Critérios de aceite**
+
+- Backend registra dispositivos autorizados por evento.
+- Notificações são agrupadas ou limitadas em rajadas.
+- Push não mostra foto nem dados sensíveis na tela bloqueada.
+- Há fallback claro quando o app não está instalado.
+
+## Épico 7 - Prova controlada de vídeo
+
+### História 7.1 - Ensaio isolado com clipes curtos
+
+Como equipe do produto, quero testar clipes de 5 a 10 segundos sem afetar o evento ao vivo.
+
+**Critérios de aceite**
+
+- Prova roda fora do fluxo público de upload do evento.
+- Documento registra tamanho médio, custo estimado e processamento necessário.
+- Estratégia de originais fica explícita: reter temporariamente, descartar ou reservar para opção paga futura.
+- Resultado não é tratado como funcionalidade de produção.
+
+## Priorização
+
+### Essencial para a festa de 11/07/2026
+
+1. Fluxo web atual estável.
+2. QR Code de upload validado em celular real.
+3. Moderação web mobile como fallback seguro.
+4. Telão funcionando em notebook/projetor.
+5. Exportação ZIP protegida testada.
+6. Credenciais sensíveis rotacionadas antes do evento.
+
+### Fase 2 com baixo risco
+
+1. Modo de moderação por evento.
+2. Aviso claro no admin quando a moderação estiver desligada.
+3. Histórico de aprovação automática.
+4. Melhorias mobile da moderação web.
+5. Direção técnica do app de moderadores.
+6. Estratégia de push.
+
+### Pós-evento ou comercial
+
+1. Aplicativo para convidados.
+2. Galeria privada pós-evento.
+3. Produto comercial com planos.
+4. Cobrança e enforcement de pagamento.
+5. Vídeo em produção.
+6. IA de moderação.
+7. Reconhecimento facial.

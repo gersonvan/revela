@@ -1,174 +1,201 @@
 # PRD - Revela
 
-## Visao
+## Visão
 
-Revela e um sistema online para eventos privados onde convidados enviam fotos por QR Code, moderadores aprovam manualmente, e um telao exibe em tempo real um feed com as fotos aprovadas.
+Revela é um sistema online para eventos privados em que convidados enviam fotos pelo celular via QR Code, a organização controla o que aparece, e um telão exibe em tempo real um feed com fotos aprovadas.
 
-O primeiro uso sera em uma festa de aniversario, mas o MVP deve nascer reutilizavel para varios eventos.
+O primeiro uso real é uma festa de aniversário, com alvo operacional em 11/07/2026 e prontidão desejada até 10/07/2026. O produto deve continuar simples, reutilizável para outros eventos e estável em produção enquanto a Fase 2 evolui.
 
-## Objetivos do MVP
+## Objetivos do MVP validado
 
-- Permitir que um admin crie e configure eventos.
+- Permitir que um admin crie, configure, ative, acompanhe e encerre eventos.
 - Permitir que convidados enviem fotos pelo celular sem criar conta.
-- Garantir moderacao manual antes de qualquer foto aparecer no telao.
-- Exibir um feed ao vivo no projetor/notebook com fotos aprovadas.
-- Manter fotos e historico armazenados apos o evento.
+- Gerar QR Code e links operacionais por evento.
+- Manter fotos separadas por evento e status.
+- Exibir no telão apenas fotos aprovadas.
+- Permitir que moderadores aprovem, rejeitem e corrijam decisões.
+- Preservar histórico de moderação e exportação protegida do evento.
 - Bloquear novos uploads quando o evento for encerrado.
+
+## Objetivos da Fase 2
+
+- Preparar o uso do evento real de 11/07/2026 sem quebrar o fluxo web existente.
+- Adicionar modo de moderação por evento: com moderação ou sem moderação.
+- Melhorar a experiência mobile da moderação web como fallback seguro.
+- Direcionar o aplicativo nativo primeiro para moderadores.
+- Definir estratégia de notificações push sem expor dados sensíveis.
+- Fazer prova controlada de vídeo curto, isolada do fluxo vivo do evento.
 
 ## Personas
 
 ### Admin
 
-Pessoa responsavel por configurar o evento, gerar QR Code, convidar moderadores, acompanhar a operacao e encerrar o evento.
+Pessoa responsável por configurar o evento, gerar QR Code, convidar moderadores, acompanhar a operação, exportar arquivos e encerrar o evento.
 
 ### Convidado
 
-Pessoa presente no evento que envia fotos pelo celular. Nao deve precisar instalar aplicativo nem criar login.
+Pessoa presente no evento que envia fotos pelo celular. Não deve precisar instalar aplicativo nem criar login.
 
 ### Moderador
 
-Pessoa convidada pelo admin para aprovar ou rejeitar fotos durante o evento, normalmente usando celular.
+Pessoa convidada pelo admin para aprovar, rejeitar ou remover fotos durante o evento. Na Fase 2, pode usar a web mobile ou, futuramente, aplicativo nativo.
 
-### Telao
+### Telão
 
-Pagina publica de exibicao aberta em notebook ligado a projetor ou TV. Nao executa acoes administrativas.
+Página pública de exibição aberta em notebook ligado a projetor ou TV. Não executa ações administrativas.
 
-## Jornadas Principais
-
-1. Admin faz login com Google.
-2. Admin cria um evento.
-3. Admin configura nome, data, convite, tema visual e termo de autorizacao.
-4. Sistema gera QR Code do evento.
-5. Admin cria links individuais para moderadores.
-6. Convidado acessa QR Code, informa nome/apelido, aceita termo e envia fotos.
-7. Fotos entram como pendentes.
-8. Moderadores aprovam ou rejeitam.
-9. Telao exibe automaticamente o feed com fotos aprovadas.
-10. Admin encerra o evento ao final.
-
-## Requisitos Funcionais
+## Jornadas principais
 
 ### Admin
 
-- Fazer login com Google.
-- Criar eventos.
-- Editar configuracoes do evento.
-- Subir imagem do convite.
-- Definir tema visual basico.
-- Definir texto de autorizacao.
-- Gerar e visualizar QR Code do evento.
-- Criar links secretos individuais para moderadores.
-- Revogar links de moderadores.
-- Ver dashboard operacional com:
-  - total de fotos enviadas;
-  - fotos pendentes;
-  - fotos aprovadas;
-  - fotos rejeitadas;
-  - moderadores criados, usados e revogados.
-- Encerrar evento.
-- Acessar historico apos encerramento.
+1. Faz login com Google.
+2. Cria um evento.
+3. Configura nome, data, imagem do convite, tema visual, termo de autorização e modo de moderação.
+4. Ativa o evento.
+5. Gera ou baixa QR Code de envio.
+6. Cria links individuais para moderadores quando necessário.
+7. Acompanha contadores de fotos, estados de moderação e links de moderadores.
+8. Abre o telão.
+9. Encerra o evento.
+10. Exporta ZIP ou JSON protegido com fotos, metadados e histórico.
 
 ### Convidado
 
-- Acessar evento por QR Code unico.
-- Informar nome/apelido.
-- Salvar nome/apelido localmente para proximos envios.
-- Aceitar termo antes do primeiro envio.
-- Enviar de 1 a 15 fotos por lote.
-- Enviar fotos de ate 20 MB cada.
-- Adicionar mensagem opcional por foto.
-- Limitar mensagem a 120 caracteres.
-- Ver confirmacao apos envio.
-- Fazer envios recorrentes durante o evento.
+1. Acessa o evento pelo QR Code.
+2. Informa nome ou apelido.
+3. Aceita o termo antes do primeiro envio.
+4. Envia uma ou mais fotos pelo celular.
+5. Adiciona mensagem opcional por foto.
+6. Recebe confirmação de envio.
 
 ### Moderador
 
-- Acessar por link secreto individual.
-- Ativar link uma unica vez, vinculando acesso ao dispositivo.
-- Ver abas:
-  - Pendentes;
-  - Aprovadas;
-  - Rejeitadas.
-- Ver foto, nome/apelido, mensagem e horario de envio.
-- Receber alerta visual quando chegarem novas fotos.
-- Aprovar foto pendente.
-- Rejeitar foto pendente.
-- Aprovar foto rejeitada por engano.
-- Remover foto aprovada do telao, movendo para rejeitada.
+1. Acessa link secreto individual.
+2. Ativa o link em um dispositivo.
+3. Revisa fotos pendentes quando o evento está com moderação.
+4. Aprova ou rejeita fotos.
+5. Revisa fotos aprovadas e rejeitadas.
+6. Remove do telão uma foto aprovada por engano.
 
-### Telao
+### Telão
 
-- Abrir pagina propria de projecao.
-- Exibir somente fotos aprovadas.
-- Mostrar feed ao vivo misturando fotos recentes e antigas.
-- Mostrar foto, nome/apelido e mensagem.
-- Exibir QR Code durante o feed.
-- Ter modo tela cheia.
-- Usar imagem do convite quando nao houver fotos aprovadas.
-- Continuar exibindo fotos ja carregadas se a internet oscilar.
+1. Abre página própria de projeção.
+2. Exibe estado inicial com convite e QR Code quando ainda não há fotos aprovadas.
+3. Exibe somente fotos aprovadas.
+4. Atualiza o feed sem recarregamento manual.
+5. Permite modo tela cheia.
 
-## Regras de Negocio
+## Regras de negócio
 
-- Evento em rascunho nao aceita uploads publicos.
-- Evento ativo aceita uploads e moderacao.
+- Evento em rascunho não aceita uploads públicos.
+- Evento ativo aceita uploads públicos.
 - Evento encerrado bloqueia novos uploads.
-- Toda foto nova entra como pendente.
-- Apenas fotos aprovadas aparecem no telao.
-- Fotos rejeitadas permanecem armazenadas.
-- Remover uma foto aprovada do telao muda seu status para rejeitada.
-- Convidado nao acessa galeria de fotos.
-- Moderadores e admin veem fotos pendentes e rejeitadas.
-- Cada foto pertence a um unico evento.
-- Cada moderador pertence a um unico evento no MVP.
-- Moderadores acessam por link secreto individual, sem login Google obrigatorio no MVP.
+- Cada foto pertence a um evento.
+- Fotos podem estar como pendentes, aprovadas ou rejeitadas.
+- Telão nunca exibe fotos pendentes ou rejeitadas.
+- Fotos rejeitadas não são apagadas automaticamente.
+- Decisões de moderação devem registrar ação, horário e responsável quando houver.
+- Admin e moderadores devem conseguir remover do telão uma foto aprovada por engano.
+- Exportações protegidas devem respeitar escopo do evento.
 
-## Privacidade e Consentimento
+## Modo de moderação por evento
 
-Como o evento pode ter criancas nas fotos, privacidade e consentimento devem ser tratados como requisitos do produto.
+Cada evento deve suportar configuração simples de moderação:
 
-Texto inicial sugerido para o termo:
+- **Com moderação:** fotos enviadas entram como pendentes e só aparecem no telão após aprovação.
+- **Sem moderação:** fotos enviadas são aprovadas automaticamente e podem aparecer no telão sem revisão prévia.
 
-> Ao enviar, você autoriza que esta foto apareça no telão da festa após moderação. Envie apenas fotos que você se sente confortável em compartilhar neste evento.
+Quando a moderação estiver desativada, a interface administrativa deve avisar claramente que novas fotos poderão aparecer diretamente no telão. Mesmo nesse modo, admin e moderadores precisam conseguir rejeitar ou remover fotos depois que elas aparecerem.
 
-Regras de privacidade no MVP:
+A aprovação automática deve preservar histórico útil, indicando que a foto chegou ao estado aprovado por regra automática do evento, não por decisão manual de um moderador.
 
-- Nao existe galeria publica para convidados.
-- Fotos pendentes e rejeitadas sao visiveis apenas para admin e moderadores.
-- Telao exibe somente fotos aprovadas.
-- Decisoes de moderacao ficam registradas.
-- Fotos rejeitadas nao sao apagadas automaticamente.
+## Privacidade e segurança
 
-## Fora do MVP
+- Convidados não têm login.
+- Não existe galeria pública pós-evento no MVP atual.
+- Fotos pendentes e rejeitadas são visíveis apenas em áreas administrativas ou de moderação.
+- Links de moderadores são individuais e podem ser revogados.
+- O telão não deve expor controles administrativos.
+- Logs e relatórios não devem expor segredos, tokens privados, e-mails sensíveis ou credenciais de storage.
 
-- Galeria publica pos-evento.
-- Download em lote.
-- Cobranca e planos.
+Texto base do termo:
+
+> Ao enviar, você autoriza que esta foto apareça no telão da festa conforme a configuração de moderação do evento. Envie apenas fotos que você se sente confortável em compartilhar neste evento.
+
+## Aplicativo nativo
+
+O aplicativo nativo da Fase 2 é direcionado primeiro a moderadores, não a convidados.
+
+Escopo previsto:
+
+- Expo/React Native.
+- Convite por e-mail.
+- Acesso com escopo por evento.
+- Registro de dispositivo ou sessão.
+- Lista de fotos pendentes.
+- Aprovação e rejeição de fotos.
+- Notificações push agrupadas ou limitadas para evitar excesso.
+- Fallback seguro para moderação web.
+
+Fora do escopo imediato:
+
+- Upload de convidados pelo aplicativo.
+- Garantia de publicação em App Store ou Google Play.
+- Substituição obrigatória da moderação web no evento de 11/07/2026.
+
+## Prova de vídeo
+
+A Fase 2 pode incluir prova controlada com clipes de 5 a 10 segundos, mas isso não faz parte do fluxo vivo de upload dos convidados para o evento.
+
+A prova deve documentar:
+
+- impacto de armazenamento;
+- custo de processamento;
+- estratégia para originais: retenção temporária, descarte ou opção paga futura;
+- isolamento em relação ao fluxo de fotos de produção.
+
+## Fora do escopo atual
+
+- Cobrança e planos com enforcement real.
+- Aplicativo nativo para upload de convidados.
+- Fluxo de vídeo em produção no evento.
+- Galeria pública pós-evento.
 - QR Code por mesa.
 - Login de convidados.
-- Integracao com WhatsApp.
-- Filtros automaticos por IA.
+- Integração com WhatsApp.
+- Moderação por IA.
 - Reconhecimento facial.
-- Aplicativo mobile nativo.
-- Multiplos administradores por evento.
-- Produto comercial completo.
+- Back office SaaS comercial completo.
+- Garantia de publicação em lojas de aplicativos.
 
 ## Riscos
 
 - Internet ruim no local do evento.
-- Volume alto de fotos afetar upload ou feed.
-- Moderacao nao acompanhar o ritmo dos envios.
-- Telao ficar visualmente poluido.
-- Links de moderacao serem compartilhados indevidamente.
-- Fotos com criancas exigirem maior cuidado operacional e juridico.
+- Volume alto de fotos afetar upload, moderação ou feed.
+- Moderação não acompanhar o ritmo dos envios.
+- Modo sem moderação aumentar risco de foto inadequada no telão.
+- Links de moderação serem compartilhados indevidamente.
+- Conta de desenvolvedor, revisão de loja e notificações push exigirem dependências externas.
+- Vídeo aumentar custo e complexidade de storage/processamento.
 
-## Criterios de Aceite do MVP
+## Critérios de aceite
 
-- Admin consegue criar um evento e gerar QR Code.
+### MVP web
+
+- Admin consegue criar, configurar, ativar e encerrar um evento.
 - Convidado consegue enviar fotos pelo celular.
-- Fotos enviadas aparecem como pendentes.
+- Fotos enviadas respeitam status do evento e validações de arquivo.
 - Moderador consegue aprovar e rejeitar fotos pelo celular.
-- Foto aprovada aparece no telao sem recarregar manualmente.
-- Foto rejeitada nunca aparece no telao.
-- Telao mostra convite quando nao ha fotos aprovadas.
-- Evento encerrado bloqueia novos uploads.
-- Dados e fotos continuam salvos apos o evento.
+- Foto aprovada aparece no telão sem recarregamento manual.
+- Foto rejeitada não aparece no telão.
+- Telão mostra convite e QR Code quando não há fotos aprovadas.
+- Exportação protegida entrega fotos e metadados do evento.
+
+### Fase 2
+
+- Evento permite escolher entre moderação ativada e desativada.
+- Modo sem moderação avisa o admin com clareza.
+- Aprovações automáticas ficam auditáveis.
+- Moderação web permanece fallback seguro para 11/07/2026.
+- Direção do app nativo fica limitada a moderadores.
+- Prova de vídeo permanece isolada e com custos documentados.

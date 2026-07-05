@@ -1,113 +1,166 @@
 # Roteiro de Releases
 
-Este roteiro organiza o MVP em etapas para reduzir risco antes do uso real em evento.
+Este roteiro organiza o Revela em entregas pequenas para preservar o fluxo de produção enquanto a Fase 2 avança.
 
-## Release 0 - Fundacao
+## Release 0 - Fundação
 
-Objetivo: preparar a base minima do produto reutilizavel.
+**Objetivo:** preparar a base mínima do produto reutilizável.
 
-Entregas:
+**Entregas**
 
 - estrutura do projeto;
-- autenticacao Google do admin;
+- autenticação Google do admin;
 - modelo de eventos;
-- criacao e edicao basica de evento;
+- criação e edição básica de evento;
 - status de evento: rascunho, ativo e encerrado;
 - upload da imagem do convite;
-- configuracao do texto de autorizacao;
-- pagina publica por evento.
+- configuração do texto de autorização;
+- página pública por evento.
 
-Criterio de pronto:
+**Critério de pronto**
 
-- admin consegue criar um evento e acessar sua pagina publica.
+- Admin consegue criar um evento e acessar sua página pública.
 
-## Release 1 - Upload dos Convidados
+## Release 1 - Upload dos convidados
 
-Objetivo: permitir envio real de fotos pelo celular.
+**Objetivo:** permitir envio real de fotos pelo celular.
 
-Entregas:
+**Entregas**
 
-- QR Code unico por evento;
-- pagina mobile de upload;
-- nome/apelido obrigatorio;
+- QR Code único por evento;
+- página mobile de upload;
+- nome ou apelido obrigatório;
 - aceite do termo;
 - envio de 1 a 15 fotos;
 - limite de 20 MB por foto;
 - mensagem opcional por foto;
-- armazenamento das fotos como pendentes;
-- confirmacao de envio.
+- armazenamento das fotos;
+- confirmação de envio.
 
-Criterio de pronto:
+**Critério de pronto**
 
-- convidado consegue enviar fotos pelo celular e elas ficam registradas como pendentes.
+- Convidado consegue enviar fotos pelo celular e elas ficam registradas no evento.
 
-## Release 2 - Moderacao
+## Release 2 - Moderação web
 
-Objetivo: garantir que nenhuma foto apareca no telao sem aprovacao.
+**Objetivo:** controlar o que aparece no telão sem depender de aplicativo nativo.
 
-Entregas:
+**Entregas**
 
-- criacao de links secretos individuais de moderador;
-- ativacao de link de moderador;
-- painel mobile-first de moderacao;
+- criação de links secretos individuais de moderador;
+- ativação de link de moderador;
+- painel mobile-first de moderação;
 - aba Pendentes;
-- acao de aprovar;
-- acao de rejeitar;
+- ação de aprovar;
+- ação de rejeitar;
 - abas Aprovadas e Rejeitadas;
 - alerta visual de novas fotos;
-- historico de decisoes.
+- histórico de decisões.
 
-Criterio de pronto:
+**Critério de pronto**
 
-- moderador consegue revisar fotos no celular e as decisoes ficam registradas.
+- Moderador consegue revisar fotos no celular e as decisões ficam registradas.
 
-## Release 3 - Telao Ao Vivo
+## Release 3 - Telão ao vivo
 
-Objetivo: exibir fotos aprovadas em tempo real no projetor.
+**Objetivo:** exibir fotos aprovadas em tempo real no projetor.
 
-Entregas:
+**Entregas**
 
-- pagina de telao por evento;
+- página de telão por evento;
 - estado sem fotos usando imagem do convite;
-- QR Code visivel no estado inicial;
+- QR Code visível no estado inicial;
 - feed ao vivo com fotos aprovadas;
-- exibicao de nome/apelido e mensagem;
+- exibição de nome ou apelido e mensagem;
 - mistura de fotos recentes e antigas;
 - QR Code discreto durante o feed;
 - modo tela cheia.
 
-Criterio de pronto:
+**Critério de pronto**
 
-- foto aprovada aparece no telao sem recarregar manualmente.
+- Foto aprovada aparece no telão sem recarregamento manual.
 
-## Release 4 - Operacao e Fechamento
+## Release 4 - Operação e fechamento
 
-Objetivo: dar controle operacional ao admin antes, durante e depois da festa.
+**Objetivo:** dar controle operacional ao admin antes, durante e depois da festa.
 
-Entregas:
+**Entregas**
 
 - dashboard operacional;
 - contadores de fotos por status;
 - status dos moderadores;
 - encerramento do evento;
-- bloqueio de novos uploads apos encerramento;
-- acesso ao historico apos encerramento;
+- bloqueio de novos uploads após encerramento;
+- acesso ao histórico após encerramento;
+- exportação protegida em JSON e ZIP;
 - ajustes de estabilidade para internet oscilante.
 
-Criterio de pronto:
+**Critério de pronto**
 
-- admin consegue acompanhar e encerrar o evento sem perder fotos ou historico.
+- Admin consegue acompanhar, exportar e encerrar o evento sem perder fotos ou histórico.
 
-## Release 5 - Pos-MVP
+## Release 5 - Fase 2: prontidão do evento
 
-Ideias para evolucao depois do primeiro uso real:
+**Objetivo:** preparar o uso real de 11/07/2026 com mudanças de baixo risco.
 
-- download em lote;
-- galeria privada pos-evento;
-- templates visuais para telao;
+**Entregas planejadas**
+
+- ensaio físico com celular real via QR Code;
+- revisão fina da moderação web em telas pequenas;
+- modo de moderação por evento;
+- aviso claro quando o evento estiver sem moderação;
+- aprovação automática auditável;
+- remoção/rejeição posterior de fotos aprovadas automaticamente;
+- rotação de credenciais sensíveis antes do evento real.
+
+**Critério de pronto**
+
+- Fluxo web de produção continua validado e o operador sabe conduzir o evento com ou sem moderação.
+
+## Release 6 - Aplicativo de moderadores
+
+**Objetivo:** experimentar aplicativo nativo sem substituir a web como fallback.
+
+**Entregas planejadas**
+
+- base Expo/React Native;
+- convite por e-mail para moderadores;
+- acesso com escopo por evento;
+- registro de dispositivo ou sessão;
+- lista de fotos pendentes;
+- aprovação e rejeição pelo app;
+- notificações push agrupadas ou limitadas.
+
+**Critério de pronto**
+
+- Moderador consegue atuar em um evento pelo app, e a web segue funcionando como alternativa segura.
+
+## Release 7 - Prova controlada de vídeo
+
+**Objetivo:** avaliar clipes curtos sem afetar o evento ao vivo.
+
+**Entregas planejadas**
+
+- prova isolada com vídeos de 5 a 10 segundos;
+- estimativa de armazenamento e processamento;
+- decisão documentada sobre retenção ou descarte de originais;
+- avaliação de custo antes de qualquer uso em produção.
+
+**Critério de pronto**
+
+- Existe evidência técnica e de custo suficiente para decidir se vídeo vira produto futuro.
+
+## Pós-evento e produto comercial
+
+Ideias para evolução posterior:
+
+- galeria privada pós-evento;
+- templates visuais para telão;
 - controle manual do feed;
-- multiplos admins;
+- múltiplos admins;
 - QR Code por mesa;
-- aplicativo Android/iOS para moderação, envio de fotos e notificações push;
-- produto comercial com planos;
-- politicas de retencao e exclusao de dados.
+- aplicativo para convidados;
+- cobrança e planos;
+- políticas de retenção e exclusão de dados;
+- moderação por IA;
+- reconhecimento facial.
