@@ -130,7 +130,7 @@ export default async function ModerationPage({
   });
 
   return (
-    <main className="min-h-screen bg-[#FBF5EE] px-4 py-6 text-[#1D1108]">
+    <main className="min-h-screen bg-[#FBF5EE] px-3 py-4 text-[#1D1108] sm:px-5 sm:py-6">
       <RememberModeratorAccess
         eventName={access.moderator.event.name}
         moderatorName={access.moderator.name}
@@ -141,12 +141,25 @@ export default async function ModerationPage({
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4562B]">
             Moderação
           </p>
-          <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-semibold italic text-[#1D1108]">
+          <h1 className="mt-2 font-[family-name:var(--font-display)] text-3xl font-semibold italic leading-tight text-[#1D1108] sm:text-4xl">
             {access.moderator.event.name}
           </h1>
           <p className="mt-2 text-sm text-[#8A6B55]">
             Moderador: {access.moderator.name}
           </p>
+          <div className="mt-4 rounded-2xl border border-[#E8DDD1] bg-white p-4 shadow-sm">
+            <p className="text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
+              Pendentes para revisar
+            </p>
+            <div className="mt-2 flex items-end justify-between gap-3">
+              <p className="font-[family-name:var(--font-display)] text-5xl font-semibold leading-none text-[#D4562B]">
+                {pendingCount}
+              </p>
+              <p className="max-w-44 text-right text-xs leading-5 text-[#8A6B55]">
+                Ações de aprovar e rejeitar continuam disponíveis em cada foto.
+              </p>
+            </div>
+          </div>
           <ModerationAutoRefresh
             initialLatestPendingId={latestPending?.id ?? null}
             token={token}
@@ -158,8 +171,8 @@ export default async function ModerationPage({
             <Link
               className={
                 currentTab === tabKey
-                  ? "rounded-lg bg-[#1D1108] px-3 py-3 text-center text-sm font-bold text-white"
-                  : "rounded-lg border border-[#E8DDD1] bg-white px-3 py-3 text-center text-sm font-semibold text-[#8A6B55]"
+                  ? "rounded-lg bg-[#1D1108] px-2 py-3.5 text-center text-sm font-bold text-white"
+                  : "rounded-lg border border-[#E8DDD1] bg-white px-2 py-3.5 text-center text-sm font-semibold text-[#8A6B55]"
               }
               href={`/moderate/${token}?tab=${tabKey}`}
               key={tabKey}
@@ -193,7 +206,7 @@ export default async function ModerationPage({
               </p>
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {photos.map((photo) => (
                 <PhotoCard
                   currentStatus={tabStatus[currentTab]}
@@ -231,14 +244,27 @@ function PhotoCard({
   };
   token: string;
 }) {
+  const canApprove = currentStatus !== PhotoStatus.APPROVED;
+  const canReject = currentStatus !== PhotoStatus.REJECTED;
+  const actionGridClass =
+    canApprove && canReject ? "grid grid-cols-2 gap-2" : "grid gap-2";
+  const rejectLabel =
+    currentStatus === PhotoStatus.APPROVED ? "Remover do telão" : "Rejeitar";
+
   return (
     <article className="overflow-hidden rounded-2xl border border-[#E8DDD1] bg-white shadow-sm">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img alt="" className="aspect-[4/3] w-full object-cover" src={photo.imageUrl} />
-      <div className="space-y-3 p-4">
+      <img
+        alt=""
+        className="aspect-[4/3] w-full bg-[#F4EDE1] object-cover"
+        src={photo.imageUrl}
+      />
+      <div className="space-y-4 p-4">
         <div>
-          <h2 className="text-sm font-bold text-[#1D1108]">{photo.guestName}</h2>
-          <p className="mt-0.5 text-[10px] text-[#8A6B55]">
+          <h2 className="text-base font-bold leading-tight text-[#1D1108]">
+            {photo.guestName}
+          </h2>
+          <p className="mt-1 text-[11px] text-[#8A6B55]">
             {photo.uploadedAt.toLocaleString("pt-BR")}
           </p>
         </div>
@@ -247,30 +273,30 @@ function PhotoCard({
             &ldquo;{photo.message}&rdquo;
           </p>
         ) : null}
-        <div className="grid grid-cols-2 gap-2">
-          {currentStatus !== PhotoStatus.APPROVED ? (
+        <div className={actionGridClass}>
+          {canApprove ? (
             <form action={moderatePhotoAction} className="flex-1">
               <input name="token" type="hidden" value={token} />
               <input name="photoId" type="hidden" value={photo.id} />
               <input name="nextStatus" type="hidden" value={PhotoStatus.APPROVED} />
               <button
-                className="h-10 w-full rounded-xl bg-[#16A34A] px-3 text-sm font-bold text-white"
+                className="h-12 w-full rounded-xl bg-[#16A34A] px-3 text-sm font-bold text-white"
                 type="submit"
               >
                 Aprovar
               </button>
             </form>
           ) : null}
-          {currentStatus !== PhotoStatus.REJECTED ? (
+          {canReject ? (
             <form action={moderatePhotoAction} className="flex-1">
               <input name="token" type="hidden" value={token} />
               <input name="photoId" type="hidden" value={photo.id} />
               <input name="nextStatus" type="hidden" value={PhotoStatus.REJECTED} />
               <button
-                className="h-10 w-full rounded-xl border border-[rgba(220,38,38,0.3)] bg-[rgba(220,38,38,0.06)] px-3 text-sm font-bold text-[#DC2626]"
+                className="h-12 w-full rounded-xl border border-[rgba(220,38,38,0.35)] bg-white px-3 text-sm font-bold text-[#DC2626]"
                 type="submit"
               >
-                Rejeitar
+                {rejectLabel}
               </button>
             </form>
           ) : null}

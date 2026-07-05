@@ -2,7 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { EventStatus, ModeratorStatus } from "@/generated/prisma/enums";
+import {
+  EventModerationMode,
+  EventStatus,
+  ModeratorStatus,
+} from "@/generated/prisma/enums";
 import { requireAdmin } from "@/lib/admin";
 import { sendModeratorInviteEmail } from "@/lib/email/moderator-invite";
 import { createSecretToken, hashSecretToken } from "@/lib/moderation/token";
@@ -19,12 +23,19 @@ const DEFAULT_PRIMARY_COLOR = "#D4562B";
 const DEFAULT_SECONDARY_COLOR = "#FBF5EE";
 const MAX_INVITATION_SIZE_BYTES = 20 * 1024 * 1024;
 
+function parseModerationMode(value: FormDataEntryValue | null) {
+  return value === EventModerationMode.WITHOUT_MODERATION
+    ? EventModerationMode.WITHOUT_MODERATION
+    : EventModerationMode.WITH_MODERATION;
+}
+
 export async function createEventAction(formData: FormData) {
   const admin = await requireAdmin();
   const name = String(formData.get("name") ?? "").trim();
   const eventDate = String(formData.get("eventDate") ?? "").trim();
   const primaryColor = String(formData.get("primaryColor") ?? "").trim();
   const secondaryColor = String(formData.get("secondaryColor") ?? "").trim();
+  const moderationMode = parseModerationMode(formData.get("moderationMode"));
   const authorizationText = String(
     formData.get("authorizationText") ?? DEFAULT_AUTHORIZATION_TEXT,
   ).trim();
@@ -38,6 +49,7 @@ export async function createEventAction(formData: FormData) {
       adminId: admin.id,
       name,
       eventDate: eventDate ? new Date(`${eventDate}T12:00:00`) : null,
+      moderationMode,
       publicSlug: buildEventSlug(name),
       primaryColor: primaryColor || DEFAULT_PRIMARY_COLOR,
       secondaryColor: secondaryColor || DEFAULT_SECONDARY_COLOR,
@@ -194,6 +206,7 @@ export async function updateEventSettingsAction(formData: FormData) {
   const eventDate = String(formData.get("eventDate") ?? "").trim();
   const primaryColor = String(formData.get("primaryColor") ?? "").trim();
   const secondaryColor = String(formData.get("secondaryColor") ?? "").trim();
+  const moderationMode = parseModerationMode(formData.get("moderationMode"));
   const authorizationText = String(
     formData.get("authorizationText") ?? DEFAULT_AUTHORIZATION_TEXT,
   ).trim();
@@ -247,6 +260,7 @@ export async function updateEventSettingsAction(formData: FormData) {
       authorizationText: authorizationText || DEFAULT_AUTHORIZATION_TEXT,
       eventDate: eventDate ? new Date(`${eventDate}T12:00:00`) : null,
       invitationImageUrl,
+      moderationMode,
       name,
       primaryColor: primaryColor || DEFAULT_PRIMARY_COLOR,
       secondaryColor: secondaryColor || DEFAULT_SECONDARY_COLOR,

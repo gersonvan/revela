@@ -26,13 +26,16 @@ export function BulkModerationActions({
 
   return (
     <section className="mt-5 rounded-2xl border border-[#E8DDD1] bg-white p-4 shadow-sm">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-sm font-bold text-[#1D1108]">
             Ações rápidas de moderação
           </h2>
           <p className="mt-1 text-sm text-[#8A6B55]">
             {pendingCount} {pendingCount === 1 ? "foto pendente" : "fotos pendentes"}
+          </p>
+          <p className="mt-2 text-xs leading-5 text-[#8A6B55]">
+            As ações em lote pedem confirmação e afetam somente fotos pendentes.
           </p>
         </div>
         <div className="grid gap-2 sm:grid-cols-2">
@@ -47,7 +50,7 @@ export function BulkModerationActions({
             <input name="token" type="hidden" value={token} />
             <input name="nextStatus" type="hidden" value="APPROVED" />
             <button
-              className="h-11 w-full rounded-xl bg-[#16A34A] px-4 text-sm font-bold text-white sm:w-auto"
+              className="h-12 w-full rounded-xl bg-[#16A34A] px-4 text-sm font-bold text-white sm:w-auto"
               type="submit"
             >
               Aprovar todas
@@ -64,7 +67,7 @@ export function BulkModerationActions({
             <input name="token" type="hidden" value={token} />
             <input name="nextStatus" type="hidden" value="REJECTED" />
             <button
-              className="h-11 w-full rounded-xl border border-[rgba(220,38,38,0.3)] bg-[rgba(220,38,38,0.06)] px-4 text-sm font-bold text-[#DC2626] sm:w-auto"
+              className="h-12 w-full rounded-xl border border-[rgba(220,38,38,0.35)] bg-white px-4 text-sm font-bold text-[#DC2626] sm:w-auto"
               type="submit"
             >
               Reprovar todas
