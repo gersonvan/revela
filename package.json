@@ -10,6 +10,7 @@
     "db:up": "docker compose up -d postgres",
     "env:check": "node scripts/check-env.mjs",
     "smoke:demo": "node scripts/smoke-demo.mjs",
+    "smoke:moderation-mode": "node scripts/smoke-moderation-mode.mjs",
     "video:proof": "node scripts/video-proof.mjs",
     "start": "next start",
     "lint": "eslint",

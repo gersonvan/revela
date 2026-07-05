@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { EventStatus } from "@/generated/prisma/enums";
+import {
+  EventModerationMode,
+  EventStatus,
+  ModerationAction,
+  PhotoStatus,
+} from "@/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 import { isSupportedImageType, saveEventPhoto } from "@/lib/storage";
 
@@ -23,6 +28,7 @@ export async function POST(request: Request, context: UploadRouteContext) {
     where: { publicSlug: slug },
     select: {
       id: true,
+      moderationMode: true,
       status: true,
     },
   });
@@ -84,6 +90,11 @@ export async function POST(request: Request, context: UploadRouteContext) {
     }
   }
 
+  const shouldAutoApprove =
+    event.moderationMode === EventModerationMode.WITHOUT_MODERATION;
+  const initialStatus = shouldAutoApprove
+    ? PhotoStatus.APPROVED
+    : PhotoStatus.PENDING;
   const createdPhotos = [];
 
   for (const [index, file] of files.entries()) {
@@ -101,21 +112,37 @@ export async function POST(request: Request, context: UploadRouteContext) {
       file,
     });
 
-    const photo = await prisma.photo.create({
-      data: {
-        eventId: event.id,
-        guestName,
-        message: message || null,
-        originalFileUrl: storedFile.originalFileUrl,
-        optimizedFileUrl: storedFile.optimizedFileUrl,
-        mimeType: file.type,
-        sizeBytes: file.size,
-        width: storedFile.width,
-        height: storedFile.height,
-      },
-      select: {
-        id: true,
-      },
+    const photo = await prisma.$transaction(async (tx) => {
+      const createdPhoto = await tx.photo.create({
+        data: {
+          eventId: event.id,
+          guestName,
+          message: message || null,
+          originalFileUrl: storedFile.originalFileUrl,
+          optimizedFileUrl: storedFile.optimizedFileUrl,
+          mimeType: file.type,
+          sizeBytes: file.size,
+          status: initialStatus,
+          width: storedFile.width,
+          height: storedFile.height,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (shouldAutoApprove) {
+        await tx.moderationDecision.create({
+          data: {
+            action: ModerationAction.AUTO_APPROVED,
+            newStatus: PhotoStatus.APPROVED,
+            photoId: createdPhoto.id,
+            previousStatus: PhotoStatus.PENDING,
+          },
+        });
+      }
+
+      return createdPhoto;
     });
 
     createdPhotos.push(photo);

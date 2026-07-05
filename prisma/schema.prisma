@@ -34,6 +34,7 @@ enum ModerationAction {
   APPROVED
   REJECTED
   RESTORED
+  AUTO_APPROVED
 }
 
 model Admin {
@@ -118,14 +119,14 @@ model Moderator {
 model ModerationDecision {
   id             String           @id @default(cuid())
   photoId        String
-  moderatorId    String
+  moderatorId    String?
   action         ModerationAction
   previousStatus PhotoStatus
   newStatus      PhotoStatus
   createdAt      DateTime         @default(now())
 
-  photo     Photo     @relation(fields: [photoId], references: [id], onDelete: Cascade)
-  moderator Moderator @relation(fields: [moderatorId], references: [id], onDelete: Cascade)
+  photo     Photo      @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  moderator Moderator? @relation(fields: [moderatorId], references: [id], onDelete: SetNull)
 
   @@index([photoId])
   @@index([moderatorId])
