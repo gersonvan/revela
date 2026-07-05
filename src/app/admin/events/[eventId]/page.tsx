@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { EventStatus, ModeratorStatus } from "@/generated/prisma/enums";
+import {
+  EventModerationMode,
+  EventStatus,
+  ModeratorStatus,
+} from "@/generated/prisma/enums";
 import {
   createModeratorAction,
   revokeModeratorAction,
@@ -16,6 +20,11 @@ const statusLabel: Record<EventStatus, string> = {
   DRAFT: "Rascunho",
   ACTIVE: "Ativo",
   CLOSED: "Encerrado",
+};
+
+const moderationModeLabel: Record<EventModerationMode, string> = {
+  WITH_MODERATION: "Com moderação",
+  WITHOUT_MODERATION: "Sem moderação",
 };
 
 const moderatorStatusLabel: Record<ModeratorStatus, string> = {
@@ -273,16 +282,72 @@ ${createdModeratorUrl}`)}`
 
               <label className="block">
                 <span className="mb-1.5 block text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">Data</span>
-                <input
-                  className="h-10 w-full rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm text-[#1D1108] outline-none focus:border-[#D4562B]"
-                  defaultValue={formattedEventDate}
-                  name="eventDate"
-                  type="date"
-                />
-              </label>
+              <input
+                className="h-10 w-full rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 text-sm text-[#1D1108] outline-none focus:border-[#D4562B]"
+                defaultValue={formattedEventDate}
+                name="eventDate"
+                type="date"
+              />
+            </label>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block">
+            <fieldset className="rounded-xl border border-[#E8DDD1] bg-[#F4EDE1] p-4">
+              <legend className="text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
+                Modo de moderação
+              </legend>
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                <label className="flex min-h-20 cursor-pointer items-start gap-3 rounded-lg border border-[#E8DDD1] bg-white p-3 text-sm text-[#1D1108] has-[:checked]:border-[#D4562B] has-[:checked]:ring-2 has-[:checked]:ring-[#D4562B]/20">
+                  <input
+                    className="mt-1 h-4 w-4 accent-[#D4562B]"
+                    defaultChecked={
+                      event.moderationMode ===
+                      EventModerationMode.WITH_MODERATION
+                    }
+                    name="moderationMode"
+                    type="radio"
+                    value={EventModerationMode.WITH_MODERATION}
+                  />
+                  <span>
+                    <strong className="block text-sm">
+                      {moderationModeLabel.WITH_MODERATION}
+                    </strong>
+                    <span className="mt-1 block text-xs leading-5 text-[#8A6B55]">
+                      Fotos entram como pendentes e precisam de aprovação antes
+                      do telão.
+                    </span>
+                  </span>
+                </label>
+                <label className="flex min-h-20 cursor-pointer items-start gap-3 rounded-lg border border-[#D4562B]/40 bg-white p-3 text-sm text-[#1D1108] has-[:checked]:border-[#D4562B] has-[:checked]:ring-2 has-[:checked]:ring-[#D4562B]/20">
+                  <input
+                    className="mt-1 h-4 w-4 accent-[#D4562B]"
+                    defaultChecked={
+                      event.moderationMode ===
+                      EventModerationMode.WITHOUT_MODERATION
+                    }
+                    name="moderationMode"
+                    type="radio"
+                    value={EventModerationMode.WITHOUT_MODERATION}
+                  />
+                  <span>
+                    <strong className="block text-sm">
+                      {moderationModeLabel.WITHOUT_MODERATION}
+                    </strong>
+                    <span className="mt-1 block text-xs leading-5 text-[#8A6B55]">
+                      Fotos poderão aparecer diretamente no telão sem revisão
+                      prévia.
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <p className="mt-3 rounded-lg border border-[#D4562B]/30 bg-[#D4562B]/10 p-3 text-xs font-bold leading-5 text-[#9A3412]">
+                Atenção: no modo Sem moderação, fotos enviadas pelos convidados
+                podem aparecer diretamente no telão sem aprovação prévia. Admins
+                e moderadores ainda devem acompanhar o evento para remover ou
+                rejeitar fotos inadequadas.
+              </p>
+            </fieldset>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="block">
                   <span className="mb-1.5 block text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
                     Cor principal
                   </span>

@@ -13,6 +13,11 @@ enum EventStatus {
   CLOSED
 }
 
+enum EventModerationMode {
+  WITH_MODERATION
+  WITHOUT_MODERATION
+}
+
 enum PhotoStatus {
   PENDING
   APPROVED
@@ -44,19 +49,20 @@ model Admin {
 }
 
 model Event {
-  id                String      @id @default(cuid())
-  adminId           String
-  name              String
-  eventDate         DateTime?
-  publicSlug        String      @unique
-  status            EventStatus @default(DRAFT)
+  id                 String              @id @default(cuid())
+  adminId            String
+  name               String
+  eventDate          DateTime?
+  publicSlug         String              @unique
+  status             EventStatus         @default(DRAFT)
+  moderationMode     EventModerationMode @default(WITH_MODERATION)
   invitationImageUrl String?
-  primaryColor      String?
-  secondaryColor    String?
-  authorizationText String
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  closedAt          DateTime?
+  primaryColor       String?
+  secondaryColor     String?
+  authorizationText  String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  closedAt           DateTime?
 
   admin      Admin       @relation(fields: [adminId], references: [id], onDelete: Cascade)
   photos     Photo[]
@@ -67,19 +73,19 @@ model Event {
 }
 
 model Photo {
-  id                String      @id @default(cuid())
-  eventId           String
-  guestName         String
-  message           String?
-  originalFileUrl   String
-  optimizedFileUrl  String?
-  mimeType          String
-  sizeBytes         Int
-  width             Int?
-  height            Int?
-  status            PhotoStatus @default(PENDING)
-  uploadedAt        DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
+  id               String      @id @default(cuid())
+  eventId          String
+  guestName        String
+  message          String?
+  originalFileUrl  String
+  optimizedFileUrl String?
+  mimeType         String
+  sizeBytes        Int
+  width            Int?
+  height           Int?
+  status           PhotoStatus @default(PENDING)
+  uploadedAt       DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
 
   event     Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
   decisions ModerationDecision[]
@@ -90,17 +96,17 @@ model Photo {
 }
 
 model Moderator {
-  id            String          @id @default(cuid())
-  eventId       String
-  name          String
-  email String?
- tokenHash     String          @unique
-  status        ModeratorStatus @default(CREATED)
-  activatedAt   DateTime?
-  lastAccessAt  DateTime?
-  deviceId      String?
-  createdAt     DateTime        @default(now())
-  revokedAt     DateTime?
+  id           String          @id @default(cuid())
+  eventId      String
+  name         String
+  email        String?
+  tokenHash    String          @unique
+  status       ModeratorStatus @default(CREATED)
+  activatedAt  DateTime?
+  lastAccessAt DateTime?
+  deviceId     String?
+  createdAt    DateTime        @default(now())
+  revokedAt    DateTime?
 
   event     Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
   decisions ModerationDecision[]
