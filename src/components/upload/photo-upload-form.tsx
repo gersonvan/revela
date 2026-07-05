@@ -62,10 +62,15 @@ export function PhotoUploadForm({
     }
 
     const nextFiles = Array.from(files);
+    const availableSlots = MAX_FILES - photos.length;
 
-    if (photos.length + nextFiles.length > MAX_FILES) {
+    if (nextFiles.length > availableSlots) {
       setStatus("error");
-      setStatusMessage(`Envie no máximo ${MAX_FILES} fotos por vez.`);
+      setStatusMessage(
+        photos.length > 0
+          ? `O limite é de ${MAX_FILES} fotos por envio. Você já tem ${photos.length} selecionada${photos.length === 1 ? "" : "s"}; essa seleção foi mantida. Remova alguma foto antes de adicionar mais.`
+          : `Selecione no máximo ${MAX_FILES} fotos por envio. Escolha até ${MAX_FILES} imagens e tente novamente.`,
+      );
       return;
     }
 
