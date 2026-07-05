@@ -180,6 +180,34 @@ Variáveis atuais:
 - Validação de 30/06/2026: `media.gersonvan.com.br` ainda não possui CNAME; o bucket `revela-uploads` ainda não possui custom domain conectado; a zona `gersonvan.com.br` ainda não existe na conta Cloudflare do bucket.
 - Componentes visuais devem seguir os tokens do design system como fonte única.
 
+## Auditoria QA - 05/07/2026
+
+Baseline operacional registrado em `docs/QA-2026-07-05-baseline-operacional.md`.
+
+Resumo do estado atual:
+
+- Worktree auditado: `/Users/gersonvan/Documents/EventoOn/.apm/worktrees/codex-audit-operational-baseline`.
+- Branch auditada: `codex/audit-operational-baseline`.
+- `pnpm install`: concluído para preparar dependências locais do worktree.
+- `pnpm lint`: passando.
+- `pnpm typecheck`: passando.
+- `pnpm build`: passando.
+- `pnpm env:check`: bloqueado no worktree por ausência de `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET`.
+- Produção `https://revela.gersonvan.com.br/`: `HTTP 200`.
+- Upload público `https://revela.gersonvan.com.br/e/ensaio-producao-kkh7uc`: `HTTP 200`.
+- Telão `https://revela.gersonvan.com.br/screen/ensaio-producao-kkh7uc`: `HTTP 200`.
+- Atalho de telão `https://revela.gersonvan.com.br/t/ensaio-producao-kkh7uc`: `HTTP 307` para `/screen/ensaio-producao-kkh7uc`.
+- Feed público `https://revela.gersonvan.com.br/api/events/ensaio-producao-kkh7uc/approved-photos`: `HTTP 200`, payload com chave `photos` e 2 itens no momento da auditoria.
+- Admin `/admin`: `HTTP 307` para `/admin/login?callbackUrl=%2Fadmin` sem sessão, comportamento esperado.
+- Login admin `/admin/login`: `HTTP 200`.
+- Exportação JSON, ZIP e QR protegidos sob `/admin/events/...`: `HTTP 307` para login sem sessão, comportamento esperado.
+
+Riscos atuais para o evento de 11/07/2026:
+
+- Validação autenticada de admin, moderação real por token privado, exportação real de evento e upload físico por celular ainda exigem sessão/credenciais ou ensaio operacional fora deste baseline sem sessão.
+- O worktree auditado não possui `.env`; validações que dependem de banco, OAuth ou storage real precisam de ambiente configurado antes de novo smoke local.
+- `media.gersonvan.com.br` segue planejado; enquanto não for configurado, o fluxo depende da URL pública atual do R2 registrada no ambiente de produção.
+
 ## Próxima fase
 
 Fase 2 - ensaio operacional e acabamento.
