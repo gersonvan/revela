@@ -20,14 +20,14 @@ title: Revela Fase 2
 |------|--------|-------|--------|
 | 5.1 | Done | qa-release-agent | |
 | 5.2 | Done | documentation-agent | |
-| 5.3 | Ready | qa-release-agent | |
+| 5.3 | Active | qa-release-agent | codex/fase-2-readiness-report |
 
 ## Worker Tracking
 
 | Agent | Instance | Notes |
 |-------|----------|-------|
 | documentation-agent | 1 | Available after Task 5.2. |
-| qa-release-agent | 1 | Available after Task 5.1. Authenticated/mobile E2E validation remains an event-readiness caveat. |
+| qa-release-agent | 1 | Task 5.3 dispatched. Authenticated/mobile E2E validation remains an event-readiness caveat. |
 | web-product-agent | 1 | Available after Task 3.2. |
 | native-app-agent | 1 | Available after Task 3.4. |
 | media-research-agent | 1 | Tasks 4.1 and 4.2 completed. |
