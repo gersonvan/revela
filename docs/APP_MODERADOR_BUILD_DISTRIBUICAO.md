@@ -39,6 +39,7 @@ Resultados:
   - `apps/moderator/App.tsx`: imagem sem `alt` no lint web/a11y.
 - `pnpm build`: passou e incluiu as rotas `/api/moderator-app/*`.
 - Expo CLI disponível via pacote: versão `57.0.4`.
+- EAS CLI disponível via pacote após instalação autorizada: versão `20.5.1`.
 - Config pública Expo:
   - `name`: `Revela Moderador`
   - `slug`: `revela-moderador`
@@ -48,7 +49,7 @@ Resultados:
   - plugin: `expo-notifications`
   - `moderatorApiBaseUrl`: `http://127.0.0.1:3000` por padrão.
 - Não existe `eas.json`.
-- `eas` não está instalado no pacote.
+- `eas-cli` está instalado no pacote `@eventoon/moderator-app`, mas ainda não há projeto EAS configurado.
 - `expo install --check` falhou por compatibilidade esperada do Expo SDK 57:
   - instalado `react@19.2.4`; esperado `19.2.3`.
   - instalado `typescript@5.9.3`; esperado `~6.0.3`.
@@ -212,7 +213,7 @@ Critério prático: o evento não deve depender do app nativo enquanto não houv
 
 ## Riscos Conhecidos
 
-- `eas` ainda não está instalado/configurado.
+- `eas-cli` está instalado no pacote, mas ainda não está configurado com `eas.json` e projeto EAS.
 - Não existe `eas.json`.
 - `expo install --check` aponta versões desalinhadas com Expo SDK 57.
 - Push real depende de aparelho físico, permissões e configuração Expo/EAS.
