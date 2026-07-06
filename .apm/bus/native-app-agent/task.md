@@ -1,74 +1,65 @@
 ---
 stage: 3
-task: 3
+task: 4
 agent: native-app-agent
-log_path: ".apm/memory/stage-03/task-03-03.log.md"
+log_path: ".apm/memory/stage-03/task-03-04.log.md"
 has_dependencies: true
 ---
 
-# Expo Moderator App Core
+# Push Notification Prototype
 
 ## Task Reference
 
-Task 3.3 assigned to `native-app-agent`.
+Task 3.4 assigned to `native-app-agent`.
 
 ## Context Dependencies
 
-This Task depends on app architecture and backend implementation.
+Building on your previous work:
 
-**Same-agent context from Task 3.1:**
+**From Task 3.3:**
 
-- App scope is moderators only; guest native app is out of scope.
-- Web moderation remains fallback for the 2026-07-11 event.
-- App should support invitation/login, event-scoped session, pending list, photo review, approve/reject, and error/empty/offline states.
-- Read `docs/ARQUITETURA_APP_MODERADOR.md` for the app flow and screen contract.
+- Expo app prototype exists in `apps/moderator`.
+- App supports invitation activation, session persistence, `/me`, pending-photo list, photo review, approve/reject, logout, loading/error/empty states.
+- App uses `EXPO_PUBLIC_MODERATOR_API_BASE_URL` and a manually editable backend URL.
+- Session persistence uses `expo-secure-store` on iOS/Android and fallback in memory for web.
+- App validation should use `rtk proxy pnpm --filter @eventoon/moderator-app typecheck`; root `pnpm typecheck` intentionally excludes `apps` due React Native global type conflicts.
 
-**Cross-agent context from Task 3.2:**
+**From Task 3.2:**
 
-Backend support now exists under `/api/moderator-app/*`:
-
-- `POST /api/moderator-app/sessions`
-- `GET /api/moderator-app/me`
-- `GET /api/moderator-app/photos`
-- `GET /api/moderator-app/photos/{photoId}`
-- `POST /api/moderator-app/photos/{photoId}/decision`
-- `PUT /api/moderator-app/push-token`
-- `DELETE /api/moderator-app/sessions/current`
-
-The backend added `ModeratorSession`, Bearer session auth, event-scoped photo endpoints, approve/reject decision endpoint, push-token persistence, logout, `scripts/smoke-moderator-app-api.mjs`, and `docs/API_APP_MODERADOR.md`. Local end-to-end backend smoke still requires Docker/Postgres.
+- Backend has `PUT /api/moderator-app/push-token`, which persists push token, platform, and app version on the current `ModeratorSession`.
+- Backend does not send push notifications yet.
+- Push support should remain no-cost/prototype-oriented in this phase.
 
 ## Objective
 
-Build the first Expo/React Native moderator app prototype core for event-scoped moderation.
+Prototype app-side push notification registration and document grouped new-photo alert behavior for moderator devices.
 
 ## Detailed Instructions
 
-1. Create an Expo app workspace in an appropriate repository location, following the architecture document where practical.
-2. Keep the implementation prototype-focused and low-cost. Do not add paid services.
-3. Implement backend base URL configuration suitable for local/dev/prototype testing.
-4. Implement invitation/session flow:
-   - accept or enter invite token;
-   - call `POST /api/moderator-app/sessions`;
-   - persist session token locally;
-   - restore session via `GET /api/moderator-app/me`;
-   - logout via `DELETE /api/moderator-app/sessions/current`.
-5. Implement pending photo list using `GET /api/moderator-app/photos?status=PENDING`.
-6. Implement a simple photo review UI:
-   - image;
-   - guest name;
-   - message;
-   - uploaded time;
-   - approve/reject actions.
-7. Implement approve/reject using `POST /api/moderator-app/photos/{photoId}/decision`, updating local state after success.
-8. Include empty/error/loading states.
-9. Keep guest upload out of scope.
-10. Document how to run the app prototype and any limitations.
+1. Work in `apps/moderator` and keep guest upload out of scope.
+2. Add app-side notification permission/token registration using Expo APIs where practical.
+3. Register/update push token through `PUT /api/moderator-app/push-token` when a valid app session exists.
+4. Handle unsupported environments gracefully:
+   - web;
+   - simulator/emulator limitations;
+   - missing physical device permissions;
+   - no Expo project credentials.
+5. Do not introduce paid services.
+6. Do not implement backend push dispatch unless it is a clearly isolated no-cost stub. Backend currently persists token only.
+7. Document grouped/throttled new-photo notification behavior for future backend implementation:
+   - avoid one notification per photo during bursts;
+   - avoid sensitive photo/guest data on lock screen;
+   - include fallback when push fails.
+8. Update `apps/moderator/README.md` or a relevant doc with setup, validation, and limitations.
+9. Run the strongest available validation:
+   - `rtk proxy pnpm --filter @eventoon/moderator-app typecheck`
+   - any additional static check available.
 
 ## Workspace
 
 Use this worktree for edits and validation:
 
-`/Users/gersonvan/Documents/EventoOn/.apm/worktrees/codex-expo-moderator-app-core`
+`/Users/gersonvan/Documents/EventoOn/.apm/worktrees/codex-push-notification-prototype`
 
 The main project root is:
 
@@ -78,22 +69,21 @@ Write logs and reports under the main project root `.apm/`, not the worktree cop
 
 Work on branch:
 
-`codex/expo-moderator-app-core`
+`codex/push-notification-prototype`
 
 Do not merge.
 
 ## Expected Output
 
-An Expo/React Native app prototype with login/access, session persistence, pending photo list, photo review UI, and approve/reject actions.
+App-side push registration plus backend-compatible integration documentation or implementation for grouped pending-photo alerts.
 
 ## Validation Criteria
 
-- App code typechecks or passes the strongest available Expo/TypeScript validation.
-- App can be configured with backend base URL.
-- Session/token flow is implemented.
-- Pending list and approve/reject API integration are implemented.
-- Guest upload is not implemented.
-- Run instructions and limitations are documented.
+- App requests/registers notification token where supported, or clearly reports unsupported environment.
+- Push token registration calls the existing backend endpoint when session exists.
+- Grouping/throttling behavior is documented.
+- Failure modes do not block upload, moderation, or web fallback.
+- `rtk proxy pnpm --filter @eventoon/moderator-app typecheck` passes, or blockers are documented precisely.
 
 ## Instruction Accuracy
 
@@ -103,7 +93,7 @@ The objective and expected output are authoritative. If a detailed instruction c
 
 Write this Task Log to:
 
-`/Users/gersonvan/Documents/EventoOn/.apm/memory/stage-03/task-03-03.log.md`
+`/Users/gersonvan/Documents/EventoOn/.apm/memory/stage-03/task-03-04.log.md`
 
 ## Reporting Instructions
 
