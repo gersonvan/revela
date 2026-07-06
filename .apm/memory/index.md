@@ -15,6 +15,7 @@ title: Revela Fase 2
 - Video remains a controlled proof only in this phase. The 2026-07-11 event flow must stay focused on photos, moderation, stable screen display, and export.
 - Final smoke on 06/07/2026 passed local `pnpm typecheck`, `pnpm build`, app typecheck, and public production checks; database smokes, authenticated admin/moderator/export, and physical mobile checks remain explicit pre-event rehearsal items.
 - Event runbook `docs/OPERACAO_EVENTO.md` now centers the 2026-07-11 operation on the web path only and explicitly excludes native app and video proof from the critical path.
+- Fase 2 APM implementation is complete; remaining event risk is operational rehearsal, not implementation completion.
 
 ## Stage Summaries
 
@@ -59,3 +60,13 @@ Stage 4 completed the isolated video proof stream without changing production up
 - task-04-01.log.md
 - task-04-02.log.md
 - task-04-03.log.md
+
+### Stage 5 - Release Readiness
+
+Stage 5 completed release-readiness documentation and QA for the 2026-07-11 event. QA Release Agent produced final smoke evidence in `docs/QA-2026-07-06-smoke-final-producao.md`, confirming local typecheck/build/app typecheck and public production checks while recording blocked authenticated, database, and physical-device validations. Documentation Agent updated `docs/OPERACAO_EVENTO.md` into a non-technical event runbook centered on the web path. QA Release Agent then produced `docs/RELATORIO_PRONTIDAO_FASE_2.md`, separating complete, partial, blocked, and deferred work. Manager review corrected truncated Markdown in the runbook/readiness report before acceptance. The final operational recommendation remains: use QR upload, web moderation, telão, and ZIP export as the critical path; keep native app and video outside the event-critical path; complete a real authenticated rehearsal before the event.
+
+**Task Logs:**
+
+- task-05-01.log.md
+- task-05-02.log.md
+- task-05-03.log.md

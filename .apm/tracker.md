@@ -1,5 +1,6 @@
 ---
 title: Revela Fase 2
+completed_at: 2026-07-06T18:21:11Z
 ---
 
 # APM Tracker
@@ -14,20 +15,14 @@ title: Revela Fase 2
 
 **Stage 4:** Complete
 
-**Stage 5:**
-
-| Task | Status | Agent | Branch |
-|------|--------|-------|--------|
-| 5.1 | Done | qa-release-agent | |
-| 5.2 | Done | documentation-agent | |
-| 5.3 | Active | qa-release-agent | codex/fase-2-readiness-report |
+**Stage 5:** Complete
 
 ## Worker Tracking
 
 | Agent | Instance | Notes |
 |-------|----------|-------|
 | documentation-agent | 1 | Available after Task 5.2. |
-| qa-release-agent | 1 | Task 5.3 dispatched. Authenticated/mobile E2E validation remains an event-readiness caveat. |
+| qa-release-agent | 1 | Available after Task 5.3. Authenticated/mobile E2E validation remains an event-readiness caveat. |
 | web-product-agent | 1 | Available after Task 3.2. |
 | native-app-agent | 1 | Available after Task 3.4. |
 | media-research-agent | 1 | Tasks 4.1 and 4.2 completed. |
@@ -45,5 +40,4 @@ title: Revela Fase 2
 - Stage 3 app work is prototype-complete for this phase. Store distribution remains externally constrained by Apple/Google accounts, EAS project/configuration, physical-device testing, and review timing.
 - `eas-cli` was verified during Task 3.5 but is not versioned in `apps/moderator`; adding it introduced a `pnpm` `minimumReleaseAge` supply-chain block through a new transitive dependency.
 - Web moderation remains the operational fallback for the 2026-07-11 event.
-- Task 5.1 final smoke accepted as Partial due environment/access limits: local typecheck/build/app typecheck and public production checks passed; authenticated admin/moderator/export, database smokes, and real mobile checks still need proper session, Postgres/Docker, and physical device access.
-- Task 5.2 runbook accepted after Manager corrected truncated Markdown in `docs/OPERACAO_EVENTO.md`; runbook now keeps app native and video out of the 2026-07-11 critical path.
+- Fase 2 APM execution is complete at 17/17 tasks. Remaining work is operational rehearsal, not open APM implementation: admin session, moderator token, QR on real phone, telão full-screen, ZIP export, and venue network/device checks.
