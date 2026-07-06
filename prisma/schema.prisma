@@ -111,9 +111,31 @@ model Moderator {
 
   event     Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
   decisions ModerationDecision[]
+  sessions  ModeratorSession[]
 
   @@index([eventId])
   @@index([status])
+}
+
+model ModeratorSession {
+  id          String    @id @default(cuid())
+  moderatorId String
+  tokenHash   String    @unique
+  deviceId    String
+  platform    String?
+  appVersion  String?
+  deviceName  String?
+  pushToken   String?
+  createdAt   DateTime  @default(now())
+  lastSeenAt  DateTime  @default(now())
+  expiresAt   DateTime?
+  revokedAt   DateTime?
+
+  moderator Moderator @relation(fields: [moderatorId], references: [id], onDelete: Cascade)
+
+  @@index([moderatorId])
+  @@index([revokedAt])
+  @@index([expiresAt])
 }
 
 model ModerationDecision {
