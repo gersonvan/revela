@@ -31,6 +31,12 @@ export type ActivateSessionInput = {
   platform: string;
 };
 
+export type RegisterPushTokenInput = {
+  appVersion: string;
+  platform: string;
+  pushToken: string;
+};
+
 export function createModeratorApi(baseUrl: string) {
   const normalizedBaseUrl = baseUrl.replace(/\/+$/, "");
 
@@ -91,6 +97,14 @@ export function createModeratorApi(baseUrl: string) {
           sessionToken,
         },
       );
+    },
+
+    registerPushToken(sessionToken: string, input: RegisterPushTokenInput) {
+      return requestJson<null>("/api/moderator-app/push-token", {
+        body: input,
+        method: "PUT",
+        sessionToken,
+      });
     },
 
     logout(sessionToken: string) {

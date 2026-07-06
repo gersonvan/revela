@@ -48,7 +48,21 @@ pnpm smoke:moderator-app
 
 ## Limitações
 
-- Push token ainda não é registrado pelo app; o backend já possui rota para persistência futura.
+- Push token é registrado apenas quando o moderador toca em `Ativar` na área de alertas. Web, simuladores/emuladores, permissão negada ou ausência de credenciais Expo são tratados como indisponíveis e não bloqueiam a moderação.
+- O backend persiste o token com `PUT /api/moderator-app/push-token`, mas ainda não envia notificações nesta fase.
 - O protótipo usa sessão via `expo-secure-store` em iOS/Android e fallback em memória no web.
 - Não há distribuição por App Store ou Google Play nesta fase.
 - A moderação web segue como fallback operacional.
+
+## Comportamento de alertas agrupados
+
+O comportamento planejado para envio futuro é agrupado e sem dados sensíveis na tela bloqueada:
+
+- agrupar novas fotos pendentes por evento em janelas curtas, por exemplo 1 a 3 minutos;
+- limitar reenvios em períodos de pico para não saturar moderadores;
+- usar texto genérico, como `Novas fotos aguardam moderação`;
+- não incluir foto, nome do convidado, mensagem ou token na notificação;
+- abrir a lista pendente do evento ao tocar no alerta;
+- manter pull-to-refresh, app de moderação e web fallback funcionando mesmo quando push falhar.
+
+Este protótipo só registra o token do aparelho. O dispatch agrupado deve ser implementado depois como job/backend isolado e sem serviço pago obrigatório.
