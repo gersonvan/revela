@@ -8,6 +8,7 @@ title: Revela Fase 2
 
 - Keep authenticated admin, moderator token, export, physical mobile QR checks explicit event-readiness work; 05/07/2026 baseline only verified public production routes plus local lint/typecheck/build without configured `.env`.
 - Video remains a controlled proof only for this phase. The 2026-07-11 event flow must stay focused on photos, moderation, and stable screen display.
+- Stage 2 web controls are merged, but event-readiness still needs authenticated admin/moderator/export rehearsal and real mobile QR/moderation checks before relying on the flow operationally.
 
 ## Stage Summaries
 
@@ -19,6 +20,17 @@ Stage 1 repaired product documentation baseline established operational QA basel
 
 - task-01-01.log.md
 - task-01-02.log.md
+
+### Stage 2 - Event-Ready Web Controls
+
+Stage 2 delivered the web controls needed before app work can depend on the backend: event-level moderation mode in admin settings, upload behavior for `WITH_MODERATION` and `WITHOUT_MODERATION`, `AUTO_APPROVED` moderation history, safer guest selection handling for the 15-photo limit, and mobile-oriented improvements to the web moderation fallback. QA accepted the stage with operational caveats: `pnpm lint`, `pnpm typecheck`, and `pnpm build` passed, public production checks were healthy, and code inspection plus smoke script coverage support the moderation-mode behavior, but local Docker/Postgres was unavailable for `pnpm smoke:moderation-mode` and private session/token access is still required for authenticated admin, moderator, export, and real mobile checks. Relevant commits merged into `main`: `dcc6d4a`, `37021a8`, and the web-flow validation merge following Task 2.4.
+
+**Task Logs:**
+
+- task-02-01.log.md
+- task-02-02.log.md
+- task-02-03.log.md
+- task-02-04.log.md
 
 ### Stage 4 - Video Proof
 
