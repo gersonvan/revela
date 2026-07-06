@@ -9,6 +9,7 @@ title: Revela Fase 2
 - Keep authenticated admin, moderator token, export, physical mobile QR checks explicit event-readiness work; 05/07/2026 baseline only verified public production routes plus local lint/typecheck/build without configured `.env`.
 - Video remains a controlled proof only for this phase. The 2026-07-11 event flow must stay focused on photos, moderation, and stable screen display.
 - Stage 2 web controls are merged, but event-readiness still needs authenticated admin/moderator/export rehearsal and real mobile QR/moderation checks before relying on the flow operationally.
+- Native moderator app architecture is documented in `docs/ARQUITETURA_APP_MODERADOR.md`; current backend still lacks app-specific moderator sessions, device registration, and push-token persistence.
 
 ## Stage Summaries
 
