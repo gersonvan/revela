@@ -14,6 +14,7 @@ title: Revela Fase 2
 - `eas-cli` was verified during Task 3.5 but is not versioned for `@eventoon/moderator-app`; adding it caused a `pnpm` `minimumReleaseAge` supply-chain block through a new transitive dependency. The app still needs `eas.json`, an EAS project, store credentials, and physical-device validation before native distribution.
 - Video remains a controlled proof only in this phase. The 2026-07-11 event flow must stay focused on photos, moderation, stable screen display, and export.
 - Final smoke on 06/07/2026 passed local `pnpm typecheck`, `pnpm build`, app typecheck, and public production checks; database smokes, authenticated admin/moderator/export, and physical mobile checks remain explicit pre-event rehearsal items.
+- Event runbook `docs/OPERACAO_EVENTO.md` now centers the 2026-07-11 operation on the web path only and explicitly excludes native app and video proof from the critical path.
 
 ## Stage Summaries
 

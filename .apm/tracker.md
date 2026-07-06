@@ -19,14 +19,14 @@ title: Revela Fase 2
 | Task | Status | Agent | Branch |
 |------|--------|-------|--------|
 | 5.1 | Done | qa-release-agent | |
-| 5.2 | Active | documentation-agent | codex/update-event-runbook |
-| 5.3 | Waiting: 5.1, 5.2 | qa-release-agent | |
+| 5.2 | Done | documentation-agent | |
+| 5.3 | Ready | qa-release-agent | |
 
 ## Worker Tracking
 
 | Agent | Instance | Notes |
 |-------|----------|-------|
-| documentation-agent | 1 | Task 5.2 dispatched. |
+| documentation-agent | 1 | Available after Task 5.2. |
 | qa-release-agent | 1 | Available after Task 5.1. Authenticated/mobile E2E validation remains an event-readiness caveat. |
 | web-product-agent | 1 | Available after Task 3.2. |
 | native-app-agent | 1 | Available after Task 3.4. |
@@ -46,3 +46,4 @@ title: Revela Fase 2
 - `eas-cli` was verified during Task 3.5 but is not versioned in `apps/moderator`; adding it introduced a `pnpm` `minimumReleaseAge` supply-chain block through a new transitive dependency.
 - Web moderation remains the operational fallback for the 2026-07-11 event.
 - Task 5.1 final smoke accepted as Partial due environment/access limits: local typecheck/build/app typecheck and public production checks passed; authenticated admin/moderator/export, database smokes, and real mobile checks still need proper session, Postgres/Docker, and physical device access.
+- Task 5.2 runbook accepted after Manager corrected truncated Markdown in `docs/OPERACAO_EVENTO.md`; runbook now keeps app native and video out of the 2026-07-11 critical path.
