@@ -10,6 +10,7 @@ title: Revela Fase 2
 - Video remains a controlled proof only for this phase. The 2026-07-11 event flow must stay focused on photos, moderation, and stable screen display.
 - Stage 2 web controls are merged, but event-readiness still needs authenticated admin/moderator/export rehearsal and real mobile QR/moderation checks before relying on the flow operationally.
 - Native moderator app architecture is documented in `docs/ARQUITETURA_APP_MODERADOR.md`; current backend still lacks app-specific moderator sessions, device registration, and push-token persistence.
+- Moderator app backend is now implemented behind `/api/moderator-app/*` with app sessions and event-scoped endpoints, but local end-to-end smoke still requires Docker/Postgres.
 
 ## Stage Summaries
 

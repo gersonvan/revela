@@ -15,8 +15,8 @@ title: Revela Fase 2
 | Task | Status | Agent | Branch |
 |------|--------|-------|--------|
 | 3.1 | Done | native-app-agent | |
-| 3.2 | Active | web-product-agent | codex/moderator-app-backend |
-| 3.3 | Waiting: 3.1, 3.2 | native-app-agent | |
+| 3.2 | Done | web-product-agent | |
+| 3.3 | Active | native-app-agent | codex/expo-moderator-app-core |
 | 3.4 | Waiting: 3.2, 3.3 | native-app-agent | |
 | 3.5 | Waiting: 3.4 | qa-release-agent | |
 
@@ -36,8 +36,8 @@ title: Revela Fase 2
 |-------|----------|-------|
 | documentation-agent | 1 | Available after Task 4.3. |
 | qa-release-agent | 1 | Available after Task 2.4; authenticated/mobile E2E validation remains a future event-readiness caveat. |
-| web-product-agent | 1 | Task 3.2 dispatched. |
-| native-app-agent | 1 | Available after Task 3.1. |
+| web-product-agent | 1 | Available after Task 3.2. |
+| native-app-agent | 1 | Task 3.3 dispatched. |
 | media-research-agent | 1 | Tasks 4.1 and 4.2 completed. |
 
 ## Version Control
@@ -54,3 +54,4 @@ title: Revela Fase 2
 - Stage 2 validation should account for Docker/local database availability: Task 2.2 added `pnpm smoke:moderation-mode`, but end-to-end execution was blocked in the Worker by Docker daemon unavailability.
 - Stage 2 accepted with caveats: lint/typecheck/build and public production checks passed, but `pnpm smoke:moderation-mode`, authenticated admin/moderator/export checks, and real mobile moderation validation still need an environment with Docker/Postgres plus private session/token access.
 - Task 3.1 architecture proposes explicit native app session/device handling in `docs/ARQUITETURA_APP_MODERADOR.md`; backend implementation should treat that as contract proposal, not existing behavior.
+- Task 3.2 added moderator app backend routes, `ModeratorSession`, session auth, app decision helper, push-token persistence, smoke script, and `docs/API_APP_MODERADOR.md`. End-to-end smoke remains blocked without Docker/Postgres.
