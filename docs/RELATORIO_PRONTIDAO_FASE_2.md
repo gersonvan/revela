@@ -38,23 +38,20 @@ Validações locais recentes:
 - `pnpm --filter @eventoon/moderator-app typecheck`: passou.
 - `pnpm lint`: passou com 2 warnings conhecidos no app moderador.
 
-## Completo Para Uso no Evento
+## Completo Para o Caminho Crítico Web
 
-- Upload web por QR Code para convidados.
-- Formulário público de envio de fotos.
-- Limite de até 15 fotos por envio.
-- Telão web com rota `/screen/[slug]` e atalho `/t/[slug]`.
-- Moderação web por link de moderador.
-- Ações de aprovar, rejeitar e remover foto aprovada do telão.
-- Exportação ZIP protegida por login admin.
-- Proteção de rotas admin/export/QR por login.
-- Runbook operacional do evento em `docs/OPERACAO_EVENTO.md`.
+- Página pública de upload por QR Code.
+- Upload web de fotos.
+- Limite operacional de lote de até 15 fotos.
+- Telão em `/screen/[slug]` e atalho `/t/[slug]`.
+- Feed público de fotos aprovadas.
+- Admin protegido por login.
+- Exportação JSON e ZIP protegidas por login.
+- Runbook operacional em `docs/OPERACAO_EVENTO.md`.
 
-## Parcial
+## Parcial ou Dependente de Ensaio Real
 
 ### Modos de Moderação
-
-O código suporta:
 
 - **Com moderação:** fotos entram como `PENDING`.
 - **Sem moderação:** fotos entram como `APPROVED` e registram histórico `AUTO_APPROVED`.
@@ -68,6 +65,12 @@ Recomendação: usar **Com moderação** como padrão seguro. Se optar por **Sem
 O fallback web está disponível e a página base `/moderate` respondeu `HTTP 200`.
 
 Status: o fluxo autenticado com token real de moderador ainda precisa de ensaio em celular físico.
+
+### Exportação ZIP
+
+As rotas protegidas redirecionam corretamente para login sem sessão.
+
+Status: o download real do ZIP ainda precisa ser testado com sessão admin válida antes do evento.
 
 ## Bloqueado Por Ambiente ou Acesso Externo
 
@@ -95,19 +98,13 @@ Status: o fluxo autenticado com token real de moderador ainda precisa de ensaio 
 
 Status honesto:
 
-- Protótipo existe em `apps/moderator`.
-- Typecheck do app passou.
-- Backend possui APIs `/api/moderator-app/*`.
-- App não é obrigatório para o evento de 11/07/2026.
-- Publicação em App Store ou Google Play não está garantida.
+- Existe protótipo em `apps/moderator`.
+- Backend de apoio existe em `/api/moderator-app/*`.
+- O app não é obrigatório para o evento de 11/07/2026.
+- App Store e Google Play não estão garantidos.
+- Ainda faltam `eas.json`, projeto EAS, contas, credenciais, builds, testes em aparelhos físicos e revisão externa.
 
-Bloqueios externos:
-
-- `eas.json` e projeto EAS ainda precisam ser configurados na linha usada para distribuição.
-- Contas Apple Developer e Google Play Developer dependem de configuração externa.
-- Assinatura, credenciais, aparelhos físicos e revisão das lojas não são controlados pelo código.
-
-Decisão para o evento: usar moderação web como fallback obrigatório e caminho principal.
+Decisão para o evento: usar moderação web como caminho operacional seguro.
 
 ### Vídeo
 
@@ -141,22 +138,21 @@ Decisão para o evento: convidados enviam apenas fotos.
 
 ## Riscos Restantes
 
-- Falta de ensaio autenticado com admin real.
-- Falta de ensaio com link real de moderador em celular físico.
-- Falta de teste no equipamento e rede do local.
-- Uso de **Sem moderação** sem equipe monitorando a aba de aprovadas.
-- Dependência indevida do app nativo ou da prova de vídeo.
+- Falta de ensaio autenticado completo antes do evento.
+- Falta de validação física no local, com celular real, rede real e tela real.
+- Falha de internet no local pode afetar upload, moderação e atualização do telão.
+- Uso de **Sem moderação** aumenta o risco de foto inadequada aparecer diretamente no telão.
+- App nativo e vídeo não devem ser usados como plano principal.
 
 ## Recomendação Final
 
-A Fase 2 está pronta para operar o evento se o ensaio real pré-evento passar no fluxo web.
+Para o evento de 11/07/2026, considerar a Fase 2 pronta para operação apenas se o ensaio real pré-evento confirmar:
 
-Não liberar o QR Code aos convidados antes de validar, no mesmo ambiente operacional do evento:
-
-- upload por celular;
-- moderação web;
+- login admin;
+- QR Code em celular físico;
+- envio de foto;
+- aprovação ou remoção por moderador;
 - telão em tela cheia;
-- remoção de foto aprovada por engano;
 - exportação ZIP.
 
-Para o evento de 11/07/2026, manter app nativo e vídeo como itens fora do caminho crítico.
+Sem esse ensaio, a base técnica está encaminhada e os checks públicos estão saudáveis, mas a operação ainda tem risco prático de sessão, dispositivo, rede ou exportação.
