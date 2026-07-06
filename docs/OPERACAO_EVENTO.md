@@ -16,12 +16,12 @@ Não dependa do aplicativo nativo nem da prova de vídeo para operar o evento.
 
 1. Confirmar que o admin consegue entrar em `https://revela.gersonvan.com.br/admin`.
 2. Confirmar que o evento correto está criado.
-3. Confirmar nome, data, imagem do convite, tema e texto de autorização.
-4. Confirmar se o evento está em modo **Com moderação** ou **Sem moderação**.
-5. Confirmar que o evento está ativo antes de liberar o QR Code.
+3. Conferir nome, data, imagem do convite, tema e texto de autorização.
+4. Escolher o modo de moderação: **Com moderação** ou **Sem moderação**.
+5. Ativar o evento somente quando estiver pronto para receber fotos.
 6. Criar links individuais para moderadores, se houver moderação humana.
 7. Enviar cada link de moderador por canal privado.
-8. Guardar um acesso admin disponível para resolver problemas durante a festa.
+8. Manter um acesso admin disponível durante toda a festa.
 
 ### Preparar o telão
 
@@ -30,15 +30,15 @@ Não dependa do aplicativo nativo nem da prova de vídeo para operar o evento.
 3. Abrir a página do telão do evento.
 4. Ativar tela cheia.
 5. Conferir se o QR Code aparece no telão.
-6. Conferir se a imagem do convite aparece quando ainda não há fotos aprovadas.
-7. Evitar depender de Chromecast se a internet do local for instável.
+6. Conferir se a imagem do convite aparece quando ainda não houver fotos.
+7. Conferir se a tela continua ligada e sem bloqueio automático.
 
 ### Preparar o QR Code
 
-1. Abrir o QR Code no celular.
-2. Conferir se ele leva para a página de upload do evento.
-3. Manter uma cópia impressa do QR Code.
-4. Manter também o link de upload salvo para enviar manualmente se alguém não conseguir ler o QR Code.
+1. Abrir o QR Code em um celular real.
+2. Confirmar que o QR leva para a página pública de upload do evento.
+3. Guardar uma cópia do link de upload para enviar por mensagem se a câmera de algum celular não ler o QR.
+4. Se possível, manter uma cópia impressa do QR Code.
 
 ## Escolha do modo de moderação
 
@@ -64,7 +64,7 @@ Neste modo:
 
 - convidados enviam fotos pelo QR Code;
 - fotos podem aparecer diretamente no telão;
-- a aprovação automática fica registrada no histórico;
+- aprovação automática fica registrada no histórico;
 - admin e moderadores ainda podem remover ou rejeitar fotos depois.
 
 Se usar este modo, mantenha uma pessoa olhando a aba de aprovadas durante a festa. Se fotos inadequadas aparecerem ou o volume sair do controle, volte para **Com moderação**.
@@ -79,22 +79,21 @@ Faça este ensaio antes de liberar o QR Code aos convidados.
 4. Se o evento estiver **Com moderação**, abrir o link de moderador e aprovar a foto.
 5. Se o evento estiver **Sem moderação**, confirmar que a foto foi aprovada automaticamente.
 6. Confirmar que a foto aparece no telão.
-7. Remover ou rejeitar a foto de teste pelo painel de moderação.
-8. Confirmar que a foto saiu do telão.
-9. Baixar a exportação ZIP pelo admin.
-10. Confirmar que o arquivo ZIP foi baixado.
-11. Confirmar que o notebook do telão fica em tela cheia.
-12. Confirmar que pelo menos um moderador consegue operar pelo celular.
+7. Rejeitar ou remover uma foto aprovada por engano.
+8. Confirmar que a foto removida saiu do telão.
+9. Baixar a exportação ZIP com sessão admin.
+10. Confirmar que o ZIP baixou corretamente.
+11. Confirmar que o telão fica em tela cheia no notebook, TV ou projetor do evento.
 
-Se qualquer item falhar, não liberar o QR Code ainda.
+Se qualquer item falhar, não liberar o QR Code aos convidados antes de corrigir ou definir um plano manual.
 
 ## Durante o evento
 
 ### Para convidados
 
-Oriente convidados a usar somente o QR Code ou o link web de upload.
+Os convidados usam apenas o QR Code ou o link de upload.
 
-Os convidados podem:
+Eles podem:
 
 - informar nome ou apelido;
 - aceitar o termo;
@@ -138,21 +137,13 @@ Durante a festa, o admin deve acompanhar:
 1. Confirmar se o celular tem internet.
 2. Confirmar se o evento está ativo.
 3. Abrir `https://revela.gersonvan.com.br` no celular.
-4. Enviar o link de upload diretamente para a pessoa.
-5. Usar a cópia impressa do QR Code se a tela estiver difícil de ler.
-
-### Foto não apareceu no telão
-
-1. Conferir se a foto foi enviada com sucesso.
-2. Se o evento estiver **Com moderação**, conferir se ela ainda está pendente.
-3. Aprovar a foto no painel de moderação.
-4. Aguardar a atualização do telão.
-5. Se necessário, recarregar a página do telão.
+4. Enviar o link de upload diretamente para o convidado.
+5. Se vários celulares falharem, trocar para uma cópia impressa ou link enviado por mensagem.
 
 ### Foto inadequada apareceu no telão
 
 1. Abrir o painel de moderação.
-2. Entrar na aba Aprovadas.
+2. Ir para a aba Aprovadas.
 3. Rejeitar ou remover a foto.
 4. Confirmar que ela saiu do telão.
 5. Se o evento estiver **Sem moderação**, avaliar voltar para **Com moderação**.
@@ -163,7 +154,7 @@ Durante a festa, o admin deve acompanhar:
 2. Priorizar fotos claramente boas.
 3. Rejeitar duplicadas, borradas ou inadequadas.
 4. Deixar fotos duvidosas pendentes para revisar com calma.
-5. Não desligar a moderação se a equipe não aceitar o risco de publicação direta no telão.
+5. Não desligar moderação se a equipe não aceitar o risco de publicação direta no telão.
 
 ### Moderador perdeu acesso
 
@@ -193,19 +184,19 @@ Durante a festa, o admin deve acompanhar:
 2. Confirmar que novos uploads foram bloqueados.
 3. Baixar a exportação ZIP protegida.
 4. Guardar o ZIP em local seguro.
-5. Conferir se fotos e metadados esperados estão no arquivo.
-6. Manter o histórico do evento preservado.
-7. Registrar qualquer problema ocorrido para correção posterior.
+5. Conferir se o ZIP contém fotos e `metadata.json`.
+6. Conferir se fotos importantes aparecem na exportação.
+7. Manter o link e os dados do evento preservados até a entrega final ao cliente.
 
 ## O que não usar como caminho crítico
 
-### Aplicativo nativo de moderadores
+### App nativo
 
-O app nativo é protótipo. Ele não deve ser necessário para operar o evento de 11/07/2026.
+O app nativo de moderadores é protótipo. Ele não deve ser obrigatório para operar o evento de 11/07/2026.
 
-Use o app apenas como ensaio controlado se houver tempo e aparelho disponível. Se qualquer coisa falhar, moderadores devem continuar pelo link web.
+Use a moderação web como fallback seguro. O app nativo só deve ser usado em ensaio separado se já estiver instalado, configurado e validado em aparelho real.
 
-Não prometa disponibilidade em App Store ou Google Play. Isso depende de contas, credenciais, builds, revisão externa e testes em aparelhos reais.
+Publicação em App Store ou Google Play não está garantida. Isso depende de contas, credenciais, builds, revisão externa e testes em aparelhos reais.
 
 ### Vídeo
 
