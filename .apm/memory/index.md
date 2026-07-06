@@ -12,6 +12,7 @@ title: Revela Fase 2
 - Native moderator app architecture is documented in `docs/ARQUITETURA_APP_MODERADOR.md`; current backend still lacks app-specific moderator sessions, device registration, and push-token persistence.
 - Moderator app backend is now implemented behind `/api/moderator-app/*` with app sessions and event-scoped endpoints, but local end-to-end smoke still requires Docker/Postgres.
 - Expo moderator app prototype lives in `apps/moderator`; root TypeScript excludes `apps` to avoid React Native global type conflicts, so app validation must use the package filter.
+- Push registration in the Expo app is prototype-only: backend stores tokens, but no dispatch is implemented yet, and real token validation needs a supported physical device plus Expo setup.
 
 ## Stage Summaries
 

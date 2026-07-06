@@ -17,8 +17,8 @@ title: Revela Fase 2
 | 3.1 | Done | native-app-agent | |
 | 3.2 | Done | web-product-agent | |
 | 3.3 | Done | native-app-agent | |
-| 3.4 | Active | native-app-agent | codex/push-notification-prototype |
-| 3.5 | Waiting: 3.4 | qa-release-agent | |
+| 3.4 | Done | native-app-agent | |
+| 3.5 | Active | qa-release-agent | codex/app-build-distribution-plan |
 
 **Stage 4:** Complete
 
@@ -35,9 +35,9 @@ title: Revela Fase 2
 | Agent | Instance | Notes |
 |-------|----------|-------|
 | documentation-agent | 1 | Available after Task 4.3. |
-| qa-release-agent | 1 | Available after Task 2.4; authenticated/mobile E2E validation remains a future event-readiness caveat. |
+| qa-release-agent | 1 | Task 3.5 dispatched; authenticated/mobile E2E validation remains a future event-readiness caveat. |
 | web-product-agent | 1 | Available after Task 3.2. |
-| native-app-agent | 1 | Task 3.4 dispatched. |
+| native-app-agent | 1 | Available after Task 3.4. |
 | media-research-agent | 1 | Tasks 4.1 and 4.2 completed. |
 
 ## Version Control
@@ -56,3 +56,4 @@ title: Revela Fase 2
 - Task 3.1 architecture proposes explicit native app session/device handling in `docs/ARQUITETURA_APP_MODERADOR.md`; backend implementation should treat that as contract proposal, not existing behavior.
 - Task 3.2 added moderator app backend routes, `ModeratorSession`, session auth, app decision helper, push-token persistence, smoke script, and `docs/API_APP_MODERADOR.md`. End-to-end smoke remains blocked without Docker/Postgres.
 - Task 3.3 added `apps/moderator`; React Native global types are intentionally isolated from root typecheck by excluding `apps` in root `tsconfig.json`. Validate the app with `rtk proxy pnpm --filter @eventoon/moderator-app typecheck`.
+- Task 3.4 added app-side Expo push registration and docs; real token generation requires physical device, permissions, and Expo project/credentials.
