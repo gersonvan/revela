@@ -19,14 +19,14 @@ title: Revela Fase 2
 | Task | Status | Agent | Branch |
 |------|--------|-------|--------|
 | 5.1 | Done | qa-release-agent | |
-| 5.2 | Ready | documentation-agent | |
+| 5.2 | Active | documentation-agent | codex/update-event-runbook |
 | 5.3 | Waiting: 5.1, 5.2 | qa-release-agent | |
 
 ## Worker Tracking
 
 | Agent | Instance | Notes |
 |-------|----------|-------|
-| documentation-agent | 1 | Available after Task 4.3. |
+| documentation-agent | 1 | Task 5.2 dispatched. |
 | qa-release-agent | 1 | Available after Task 5.1. Authenticated/mobile E2E validation remains an event-readiness caveat. |
 | web-product-agent | 1 | Available after Task 3.2. |
 | native-app-agent | 1 | Available after Task 3.4. |
