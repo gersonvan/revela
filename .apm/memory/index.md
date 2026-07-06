@@ -13,6 +13,7 @@ title: Revela Fase 2
 - Push registration in the Expo app is prototype-only: backend stores tokens, but grouped backend dispatch is not implemented yet, and real token validation needs a supported physical device plus Expo/EAS setup.
 - `eas-cli` was verified during Task 3.5 but is not versioned for `@eventoon/moderator-app`; adding it caused a `pnpm` `minimumReleaseAge` supply-chain block through a new transitive dependency. The app still needs `eas.json`, an EAS project, store credentials, and physical-device validation before native distribution.
 - Video remains a controlled proof only in this phase. The 2026-07-11 event flow must stay focused on photos, moderation, stable screen display, and export.
+- Final smoke on 06/07/2026 passed local `pnpm typecheck`, `pnpm build`, app typecheck, and public production checks; database smokes, authenticated admin/moderator/export, and physical mobile checks remain explicit pre-event rehearsal items.
 
 ## Stage Summaries
 
