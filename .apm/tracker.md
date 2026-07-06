@@ -10,15 +10,7 @@ title: Revela Fase 2
 
 **Stage 2:** Complete
 
-**Stage 3:**
-
-| Task | Status | Agent | Branch |
-|------|--------|-------|--------|
-| 3.1 | Done | native-app-agent | |
-| 3.2 | Done | web-product-agent | |
-| 3.3 | Done | native-app-agent | |
-| 3.4 | Done | native-app-agent | |
-| 3.5 | Active | qa-release-agent | codex/app-build-distribution-plan |
+**Stage 3:** Complete
 
 **Stage 4:** Complete
 
@@ -26,8 +18,8 @@ title: Revela Fase 2
 
 | Task | Status | Agent | Branch |
 |------|--------|-------|--------|
-| 5.1 | Waiting: 2.4, 3.5 | qa-release-agent | |
-| 5.2 | Waiting: 5.1, 4.3 | documentation-agent | |
+| 5.1 | Ready | qa-release-agent | |
+| 5.2 | Waiting: 5.1 | documentation-agent | |
 | 5.3 | Waiting: 5.1, 5.2 | qa-release-agent | |
 
 ## Worker Tracking
@@ -35,7 +27,7 @@ title: Revela Fase 2
 | Agent | Instance | Notes |
 |-------|----------|-------|
 | documentation-agent | 1 | Available after Task 4.3. |
-| qa-release-agent | 1 | Task 3.5 dispatched; authenticated/mobile E2E validation remains a future event-readiness caveat. |
+| qa-release-agent | 1 | Available after Task 3.5. Authenticated/mobile E2E validation remains an event-readiness caveat. |
 | web-product-agent | 1 | Available after Task 3.2. |
 | native-app-agent | 1 | Available after Task 3.4. |
 | media-research-agent | 1 | Tasks 4.1 and 4.2 completed. |
@@ -43,17 +35,13 @@ title: Revela Fase 2
 ## Version Control
 
 | Repository | Base Branch | Branch Convention | Commit Convention |
-|-----------|-------------|-------------------|-------------------|
+|------------|-------------|-------------------|-------------------|
 | EventoOn | main | `codex/<short-description>` | Short imperative messages matching existing history. |
 
 ## Working Notes
 
-- APM artifacts are intentionally versioned in this project, per user preference.
-- QA baseline accepted with documented auth/session caveat: local lint/typecheck/build and public production checks passed, while authenticated admin/moderator/export checks require a valid session or configured local environment.
-- Task 2.2 should include the updated guest media selection requirement: selecting more than 15 items must not discard an existing valid selection and must show a clear limit message.
-- Stage 2 validation should account for Docker/local database availability: Task 2.2 added `pnpm smoke:moderation-mode`, but end-to-end execution was blocked in the Worker by Docker daemon unavailability.
-- Stage 2 accepted with caveats: lint/typecheck/build and public production checks passed, but `pnpm smoke:moderation-mode`, authenticated admin/moderator/export checks, and real mobile moderation validation still need an environment with Docker/Postgres plus private session/token access.
-- Task 3.1 architecture proposes explicit native app session/device handling in `docs/ARQUITETURA_APP_MODERADOR.md`; backend implementation should treat that as contract proposal, not existing behavior.
-- Task 3.2 added moderator app backend routes, `ModeratorSession`, session auth, app decision helper, push-token persistence, smoke script, and `docs/API_APP_MODERADOR.md`. End-to-end smoke remains blocked without Docker/Postgres.
-- Task 3.3 added `apps/moderator`; React Native global types are intentionally isolated from root typecheck by excluding `apps` in root `tsconfig.json`. Validate the app with `rtk proxy pnpm --filter @eventoon/moderator-app typecheck`.
-- Task 3.4 added app-side Expo push registration and docs; real token generation requires physical device, permissions, and Expo project/credentials.
+- Stage 2 web flow has passed lint, typecheck, build, and code/smoke-script inspection, but Docker/Postgres unavailability blocked full local E2E smoke in prior QA.
+- Production readiness still needs authenticated admin, moderator-token, export, QR/mobile, and screen checks against usable credentials/session.
+- Stage 3 app work is prototype-complete for this phase. Store distribution remains externally constrained by Apple/Google accounts, EAS project/configuration, physical-device testing, and review timing.
+- `eas-cli` was verified during Task 3.5 but is not versioned in `apps/moderator`; adding it introduced a `pnpm` `minimumReleaseAge` supply-chain block through a new transitive dependency.
+- Web moderation remains the operational fallback for the 2026-07-11 event.

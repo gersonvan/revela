@@ -39,8 +39,8 @@ Resultados:
   - `apps/moderator/App.tsx`: imagem sem `alt` no lint web/a11y.
 - `pnpm build`: passou e incluiu as rotas `/api/moderator-app/*`.
 - Expo CLI disponível via pacote: versão `57.0.4`.
-- EAS CLI disponível via pacote após instalação autorizada: versão `20.5.1`.
-- Config pública Expo:
+- EAS CLI foi verificado na investigação como `20.5.1`, mas não ficou versionado no pacote porque a árvore transitiva adicionada ao lockfile foi bloqueada pela política `minimumReleaseAge` do `pnpm`.
+- Configuração pública Expo:
   - `name`: `Revela Moderador`
   - `slug`: `revela-moderador`
   - `version`: `0.1.0`
@@ -49,7 +49,7 @@ Resultados:
   - plugin: `expo-notifications`
   - `moderatorApiBaseUrl`: `http://127.0.0.1:3000` por padrão.
 - Não existe `eas.json`.
-- `eas-cli` está instalado no pacote `@eventoon/moderator-app`, mas ainda não há projeto EAS configurado.
+- `eas-cli` não está versionado no pacote `@eventoon/moderator-app`; deve ser instalado/configurado junto com `eas.json` quando a etapa de build interno for executada.
 - `expo install --check` falhou por compatibilidade esperada do Expo SDK 57:
   - instalado `react@19.2.4`; esperado `19.2.3`.
   - instalado `typescript@5.9.3`; esperado `~6.0.3`.
@@ -74,7 +74,7 @@ Pré-requisitos:
 1. Backend Next.js rodando.
 2. Banco com dados de teste.
 3. Link/token de moderador válido.
-4. Celular na mesma rede do computador, ou túnel Expo quando a rede local não funcionar.
+4. Celular na mesma rede do computador, ou túnel Expo quando rede local não funcionar.
 
 Com backend local:
 
@@ -120,7 +120,7 @@ Simulador/emulador ou web podem validar parte visual e fluxo HTTP, mas não subs
 Antes de builds distribuíveis:
 
 1. Decidir se o projeto usará EAS.
-2. Instalar/configurar `eas-cli`.
+2. Instalar/configurar `eas-cli` quando a política de supply chain permitir a árvore transitiva necessária.
 3. Criar `eas.json`.
 4. Criar projeto Expo/EAS e definir `extra.eas.projectId` se push for usado em build.
 5. Resolver o desalinhamento apontado por `expo install --check`.
@@ -134,11 +134,11 @@ Exige:
 - Conta Apple Developer ativa.
 - App Identifier/bundle identifier.
 - Certificados e provisioning profiles.
-- Dispositivo cadastrado para Ad Hoc, se usar distribuição interna fora de TestFlight.
+- Dispositivo cadastrado para Ad Hoc, se usar distribuição interna fora do TestFlight.
 - App Store Connect para TestFlight.
 - Revisão externa para publicação pública.
 
-Não prometer disponibilidade em iPhone sem esses passos concluídos.
+Não prometer disponibilidade em iPhone sem passos concluídos.
 
 ### Google Play Developer
 
@@ -171,10 +171,9 @@ Resultado esperado: app útil para ensaio técnico, ainda sem promessa de distri
 2. Configurar projeto EAS.
 3. Configurar bundle identifier iOS e application ID Android.
 4. Gerar build de desenvolvimento ou preview.
-5. Testar em aparelhos reais dos moderadores.
-6. Validar push token real quando permissões e credenciais estiverem disponíveis.
+5. Instalar em poucos aparelhos de moderadores e validar o fluxo completo.
 
-Resultado esperado: build interno para poucos aparelhos, condicionado a contas/credenciais.
+Resultado esperado: build interno condicionado a contas, credenciais, EAS e aparelhos disponíveis.
 
 ### Fase 3 - Distribuição por Lojas
 
@@ -210,12 +209,13 @@ Critério prático: o evento não deve depender do app nativo enquanto não houv
 - [ ] Aprovar/rejeitar validado.
 - [ ] Web fallback validado com o mesmo moderador ou moderador reserva.
 - [ ] Push testado apenas se houver aparelho físico e credenciais Expo suficientes.
+- [ ] `eas.json` e projeto EAS configurados antes de tratar build nativo como distribuível.
 
 ## Riscos Conhecidos
 
-- `eas-cli` está instalado no pacote, mas ainda não está configurado com `eas.json` e projeto EAS.
-- Não existe `eas.json`.
-- `expo install --check` aponta versões desalinhadas com Expo SDK 57.
-- Push real depende de aparelho físico, permissões e configuração Expo/EAS.
-- Lojas dependem de contas e revisão externa.
-- O app não substitui o painel web para o evento de 11/07/2026.
+- `eas-cli` não está versionado no pacote porque a instalação atual foi bloqueada por política de supply chain em dependência transitiva recente.
+- `expo install --check` aponta desalinhamento de dependências para o SDK 57.
+- Contas Apple Developer e Google Play Developer são dependências externas.
+- Revisão de TestFlight/Google Play não é controlada pelo repositório.
+- Push real precisa de aparelho físico, permissões e credenciais Expo/EAS.
+- Para 11/07/2026, a moderação web permanece o fallback operacional obrigatório.
