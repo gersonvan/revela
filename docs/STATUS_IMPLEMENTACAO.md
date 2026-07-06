@@ -213,6 +213,26 @@ Riscos atuais para o evento de 11/07/2026:
 - O worktree auditado não possui `.env`; validações que dependem de banco, OAuth ou storage real precisam de ambiente configurado antes de novo smoke local.
 - `media.gersonvan.com.br` segue planejado; enquanto não for configurado, o fluxo depende da URL pública atual do R2 registrada no ambiente de produção.
 
+## Validação Web - 05/07/2026
+
+Evidência detalhada registrada em `docs/QA-2026-07-05-validacao-fluxo-web.md`.
+
+Resumo:
+
+- Worktree auditado: `/Users/gersonvan/Documents/EventoOn/.apm/worktrees/codex-validate-web-flow`.
+- Branch auditada: `codex/validate-web-flow`.
+- `pnpm install`: concluído para preparar dependências locais do worktree.
+- `pnpm lint`: passando.
+- `pnpm typecheck`: passando.
+- `pnpm build`: passando.
+- `pnpm env:check`: bloqueado por ausência de `.env` local no worktree.
+- `pnpm smoke:moderation-mode`: bloqueado por `ECONNREFUSED 127.0.0.1:5432`; Docker não estava ativo para subir o Postgres local.
+- Inspeção de código confirma que `WITH_MODERATION` cria fotos `PENDING` e `WITHOUT_MODERATION` cria fotos `APPROVED`.
+- Inspeção de código confirma histórico automático `AUTO_APPROVED` sem `moderatorId` humano.
+- Inspeção de código confirma que seleção acima de 15 fotos preserva a seleção válida já existente e mostra mensagem em português.
+- Checks públicos de produção sem sessão: home, upload e feed aprovado responderam `HTTP 200`; `/admin` redirecionou para login com `HTTP 307`.
+- Nenhum deploy foi realizado nesta validação.
+
 ## Próxima fase
 
 Fase 2 - ensaio operacional e acabamento.
