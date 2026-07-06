@@ -349,6 +349,8 @@ Infraestrutura de baixo custo:
 
 ## Distribuição e testes
 
+Checklist operacional atualizado: `docs/APP_MODERADOR_BUILD_DISTRIBUICAO.md`.
+
 Pode ser testado agora:
 
 - fluxo visual no Expo Go ou dev build;

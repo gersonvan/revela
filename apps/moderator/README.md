@@ -46,6 +46,9 @@ Para validar o fluxo integrado, o backend precisa estar rodando com banco e dado
 pnpm smoke:moderator-app
 ```
 
+O plano de build, ensaio em aparelho, EAS e limites de distribuição está em
+`docs/APP_MODERADOR_BUILD_DISTRIBUICAO.md`.
+
 ## Limitações
 
 - Push token é registrado apenas quando o moderador toca em `Ativar` na área de alertas. Web, simuladores/emuladores, permissão negada ou ausência de credenciais Expo são tratados como indisponíveis e não bloqueiam a moderação.
