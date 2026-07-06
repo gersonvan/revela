@@ -7,6 +7,7 @@ const config: ExpoConfig = {
   orientation: "portrait",
   scheme: "revela-moderador",
   userInterfaceStyle: "light",
+  plugins: ["expo-notifications"],
   extra: {
     moderatorApiBaseUrl:
       process.env.EXPO_PUBLIC_MODERATOR_API_BASE_URL ?? "http://127.0.0.1:3000",

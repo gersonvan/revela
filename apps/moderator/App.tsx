@@ -32,6 +32,7 @@ import {
   saveSessionToken,
 } from "./src/auth/session-store";
 import { APP_VERSION, DEFAULT_API_BASE_URL } from "./src/config";
+import { registerForPushNotifications } from "./src/notifications/register-push-token";
 
 type AppState = "checking-session" | "login" | "moderation";
 
@@ -46,6 +47,8 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [pushMessage, setPushMessage] = useState<string | null>(null);
+  const [registeringPush, setRegisteringPush] = useState(false);
   const api = useMemo(() => createModeratorApi(apiBaseUrl), [apiBaseUrl]);
 
   const selectedPhoto =
@@ -232,6 +235,36 @@ export default function App() {
     }
   }
 
+  async function registerPushToken() {
+    if (!sessionToken) {
+      setPushMessage("Entre com um convite antes de ativar notificações.");
+      return;
+    }
+
+    setRegisteringPush(true);
+    setPushMessage(null);
+
+    try {
+      const result = await registerForPushNotifications();
+
+      if (result.status !== "registered") {
+        setPushMessage(result.message);
+        return;
+      }
+
+      await api.registerPushToken(sessionToken, {
+        appVersion: APP_VERSION,
+        platform: Platform.OS,
+        pushToken: result.token,
+      });
+      setPushMessage(result.message);
+    } catch (error) {
+      showError(error, "Não foi possível registrar notificações.");
+    } finally {
+      setRegisteringPush(false);
+    }
+  }
+
   if (state === "checking-session") {
     return (
       <Screen>
@@ -333,6 +366,8 @@ export default function App() {
 
         {errorMessage ? <InlineMessage tone="error" text={errorMessage} /> : null}
 
+        {pushMessage ? <InlineMessage tone="info" text={pushMessage} /> : null}
+
         <View style={styles.summaryRow}>
           <SummaryTile label="Pendentes" tone="pending" value={context?.counts.pending ?? 0} />
           <SummaryTile label="Aprovadas" tone="approved" value={context?.counts.approved ?? 0} />
@@ -343,6 +378,24 @@ export default function App() {
           <View style={styles.loadingRow}>
             <ActivityIndicator color="#D4562B" />
             <Text style={styles.mutedText}>Atualizando...</Text>
+          </View>
+        ) : null}
+
+        {context?.permissions.canRegisterPushToken ? (
+          <View style={styles.notificationCard}>
+            <View style={styles.notificationText}>
+              <Text style={styles.sectionTitle}>Alertas de fotos pendentes</Text>
+              <Text style={styles.mutedText}>
+                Registra este aparelho para alertas agrupados. Se falhar, a
+                moderação continua disponível no app e no web.
+              </Text>
+            </View>
+            <SecondaryButton
+              disabled={registeringPush}
+              icon="notifications-outline"
+              label={registeringPush ? "Ativando..." : "Ativar"}
+              onPress={() => void registerPushToken()}
+            />
           </View>
         ) : null}
 
@@ -645,6 +698,17 @@ const styles = StyleSheet.create({
     color: "#8A6B55",
     fontSize: 13,
     lineHeight: 18,
+  },
+  notificationCard: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "#E8DDD1",
+    borderRadius: 12,
+    borderWidth: 1,
+    gap: 14,
+    padding: 14,
+  },
+  notificationText: {
+    gap: 4,
   },
   photo: {
     aspectRatio: 4 / 3,
