@@ -34,13 +34,13 @@ Resultados:
 
 - `pnpm install`: passou.
 - `pnpm typecheck`: passou.
-- `pnpm build`: passou. O build incluiu as rotas web principais, `/api/moderator-app/*`, upload, telão, admin, exportação e QR.
+- `pnpm build`: passou. O build incluiu rotas web principais, admin/export/QR, screen/upload APIs e `/api/moderator-app/*`.
 - `pnpm --filter @eventoon/moderator-app typecheck`: passou.
 - `pnpm lint`: passou com 2 warnings conhecidos em `apps/moderator/App.tsx`:
   - dependências ausentes no `useEffect`;
   - aviso de `Image` sem `alt` pelo lint web/a11y.
-- `pnpm env:check`: falhou porque o worktree não tem `.env` local. Variáveis ausentes: `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`.
-- `pnpm --filter @eventoon/moderator-app exec eas --version`: falhou neste worktree porque `eas` não está versionado nesta branch.
+- `pnpm env:check`: falhou porque o worktree não tem `.env` local. Variáveis ausentes: `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET`.
+- `pnpm --filter @eventoon/moderator-app exec eas --version`: falhou porque `eas` não está versionado nesta branch.
 - `docker compose up -d postgres`: falhou porque o Docker daemon não estava disponível em `unix:///Users/gersonvan/.docker/run/docker.sock`.
 - `pnpm db:migrate`: falhou por Postgres local indisponível.
 - `pnpm smoke:moderation-mode`: falhou com `ECONNREFUSED 127.0.0.1:5432`.
@@ -69,15 +69,15 @@ Nenhum token de moderador, cookie de sessão, e-mail privado ou credencial foi u
 
 ## Estado por Fluxo
 
-### Guest upload
+### Guest Upload
 
 Status: validado parcialmente.
 
-- A rota pública de upload do evento de ensaio respondeu `HTTP 200`.
-- O build local passou com a rota `/api/events/[slug]/photos`.
-- Upload real de arquivo em produção não foi repetido neste smoke para não criar dados sem necessidade.
+- A rota pública de upload do evento respondeu `HTTP 200`.
+- O build validou a rota de upload `/api/events/[slug]/photos`.
+- Upload real de arquivo em produção não foi repetido neste smoke para evitar criação de dados sem necessidade.
 
-### Modos de moderação
+### Modos de Moderação
 
 Status: validado por build e inspeção anterior; smoke de banco bloqueado.
 
@@ -85,13 +85,13 @@ Status: validado por build e inspeção anterior; smoke de banco bloqueado.
 - O smoke `pnpm smoke:moderation-mode` existe, mas não rodou por falta de Postgres local.
 - Para 11/07/2026, se usar `Sem moderação`, fazer ensaio autenticado antes, porque essa opção publica direto no telão.
 
-### Moderação web mobile
+### Moderação Web Mobile
 
 Status: fallback disponível; validação autenticada pendente.
 
 - `/moderate` respondeu `HTTP 200`.
-- A página `/moderate/[token]` mantém layout responsivo por código (`px-3`, `sm:px-5`, grid adaptativo e cards por status).
-- Sem token privado, não foi validada a fila real em aparelho ou viewport mobile autenticada.
+- A página `/moderate/[token]` mantém layout responsivo por código, com espaçamentos adaptativos e cards por status.
+- Sem token privado, não foi validada fila real em aparelho ou viewport mobile autenticada.
 
 ### Telão
 
@@ -108,7 +108,7 @@ Status: proteção validada; export real pendente de sessão admin.
 - Rotas protegidas de JSON, ZIP e QR redirecionaram para login sem sessão.
 - Download real de ZIP/export exige sessão admin válida e deve ser ensaiado antes do evento.
 
-### App moderador
+### App Moderador
 
 Status: protótipo validado em typecheck; não é dependência operacional do evento.
 
@@ -120,26 +120,21 @@ Status: protótipo validado em typecheck; não é dependência operacional do ev
 
 ### Vídeo
 
-Status: prova controlada, fora de produção.
+Status: prova controlada, fora do caminho crítico de produção.
 
-- `scripts/video-proof.mjs --help` passou.
+- `node scripts/video-proof.mjs --help` passou.
 - Não existe `storage/video-proof/` com amostra local neste worktree, então a prova não foi reexecutada.
-- `docs/PROVA_VIDEO_CONTROLADA.md` mantém vídeo fora do fluxo público de upload, telão, exportação e schema para 11/07/2026.
+- `docs/PROVA_VIDEO_CONTROLADA.md` mantém vídeo fora do fluxo de produção de 11/07/2026.
 
-## Riscos Restantes Para 11/07/2026
+## Itens Pendentes Antes de 11/07/2026
 
-- Fazer ensaio autenticado com admin real ou sessão válida:
-  - criar/ativar evento;
-  - conferir modo de moderação;
-  - gerar QR;
-  - validar exportação ZIP real.
-- Fazer ensaio com link privado de moderador:
-  - abrir em celular;
-  - aprovar/rejeitar foto;
-  - remover foto aprovada por engano.
-- Validar upload real em celular no local ou rede equivalente.
-- Confirmar que o telão abre em tela cheia no notebook/TV/projetor do evento.
-- Manter o app nativo e vídeo fora do caminho crítico.
+- Ensaiar login admin com sessão real.
+- Criar ou ativar os links de moderadores que serão usados no evento.
+- Validar QR Code e upload real em celular no local ou em rede equivalente.
+- Validar aprovar/rejeitar no link real de moderador.
+- Validar exportação ZIP com sessão admin e evento real.
+- Confirmar que o telão abre em tela cheia no notebook, TV ou projetor do evento.
+- Manter app nativo e vídeo fora do caminho crítico.
 
 ## Recomendação Final
 
