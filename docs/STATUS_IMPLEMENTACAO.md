@@ -233,6 +233,25 @@ Resumo:
 - Checks públicos de produção sem sessão: home, upload e feed aprovado responderam `HTTP 200`; `/admin` redirecionou para login com `HTTP 307`.
 - Nenhum deploy foi realizado nesta validação.
 
+## Smoke Final de Produção - 06/07/2026
+
+Evidência detalhada registrada em `docs/QA-2026-07-06-smoke-final-producao.md`.
+
+Resumo:
+
+- Worktree auditado: `/Users/gersonvan/Documents/EventoOn/.apm/worktrees/codex-final-smoke-production-checks`.
+- Branch auditada: `codex/final-smoke-production-checks`.
+- `pnpm typecheck`: passando.
+- `pnpm build`: passando.
+- `pnpm --filter @eventoon/moderator-app typecheck`: passando.
+- `pnpm lint`: passando com 2 warnings conhecidos no app moderador.
+- `pnpm env:check`: bloqueado por ausência de `.env` local no worktree.
+- `pnpm smoke:moderation-mode` e `pnpm smoke:moderator-app`: bloqueados por Postgres local indisponível em `127.0.0.1:5432`.
+- Produção pública em `https://revela.gersonvan.com.br`: home, upload, telão e feed aprovado responderam `HTTP 200`.
+- `/t/ensaio-producao-kkh7uc`: redireciona com `HTTP 307` para `/screen/ensaio-producao-kkh7uc`.
+- `/admin`, exportação JSON, ZIP e QR protegidos redirecionam para login sem sessão, comportamento esperado.
+- Recomendação para 11/07/2026: operar pelo fluxo web já validado; app nativo e vídeo permanecem não críticos para o evento.
+
 ## Próxima fase
 
 Fase 2 - ensaio operacional e acabamento.
