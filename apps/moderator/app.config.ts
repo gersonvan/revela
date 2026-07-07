@@ -16,6 +16,8 @@ const config: ExpoConfig = {
     supportsTablet: false,
   },
   android: {
+    package: "br.com.gersonvan.revelamoderador",
+    versionCode: 1,
     adaptiveIcon: {
       backgroundColor: "#FBF5EE",
     },
