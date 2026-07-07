@@ -106,6 +106,13 @@ export default function App() {
 
   useEffect(() => {
     let mounted = true;
+    let restoreSettled = false;
+    const restoreTimeoutId = setTimeout(() => {
+      if (!mounted || restoreSettled) return;
+      restoreSettled = true;
+      setErrorMessage("Não foi possível verificar a sessão. Tente entrar novamente.");
+      setState("login");
+    }, 15000);
 
     async function restoreSession() {
       const storedBaseUrl = await loadApiBaseUrl();
@@ -146,10 +153,14 @@ export default function App() {
         });
     }
 
-    void restoreSession();
+    void restoreSession().finally(() => {
+      restoreSettled = true;
+      clearTimeout(restoreTimeoutId);
+    });
 
     return () => {
       mounted = false;
+      clearTimeout(restoreTimeoutId);
     };
   }, [loadModerationState]);
 

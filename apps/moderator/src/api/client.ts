@@ -13,6 +13,8 @@ type RequestOptions = {
   sessionToken?: string | null;
 };
 
+const REQUEST_TIMEOUT_MS = 15000;
+
 export class ModeratorApiError extends Error {
   status: number;
 
@@ -41,17 +43,35 @@ export function createModeratorApi(baseUrl: string) {
   const normalizedBaseUrl = baseUrl.replace(/\/+$/, "");
 
   async function requestJson<T>(path: string, options: RequestOptions = {}): Promise<T> {
-    const response = await fetch(`${normalizedBaseUrl}${path}`, {
-      body: options.body ? JSON.stringify(options.body) : undefined,
-      headers: {
-        accept: "application/json",
-        ...(options.body ? { "content-type": "application/json" } : {}),
-        ...(options.sessionToken
-          ? { authorization: `Bearer ${options.sessionToken}` }
-          : {}),
-      },
-      method: options.method ?? "GET",
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    let response: Response;
+
+    try {
+      response = await fetch(`${normalizedBaseUrl}${path}`, {
+        body: options.body ? JSON.stringify(options.body) : undefined,
+        headers: {
+          accept: "application/json",
+          ...(options.body ? { "content-type": "application/json" } : {}),
+          ...(options.sessionToken
+            ? { authorization: `Bearer ${options.sessionToken}` }
+            : {}),
+        },
+        method: options.method ?? "GET",
+        signal: controller.signal,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        throw new ModeratorApiError(
+          "Tempo esgotado ao conectar com o servidor.",
+          408,
+        );
+      }
+
+      throw error;
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
     const responseText = await response.text();
     const payload = responseText ? (JSON.parse(responseText) as unknown) : null;
