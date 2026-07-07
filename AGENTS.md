@@ -65,4 +65,49 @@ APM_RULES {
 - Keep generated artifacts out of Git unless the repository already tracks that artifact type or the task explicitly requires it.
 - Prefer focused edits in the files owned by the assigned task.
 
+## Build Android remoto (servidor de build)
+
+O app `apps/moderator` usa Expo/EAS com build local executado num servidor remoto,
+não no cloud EAS Build (fila de espera > 1h no plano atual).
+
+**Infraestrutura:**
+- Servidor: Debian, acessível via Tailscale em `100.78.149.56` (usuário `gersonvan`)
+- Repo clonado em `~/build/revela` no servidor, sempre a partir da branch `main`
+- Script de build: `~/build/build.sh [profile]` (profile padrão: `preview`)
+- Autenticação EAS via `EXPO_TOKEN` já configurada em `~/.build_env` no servidor —
+  não deve ser regerada nem exposta em nenhum arquivo versionado
+- Monorepo pnpm: o script instala dependências na raiz antes de buildar o subpacote
+
+**Perfis (`apps/moderator/eas.json`):**
+- `preview` — APK interno, aponta para `https://revela.gersonvan.com.br`
+- `development` — APK com dev client
+- `production` — AAB para Play Store. O script ABORTA automaticamente se
+  `EXPO_PUBLIC_MODERATOR_API_BASE_URL` não estiver definido no perfil, para evitar
+  gerar um AAB apontando para localhost. Não contornar essa trava sem corrigir o
+  `eas.json` antes.
+
+**Quando disparar um build:**
+- Quando o usuário pedir explicitamente ("builda", "gera um APK", "testa no celular")
+- Ao concluir uma feature/fix no `apps/moderator` que precisa validação em dispositivo real
+- Nunca disparar automaticamente a cada commit — cada build consome minutos de CPU
+  do servidor; só faz sentido builda quando há algo específico para testar
+
+**Pré-requisito sempre:** as mudanças precisam estar commitadas E enviadas
+(`git push origin main`) antes do build — o servidor roda `git pull origin main`,
+não builda o working tree local nem branches não enviadas.
+
+**Comandos:**
+
+```bash
+git push origin main
+ssh gersonvan@100.78.149.56 '~/build/build.sh preview'
+scp gersonvan@100.78.149.56:~/build/output-preview.apk ./
+```
+
+Trocar `preview` por `development` ou `production` conforme necessário.
+
+**Em caso de falha:** o script roda com `set -euo pipefail`, então a mensagem de
+erro aparece direto na saída do comando `ssh`. Não há passo silencioso de retry —
+qualquer falha de `pnpm install`, `eas build` ou pull interrompe o script.
+
 } //APM_RULES
