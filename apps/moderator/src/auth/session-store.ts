@@ -1,9 +1,9 @@
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 
-const SESSION_TOKEN_KEY = "eventoon:moderator-app:session-token";
-const DEVICE_ID_KEY = "eventoon:moderator-app:device-id";
-const API_BASE_URL_KEY = "eventoon:moderator-app:api-base-url";
+const SESSION_TOKEN_KEY = "eventoon.moderator-app.session-token";
+const DEVICE_ID_KEY = "eventoon.moderator-app.device-id";
+const API_BASE_URL_KEY = "eventoon.moderator-app.api-base-url";
 
 let webSessionToken: string | null = null;
 let webDeviceId: string | null = null;
