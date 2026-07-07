@@ -3,7 +3,7 @@ import type { ExpoConfig } from "expo/config";
 const config: ExpoConfig = {
   name: "Revela Moderador",
   slug: "revela-moderador",
-  version: "0.1.0",
+  version: "0.1.1",
   orientation: "portrait",
   scheme: "revela-moderador",
   userInterfaceStyle: "light",
@@ -20,7 +20,7 @@ const config: ExpoConfig = {
   },
   android: {
     package: "br.com.gersonvan.revelamoderador",
-    versionCode: 1,
+    versionCode: 2,
     adaptiveIcon: {
       backgroundColor: "#FBF5EE",
     },
