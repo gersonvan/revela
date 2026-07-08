@@ -4,6 +4,7 @@ const config: ExpoConfig = {
   name: "Revela Moderador",
   slug: "revela-moderador",
   version: "0.1.1",
+  icon: "./assets/icon.png",
   orientation: "portrait",
   scheme: "revela-moderador",
   userInterfaceStyle: "light",
@@ -22,6 +23,7 @@ const config: ExpoConfig = {
     package: "br.com.gersonvan.revelamoderador",
     versionCode: 2,
     adaptiveIcon: {
+      foregroundImage: "./assets/icon.png",
       backgroundColor: "#FBF5EE",
     },
   },
