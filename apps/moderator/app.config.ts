@@ -17,6 +17,8 @@ const config: ExpoConfig = {
     },
   },
   ios: {
+    buildNumber: "2",
+    bundleIdentifier: "br.com.gersonvan.revelamoderador",
     supportsTablet: false,
   },
   android: {
