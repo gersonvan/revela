@@ -106,6 +106,29 @@ scp gersonvan@100.78.149.56:~/build/output-preview.apk ./
 
 Trocar `preview` por `development` ou `production` conforme necessário.
 
+**Após aprovação final das alterações:**
+
+Quando as alterações finais do `apps/moderator` forem aprovadas, instalar e testar o APK em um Android conectado antes de considerar a mudança pronta.
+
+```bash
+git status --short --branch
+ssh eventoon-build '~/build/build.sh preview'
+scp eventoon-build:~/build/output-preview.apk ./output-preview.apk
+adb install -r ./output-preview.apk
+adb shell monkey -p br.com.gersonvan.revelamoderador 1
+adb exec-out screencap -p > /tmp/revela-moderator-screen.png
+rm -f ./output-preview.apk
+```
+
+Se `adb install -r` falhar com `INSTALL_FAILED_UPDATE_INCOMPATIBLE`, remover a versão instalada e reinstalar:
+
+```bash
+adb uninstall br.com.gersonvan.revelamoderador
+adb install ./output-preview.apk
+```
+
+Validar visualmente a captura em `/tmp/revela-moderator-screen.png`: o app deve abrir no login ou na moderação, com backend de produção, sem ficar preso em `Verificando sessão`. O APK copiado para o repo é artefato temporário e deve ser removido após o teste.
+
 **Em caso de falha:** o script roda com `set -euo pipefail`, então a mensagem de
 erro aparece direto na saída do comando `ssh`. Não há passo silencioso de retry —
 qualquer falha de `pnpm install`, `eas build` ou pull interrompe o script.
