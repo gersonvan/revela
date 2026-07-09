@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "25mb",
     },
   },
+  serverExternalPackages: ["sharp"],
   turbopack: {
     root: process.cwd(),
   },
