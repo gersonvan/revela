@@ -26,3 +26,16 @@ export async function createQrCodeSvgDataUrl(value: string) {
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
+
+export async function createQrCodePngBuffer(value: string) {
+  return QRCode.toBuffer(value, {
+    color: {
+      dark: "#1D1108",
+      light: "#ffffff",
+    },
+    errorCorrectionLevel: "M",
+    margin: 4,
+    type: "png",
+    width: 1600,
+  });
+}
