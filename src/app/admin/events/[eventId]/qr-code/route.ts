@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
-import { createQrCodePngBuffer } from "@/lib/qrcode/data-url";
+import { createPrintableQrPngBuffer } from "@/lib/qrcode/printable-png";
 
 type EventQrCodeContext = {
   params: Promise<{
@@ -32,7 +32,10 @@ export async function GET(_request: Request, context: EventQrCodeContext) {
   const baseUrl = (process.env.NEXTAUTH_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
   const uploadUrl = `${baseUrl}/e/${event.publicSlug}`;
   const fileName = `${slugifyFileName(event.name)}-qr-code.png`;
-  const png = await createQrCodePngBuffer(uploadUrl);
+  const png = await createPrintableQrPngBuffer({
+    eventName: event.name,
+    uploadUrl,
+  });
 
   return new NextResponse(new Uint8Array(png), {
     headers: {
