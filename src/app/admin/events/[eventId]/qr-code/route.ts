@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import sharp from "sharp";
 
 import { requireAdmin } from "@/lib/admin";
-import { createQrCodeSvgDataUrl } from "@/lib/qrcode/data-url";
 import { prisma } from "@/lib/prisma";
+import { createQrCodeSvgDataUrl } from "@/lib/qrcode/data-url";
+
+export const runtime = "nodejs";
 
 type EventQrCodeContext = {
   params: Promise<{
@@ -32,13 +35,14 @@ export async function GET(_request: Request, context: EventQrCodeContext) {
   const baseUrl = (process.env.NEXTAUTH_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
   const uploadUrl = `${baseUrl}/e/${event.publicSlug}`;
   const qrCodeDataUrl = await createQrCodeSvgDataUrl(uploadUrl);
-  const fileName = `${slugifyFileName(event.name)}-qr-code.svg`;
+  const fileName = `${slugifyFileName(event.name)}-qr-code.png`;
   const svg = createPrintableQrSvg({ eventName: event.name, qrCodeDataUrl });
+  const png = await sharp(Buffer.from(svg)).resize({ width: 2160 }).png().toBuffer();
 
-  return new NextResponse(svg, {
+  return new NextResponse(new Uint8Array(png), {
     headers: {
       "Content-Disposition": `attachment; filename="${fileName}"`,
-      "Content-Type": "image/svg+xml; charset=utf-8",
+      "Content-Type": "image/png",
     },
   });
 }
@@ -65,11 +69,11 @@ function createPrintableQrSvg({
 
 function escapeXml(value: string) {
   return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&apos;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
 }
 
 function slugifyFileName(value: string) {

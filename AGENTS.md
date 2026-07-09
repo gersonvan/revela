@@ -133,4 +133,69 @@ Validar visualmente a captura em `/tmp/revela-moderator-screen.png`: o app deve 
 erro aparece direto na saída do comando `ssh`. Não há passo silencioso de retry —
 qualquer falha de `pnpm install`, `eas build` ou pull interrompe o script.
 
+## Teste iOS local (iPhones confiáveis)
+
+O app `apps/moderator` também pode ser testado em iPhones confiáveis sem conta
+Apple Developer paga, usando Xcode local e assinatura com Apple ID gratuito.
+Esse fluxo é apenas para validação local em aparelhos conectados ao Mac; não é
+distribuição pública, TestFlight ou App Store.
+
+**Pré-requisitos no Mac:**
+- Xcode instalado e selecionado em `/Applications/Xcode.app/Contents/Developer`
+- CocoaPods instalado
+- iPhone conectado por cabo, desbloqueado e com confiança concedida ao Mac
+- Apple ID configurado no Xcode para assinatura local gratuita
+- Backend sempre apontando para `https://revela.gersonvan.com.br` em testes de produção
+
+**Quando usar:**
+- Quando o usuário pedir teste em iPhone ou validação iOS
+- Quando houver alteração final no `apps/moderator` que precisa ser conferida em iPhone real
+- Não usar como substituto de distribuição oficial; builds com Apple ID gratuito expiram e exigem instalação manual
+
+**Comandos para simulador ou iPhone conectado:**
+
+```bash
+cd apps/moderator
+EXPO_PUBLIC_MODERATOR_API_BASE_URL=https://revela.gersonvan.com.br npx expo run:ios --device
+```
+
+Quando houver mais de um destino, escolher explicitamente o aparelho listado pelo Expo/Xcode.
+Para simulador já validado localmente, `iPhone 17` funcionou:
+
+```bash
+cd apps/moderator
+EXPO_PUBLIC_MODERATOR_API_BASE_URL=https://revela.gersonvan.com.br npx expo run:ios --device "iPhone 17"
+```
+
+**Validação visual obrigatória:**
+- O app deve abrir na tela de login/moderação
+- O campo `URL do backend` deve estar preenchido com `https://revela.gersonvan.com.br`
+- O app não deve ficar preso em `Verificando sessão`
+- Se houver convite de teste, validar ativação, listagem de pendentes e aprovar/rejeitar uma foto de teste
+
+**Artefatos gerados:**
+- O Expo pode gerar `apps/moderator/ios/` e `apps/moderator/.expo/` durante `run:ios`
+- Manter esses diretórios fora do Git enquanto o projeto seguir no fluxo Expo managed
+- Se o Expo alterar scripts em `apps/moderator/package.json` para `expo run:*`, restaurar para `expo start:*` antes de finalizar, salvo decisão explícita de versionar o prebuild
+
+**Workaround local conhecido:**
+
+Se o build falhar em `ExpoModulesJSI` com erro parecido com:
+
+```text
+resource fork, Finder information, or similar detritus not allowed
+```
+
+o problema é atributo estendido do macOS no framework gerado pelo Xcode. O contorno
+validado localmente foi fazer o `ExpoModulesJSI` usar DerivedData fora da pasta do
+repo, por exemplo em `/tmp`, e reconstruir o xcframework. Esse ajuste fica em
+`node_modules` e não deve ser commitado.
+
+Depois de um teste iOS local, sempre conferir:
+
+```bash
+git status --short --branch
+pnpm --filter @eventoon/moderator-app typecheck
+```
+
 } //APM_RULES

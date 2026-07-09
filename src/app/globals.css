@@ -46,6 +46,28 @@ body {
   font-family: var(--font-sans-family);
 }
 
+button:not(:disabled),
+a[href][class*="rounded"],
+[role="button"]:not([aria-disabled="true"]) {
+  -webkit-tap-highlight-color: transparent;
+  transition-duration: 150ms;
+  transition-property:
+    background-color,
+    border-color,
+    box-shadow,
+    color,
+    opacity,
+    transform;
+  transition-timing-function: ease;
+}
+
+button:not(:disabled):active,
+a[href][class*="rounded"]:active,
+[role="button"]:not([aria-disabled="true"]):active {
+  opacity: 0.86;
+  transform: translateY(1px) scale(0.98);
+}
+
 @keyframes landing-grid-appear {
   from {
     opacity: 0;
