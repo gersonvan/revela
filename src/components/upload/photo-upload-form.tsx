@@ -7,6 +7,13 @@ const MAX_MESSAGE_LENGTH = 120;
 const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
 const MAX_IMAGE_DIMENSION = 2000;
 const JPEG_QUALITY = 0.82;
+const HEIC_MIME_TYPES = new Set(["image/heic", "image/heif"]);
+const SUPPORTED_IMAGE_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  ...HEIC_MIME_TYPES,
+]);
 
 type SelectedPhoto = {
   file: File;
@@ -21,6 +28,8 @@ type PhotoUploadFormProps = {
   authorizationText: string;
   eventSlug: string;
 };
+
+class PhotoPreparationError extends Error {}
 
 export function PhotoUploadForm({
   authorizationText,
@@ -74,9 +83,9 @@ export function PhotoUploadForm({
       return;
     }
 
-    if (nextFiles.some((file) => !file.type.startsWith("image/"))) {
+    if (nextFiles.some((file) => !isSupportedImageFile(file))) {
       setStatus("error");
-      setStatusMessage("Escolha apenas arquivos de imagem.");
+      setStatusMessage("Envie fotos em JPG, PNG, WebP, HEIC ou HEIF.");
       return;
     }
 
@@ -108,9 +117,13 @@ export function PhotoUploadForm({
       setPhotos((current) => [...current, ...prepared]);
       setStatus("idle");
       setStatusMessage("");
-    } catch {
+    } catch (error) {
       setStatus("error");
-      setStatusMessage("Não foi possível preparar uma das fotos. Tente enviar menos imagens por vez.");
+      setStatusMessage(
+        error instanceof PhotoPreparationError
+          ? error.message
+          : "Não foi possível preparar uma das fotos. Tente novamente.",
+      );
     }
   }
 
@@ -259,10 +272,10 @@ export function PhotoUploadForm({
           Escolher fotos
         </span>
         <span className="mt-1 block text-xs leading-5 text-[#8A6B55]">
-          Até {MAX_FILES} imagens por envio. Fotos grandes são reduzidas antes do upload.
+          Até {MAX_FILES} imagens por envio. Fotos HEIC são convertidas antes do upload.
         </span>
         <input
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif"
           className="sr-only"
           disabled={status === "preparing" || status === "submitting"}
           multiple
@@ -348,6 +361,10 @@ export function PhotoUploadForm({
 }
 
 async function optimizeImageForUpload(file: File): Promise<File> {
+  if (isHeicImage(file)) {
+    file = await convertHeicToJpeg(file);
+  }
+
   if (!file.type.startsWith("image/") || file.type === "image/gif") {
     return file;
   }
@@ -383,6 +400,40 @@ async function optimizeImageForUpload(file: File): Promise<File> {
     lastModified: file.lastModified,
     type: "image/jpeg",
   });
+}
+
+function isSupportedImageFile(file: File) {
+  return SUPPORTED_IMAGE_MIME_TYPES.has(file.type) || isHeicImage(file);
+}
+
+function isHeicImage(file: File) {
+  return HEIC_MIME_TYPES.has(file.type) || /\.hei[cf]$/i.test(file.name);
+}
+
+async function convertHeicToJpeg(file: File): Promise<File> {
+  try {
+    const { default: heic2any } = await import("heic2any");
+    const result = await heic2any({
+      blob: file,
+      quality: JPEG_QUALITY,
+      toType: "image/jpeg",
+    });
+    const blob = Array.isArray(result) ? result[0] : result;
+
+    if (!blob) {
+      throw new Error("A conversão não retornou uma imagem.");
+    }
+
+    const baseName = file.name.replace(/\.[^.]+$/, "");
+    return new File([blob], `${baseName}.jpg`, {
+      lastModified: file.lastModified,
+      type: "image/jpeg",
+    });
+  } catch {
+    throw new PhotoPreparationError(
+      `Não foi possível ler a foto HEIC “${file.name}”. Tente exportá-la como JPEG e envie novamente.`,
+    );
+  }
 }
 
 function loadImage(file: File): Promise<HTMLImageElement> {
