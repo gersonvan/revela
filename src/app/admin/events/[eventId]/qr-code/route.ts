@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import sharp from "sharp";
 
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
@@ -35,14 +34,13 @@ export async function GET(_request: Request, context: EventQrCodeContext) {
   const baseUrl = (process.env.NEXTAUTH_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
   const uploadUrl = `${baseUrl}/e/${event.publicSlug}`;
   const qrCodeDataUrl = await createQrCodeSvgDataUrl(uploadUrl);
-  const fileName = `${slugifyFileName(event.name)}-qr-code.png`;
+  const fileName = `${slugifyFileName(event.name)}-qr-code.svg`;
   const svg = createPrintableQrSvg({ eventName: event.name, qrCodeDataUrl });
-  const png = await sharp(Buffer.from(svg), { density: 192 }).png().toBuffer();
 
-  return new NextResponse(new Uint8Array(png), {
+  return new NextResponse(svg, {
     headers: {
       "Content-Disposition": `attachment; filename="${fileName}"`,
-      "Content-Type": "image/png",
+      "Content-Type": "image/svg+xml; charset=utf-8",
     },
   });
 }

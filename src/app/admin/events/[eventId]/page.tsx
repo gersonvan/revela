@@ -12,6 +12,7 @@ import {
   updateEventStatusAction,
 } from "@/app/admin/events/actions";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { PrintableQrDownloadButton } from "@/components/admin/printable-qr-download-button";
 import { requireAdmin } from "@/lib/admin";
 import { createQrCodeDataUrl } from "@/lib/qrcode/data-url";
 import { prisma } from "@/lib/prisma";
@@ -209,12 +210,11 @@ ${createdModeratorUrl}`)}`
               <p className="mt-3 text-sm font-bold text-[#1D1108]">
                 Upload dos convidados
               </p>
-              <Link
-                className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-lg bg-[#D4562B] px-4 text-sm font-bold text-white"
-                href={`/admin/events/${event.id}/qr-code`}
-              >
-                Baixar PNG para impressão
-              </Link>
+              <PrintableQrDownloadButton
+                eventName={event.name}
+                fileName={`${event.publicSlug}-qr-code.png`}
+                qrCodeDataUrl={qrCodeDataUrl}
+              />
             </div>
             <div className="grid content-start gap-4">
               <LinkRow label="Upload dos convidados" value={uploadUrl} />
