@@ -1,0 +1,1 @@
+ALTER TABLE "Event" ADD COLUMN "galleryEnabled" BOOLEAN NOT NULL DEFAULT false;

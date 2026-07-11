@@ -57,6 +57,7 @@ model Event {
   publicSlug         String              @unique
   status             EventStatus         @default(DRAFT)
   moderationMode     EventModerationMode @default(WITH_MODERATION)
+  galleryEnabled     Boolean             @default(false)
   invitationImageUrl String?
   primaryColor       String?
   secondaryColor     String?

@@ -102,8 +102,10 @@ export default async function EventDetailPage({
   const baseUrl = process.env.NEXTAUTH_URL ?? "http://127.0.0.1:3000";
   const uploadPath = `/e/${event.publicSlug}`;
   const shortScreenPath = `/t/${event.publicSlug}`;
+  const galleryPath = `/gallery/${event.publicSlug}`;
   const uploadUrl = `${baseUrl}${uploadPath}`;
   const screenUrl = `${baseUrl}${shortScreenPath}`;
+  const galleryUrl = `${baseUrl}${galleryPath}`;
   const qrCodeDataUrl = await createQrCodeDataUrl(uploadUrl);
   const formattedEventDate = event.eventDate
     ? event.eventDate.toISOString().slice(0, 10)
@@ -219,6 +221,7 @@ ${createdModeratorUrl}`)}`
             <div className="grid content-start gap-4">
               <LinkRow label="Upload dos convidados" value={uploadUrl} />
               <LinkRow label="Telão" value={screenUrl} />
+              {event.galleryEnabled ? <LinkRow label="Galeria dos convidados" value={galleryUrl} /> : null}
             </div>
           </div>
         </section>
@@ -344,6 +347,26 @@ ${createdModeratorUrl}`)}`
                 e moderadores ainda devem acompanhar o evento para remover ou
                 rejeitar fotos inadequadas.
               </p>
+            </fieldset>
+
+            <fieldset className="rounded-xl border border-[#E8DDD1] bg-[#F4EDE1] p-4">
+              <legend className="text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
+                Galeria dos convidados
+              </legend>
+              <label className="mt-3 flex cursor-pointer items-start gap-3 rounded-lg border border-[#E8DDD1] bg-white p-3 text-sm text-[#1D1108] has-[:checked]:border-[#D4562B] has-[:checked]:ring-2 has-[:checked]:ring-[#D4562B]/20">
+                <input
+                  className="mt-1 h-4 w-4 accent-[#D4562B]"
+                  defaultChecked={event.galleryEnabled}
+                  name="galleryEnabled"
+                  type="checkbox"
+                />
+                <span>
+                  <strong className="block text-sm">Liberar galeria pública</strong>
+                  <span className="mt-1 block text-xs leading-5 text-[#8A6B55]">
+                    Mostra somente fotos aprovadas, em prévias com marca d&apos;água. A seleção fica salva no aparelho do convidado.
+                  </span>
+                </span>
+              </label>
             </fieldset>
 
             <div className="grid gap-4 sm:grid-cols-2">

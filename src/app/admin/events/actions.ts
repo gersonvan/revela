@@ -207,6 +207,7 @@ export async function updateEventSettingsAction(formData: FormData) {
   const primaryColor = String(formData.get("primaryColor") ?? "").trim();
   const secondaryColor = String(formData.get("secondaryColor") ?? "").trim();
   const moderationMode = parseModerationMode(formData.get("moderationMode"));
+  const galleryEnabled = formData.get("galleryEnabled") === "on";
   const authorizationText = String(
     formData.get("authorizationText") ?? DEFAULT_AUTHORIZATION_TEXT,
   ).trim();
@@ -259,6 +260,7 @@ export async function updateEventSettingsAction(formData: FormData) {
     data: {
       authorizationText: authorizationText || DEFAULT_AUTHORIZATION_TEXT,
       eventDate: eventDate ? new Date(`${eventDate}T12:00:00`) : null,
+      galleryEnabled,
       invitationImageUrl,
       moderationMode,
       name,
@@ -272,4 +274,5 @@ export async function updateEventSettingsAction(formData: FormData) {
   revalidatePath(`/e/${event.publicSlug}`);
   revalidatePath(`/screen/${event.publicSlug}`);
   revalidatePath(`/t/${event.publicSlug}`);
+  revalidatePath(`/gallery/${event.publicSlug}`);
 }
