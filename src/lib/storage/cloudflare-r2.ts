@@ -11,7 +11,7 @@ function requiredEnv(key: string) {
   const value = process.env[key];
 
   if (!value) {
-    throw new Error(`${key} nao configurado.`);
+    throw new Error(`${key} não configurado.`);
   }
 
   return value;

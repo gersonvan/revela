@@ -18,7 +18,7 @@ import {
 } from "@/lib/storage";
 
 const DEFAULT_AUTHORIZATION_TEXT =
-  "Ao enviar, você autoriza que está foto apareça no telão da festá após moderação. Envie apenas fotos que você se sente confortável em compartilhar neste evento.";
+  "Ao enviar, você autoriza que esta foto apareça no telão da festa após moderação. Envie apenas fotos que você se sente confortável em compartilhar neste evento.";
 const DEFAULT_PRIMARY_COLOR = "#D4562B";
 const DEFAULT_SECONDARY_COLOR = "#FBF5EE";
 const MAX_INVITATION_SIZE_BYTES = 20 * 1024 * 1024;
@@ -67,7 +67,7 @@ export async function updateEventStatusAction(formData: FormData) {
   const status = String(formData.get("status") ?? "") as EventStatus;
 
   if (!Object.values(EventStatus).includes(status)) {
-    throw new Error("Status invalido.");
+    throw new Error("Status inválido.");
   }
 
   await prisma.event.updateMany({
@@ -183,7 +183,7 @@ export async function revokeModeratorAction(formData: FormData) {
   });
 
   if (!moderator) {
-    throw new Error("Moderador nao encontrado.");
+    throw new Error("Moderador não encontrado.");
   }
 
   if (moderator.status !== ModeratorStatus.REVOKED) {
@@ -238,7 +238,7 @@ export async function updateEventSettingsAction(formData: FormData) {
 
   if (invitationFile instanceof File && invitationFile.size > 0) {
     if (!isSupportedImageType(invitationFile.type)) {
-      throw new Error("Formato de convite nao suportado.");
+      throw new Error("Formato de convite não suportado.");
     }
 
     if (invitationFile.size > MAX_INVITATION_SIZE_BYTES) {

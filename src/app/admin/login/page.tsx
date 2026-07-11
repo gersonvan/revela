@@ -38,7 +38,7 @@ export default async function AdminLoginPage() {
           </p>
           {!isGoogleConfigured ? (
             <div className="mt-6 rounded-lg border border-[rgba(212,86,43,0.2)] bg-[rgba(212,86,43,0.08)] p-4 text-sm leading-6 text-[#D4562B]">
-              Login Google ainda nao configurado. Preencha
+              Login Google ainda não configurado. Preencha
               <code className="mx-1 rounded bg-white px-1">GOOGLE_CLIENT_ID</code>
               e
               <code className="mx-1 rounded bg-white px-1">

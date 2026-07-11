@@ -373,7 +373,7 @@ ${createdModeratorUrl}`)}`
 
               <label className="block">
                 <span className="mb-1.5 block text-[9px] font-bold uppercase tracking-wide text-[#8A6B55]">
-                  Texto de autorizacao
+                  Texto de autorização
                 </span>
                 <textarea
                   className="min-h-28 w-full resize-none rounded-lg border border-[#E8DDD1] bg-[#F4EDE1] px-3 py-2 text-sm leading-6 text-[#1D1108] outline-none focus:border-[#D4562B]"

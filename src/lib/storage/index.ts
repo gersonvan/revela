@@ -19,7 +19,7 @@ function getStorageAdapter(): StorageAdapter {
     return cloudflareR2StorageAdapter;
   }
 
-  throw new Error(`STORAGE_PROVIDER invalido: ${provider}`);
+  throw new Error(`STORAGE_PROVIDER inválido: ${provider}`);
 }
 
 export function readStoredFile(mediaPathOrUrl: string) {

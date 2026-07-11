@@ -41,14 +41,14 @@ export default async function ModerationPage({
   const access = await getModeratorAccess(token);
 
   if (access.status === "invalid") {
-    return <ModerationState title="Link invalido" message="Este link nao existe ou foi revogado." />;
+    return <ModerationState title="Link inválido" message="Este link não existe ou foi revogado." />;
   }
 
   if (access.status === "device_mismatch") {
     return (
       <ModerationState
-        title="Link ja usado"
-        message="Este link ja foi ativado em outro dispositivo."
+        title="Link já usado"
+        message="Este link já foi ativado em outro dispositivo."
       />
     );
   }

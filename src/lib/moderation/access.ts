@@ -34,7 +34,7 @@ export async function requireModerator(token: string) {
   const access = await getModeratorAccess(token);
 
   if (access.status !== "authorized" || !access.moderator) {
-    throw new Error("Acesso de moderador invalido.");
+    throw new Error("Acesso de moderador inválido.");
   }
 
   await prisma.moderator.update({

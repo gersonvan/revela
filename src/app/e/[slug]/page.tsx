@@ -55,12 +55,12 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
           <div className="mt-8 rounded-2xl border border-[#E8DDD1] bg-white p-6 shadow-sm">
             <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold italic text-[#1D1108]">
               {event.status === EventStatus.DRAFT
-                ? "Evento ainda nao aberto"
+                ? "Evento ainda não aberto"
                 : "Envio encerrado"}
             </h2>
             <p className="mt-2 text-sm leading-6 text-[#8A6B55]">
               {event.status === EventStatus.DRAFT
-                ? "Este evento ainda nao está recebendo fotos."
+                ? "Este evento ainda não está recebendo fotos."
                 : "O envio de fotos deste evento foi encerrado."}
             </p>
           </div>
