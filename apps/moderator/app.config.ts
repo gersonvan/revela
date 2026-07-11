@@ -22,6 +22,7 @@ const config: ExpoConfig = {
     supportsTablet: false,
   },
   android: {
+    googleServicesFile: process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json",
     package: "br.com.gersonvan.revelamoderador",
     versionCode: 2,
     adaptiveIcon: {
